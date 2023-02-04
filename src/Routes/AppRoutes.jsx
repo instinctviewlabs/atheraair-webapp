@@ -7,6 +7,7 @@ import VerifyCode from "../Components/LoginPages/VerifyCode";
 import SetPassword from "../Components/LoginPages/SetPassword";
 import { Routes, Route } from "react-router-dom";
 import FlightSearch from "../Components/FightSearch/FlightSearch";
+import Profile from '../Components/Profile/Profile';
 
 function AppRoutes() {
   return (
@@ -17,8 +18,9 @@ function AppRoutes() {
       <Route path="signup" element={<Signup/>}/>
       <Route path="password/forgot" element={<ForgotPassword/>}/>
       <Route path="password/set" element={<SetPassword/>}/>
-      <Route path="user/verification" element={<VerifyCode/>}/>
+      <Route path="user/verify" element={<VerifyCode/>}/>
       <Route path="user/payment/add" element={<AddPayment/>}/>
+      <Route path="profile" element={<Profile/>}/>
       <Route path="*" element={<h1>Error</h1>}/>
     </Routes>
     </>

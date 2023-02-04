@@ -1,5 +1,5 @@
 import React from 'react';
-import { Button, styled, Card, TextField, Box, Typography  } from '@mui/material';
+import { Button, styled, Card, TextField, Box, Typography, Avatar  } from '@mui/material';
 import { appleColorIcon, atheraNormalLogo, facebookColorIcon, googleColorIcon } from '../../Assests/assets';
 
 
@@ -29,8 +29,8 @@ export const WhiteCard = (props) => {      //white card component
     return(
         <Card {...props} elevation={0} sx={{
             backgroundColor: "card.background",
-            borderRadius: 5,
-            p: 3,
+            borderRadius: "10px",
+            p: 2,
             boxShadow: "0px 4px 16px rgba(141, 211, 187, 0.15)",
         }}>
             {props.children}
@@ -41,6 +41,9 @@ export const WhiteCard = (props) => {      //white card component
 export const InputField = styled(TextField)(({theme}) => ({     //Styled input field
     backgroundColor: theme.palette.card.background,
     borderRadius: theme.shape.borderRadius,
+    input: {
+        color: theme.palette.text.main
+    }
 }));
 
 export const AtheraTitle = () => (                          // Athera tiltle with logo
@@ -96,3 +99,9 @@ export const FacebookButton = (props) => {                //Facebook button Comp
         </Button>
     )
 }
+
+export const AvatarProfile =  styled(Avatar)(({ theme }) => ({
+    width: 160,
+    height: 160,
+    border: `4px solid ${theme.palette.veryLightBlue.main}`,
+  }));

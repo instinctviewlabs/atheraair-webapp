@@ -1,5 +1,5 @@
 import React from 'react';
-import { Box, Checkbox, Divider, IconButton, InputAdornment, Stack, TextField, Typography } from '@mui/material';
+import { Box, Checkbox, Divider, IconButton, InputAdornment, Stack, Step, StepLabel, Stepper, TextField, Typography } from '@mui/material';
 import { usePasswordVisibility } from '../../Lib/CustomHooks/usePasswordVisibility';
 import { atheraNormalLogo } from '../../Assests/assets';
 import {VscEye, VscEyeClosed} from "react-icons/vsc";
@@ -13,6 +13,11 @@ function Signup() {
   const navigate = useNavigate();
   const [hidePassword, setHidePassword] = usePasswordVisibility();
   const [hideConfirmPassword, setHideConfirmPassword] = usePasswordVisibility();
+  const steps = [
+    'Set up Athera account',
+    'Verify code via email',
+    'Add payment method',
+  ];
 
   return (
     <Stack 
@@ -42,6 +47,13 @@ function Signup() {
                     ATHERA AIR
                 </Typography>
             </Box>
+            <Stepper activeStep={0} alternativeLabel >
+            {steps.map((label) => (
+                <Step key={label}>
+                <StepLabel><Typography variant='subtitle1'>{label}</Typography></StepLabel>
+                </Step>
+            ))}
+            </Stepper>
             <Box>
                 <Typography variant='h4'>Sign up</Typography>
                 <Typography variant='subtitle2'>Let's get you all set up so that you can access your personal account</Typography>
@@ -59,7 +71,6 @@ function Signup() {
                         type="text"
                         label="First Name"
                         required
-                        helperText="First name"
                     />
                     <TextField
                         fullWidth
@@ -67,7 +78,6 @@ function Signup() {
                         type="text"
                         label="Last Name"
                         required
-                        helperText="Last name"
 
                     />
                 </Box>
@@ -84,7 +94,6 @@ function Signup() {
                         type="email"
                         label="Email"
                         required
-                        helperText="Email"
 
                     />
 
@@ -94,7 +103,6 @@ function Signup() {
                         type="text"
                         label="Phone number"
                         required
-                        helperText="Phone number"
 
                     />
                 </Box>
@@ -103,7 +111,6 @@ function Signup() {
                     required
                     size='small'
                     label="Password"
-                    helperText="Password"
                     type={hidePassword ? 'password' : 'text'}
                     edge="end"
                     // value={values.password}
@@ -125,7 +132,6 @@ function Signup() {
                     required
                     size='small'
                     label="Confirm Password"
-                    helperText="Confirm Password"
                     type={hideConfirmPassword ? 'password' : 'text'}
                     edge="end"
                     // value={values.password}
@@ -160,7 +166,6 @@ function Signup() {
             </Stack>
             <Box 
                 display="flex" 
-                flexDirection="row" 
                 justifyContent="center"
             >
                 <Typography>Already have an account? <AnchorText onClick={() => navigate("/login")} component="span">Login</AnchorText></Typography>

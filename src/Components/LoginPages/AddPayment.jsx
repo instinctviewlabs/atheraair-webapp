@@ -8,10 +8,12 @@ import SideCarousel from './SideCarousel';
 import { DatePicker, LocalizationProvider } from '@mui/x-date-pickers';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import { MdOutlineKeyboardArrowLeft, MdOutlineKeyboardArrowRight } from 'react-icons/md';
+import { useNavigate } from 'react-router-dom';
 
 
 function AddPayment() {
 
+  const navigate = useNavigate();
   const [hideCvc, setHideCvc] = usePasswordVisibility();
   const [date, setDate] = useState(new Date());
   const steps = [
@@ -56,7 +58,7 @@ function AddPayment() {
             ))}
             </Stepper>
             <Stack direction="row" justifyContent="space-between">
-                <AnchorText sx={{display: "flex", alignItems: "center"}}>
+                <AnchorText onClick={() => navigate(-1)} sx={{display: "flex", alignItems: "center"}}>
                     <MdOutlineKeyboardArrowLeft/>
                     <Typography variant='subtitle1' component="span">
                         Back

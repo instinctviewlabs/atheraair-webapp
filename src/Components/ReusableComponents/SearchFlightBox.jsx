@@ -14,11 +14,11 @@ function SearchFlightBox() {
     <Box sx={{
         height: "auto",
         width: "auto",
+        backgroundColor: "common.background",
         p: {
             xs: 1,
             sm: 10
-        },
-        backgroundColor: "common.background"
+        }
     }}>
         <WhiteCard>
             <Typography variant='h5' color="text.main">
@@ -39,14 +39,12 @@ function SearchFlightBox() {
                     label="From"
                     size="small"
                     // value="Lahore"
-                    InputProps={{ inputProps: { sx: { color: 'text.main' }}}}
                 />
                 
                 <InputField 
                     label="To"
                     size="small"
                     // value="Karachi"
-                    InputProps={{ inputProps: { sx: { color: 'text.main' }}}}
 
                 />
                 <InputField
@@ -68,7 +66,6 @@ function SearchFlightBox() {
                 <LocalizationProvider dateAdapter={AdapterDayjs}>
                     <DesktopDatePicker
                         // label="Depart - Return"
-                        InputProps={{ inputProps: { sx: { color: 'text.main' }}}}
                         renderInput={(params) => <InputField size="small" {...params} />}
                         value={date}
                         onChange={(newValue) => {
@@ -79,7 +76,6 @@ function SearchFlightBox() {
                 <InputField 
                     label="Passenger - Class"
                     size="small"
-                    InputProps={{ inputProps: { sx: { color: 'text.main' }}}}
                 />
                 <BlueButton>
                     <FiSend/>

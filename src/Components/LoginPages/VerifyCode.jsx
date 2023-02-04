@@ -6,9 +6,11 @@ import { AnchorText, BlueButton } from '../../Lib/MuiThemes/MuiComponents';
 import {MdOutlineKeyboardArrowLeft} from "react-icons/md";
 import SideCarousel from './SideCarousel';
 import { usePasswordVisibility } from '../../Lib/CustomHooks/usePasswordVisibility';
+import { useNavigate } from 'react-router-dom';
 
 function VerifyCode() {
 
+  const navigate = useNavigate();
   const [hidePassword, setHidePassword] = usePasswordVisibility();
   const steps = [
     'Set up Athera account',
@@ -52,7 +54,7 @@ function VerifyCode() {
                 </Step>
             ))}
             </Stepper>
-            <AnchorText sx={{display: "flex", alignItems: "center"}}>
+            <AnchorText onClick={() => navigate(-1)} sx={{display: "flex", alignItems: "center"}}>
                     <MdOutlineKeyboardArrowLeft/>
                     <Typography variant='subtitle1' component="span">
                         Back
