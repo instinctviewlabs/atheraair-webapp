@@ -13,6 +13,20 @@ export const BlueButton = styled(Button)(({theme}) => ({    //Contained Blue but
     }
 }));
 
+export const BlueBox = styled(Box)(({theme}) => ({                 // Box with blue border
+
+    display: "flex",
+    alignItems: "center", 
+    height: "auto", 
+    width: "auto",
+    gap: "10px", 
+    border: `1px solid ${theme.palette.primary.main}`, 
+    borderRadius: "10px",
+    padding: "5px",
+
+}))
+
+
 export const BlackButton = styled(Button)(({theme}) => ({   //Contained black button
     backgroundColor: theme.palette.common.black,
     color: theme.palette.text.white,
@@ -61,6 +75,8 @@ export const AtheraTitle = () => (                          // Athera tiltle wit
 );
 
 export const AnchorText = styled(Typography)(() => ({   // Yellow color link text
+    display: "flex", 
+    alignItems: "center",
     color: "#FF8682",
     cursor: "pointer"
 }));
@@ -104,4 +120,47 @@ export const AvatarProfile =  styled(Avatar)(({ theme }) => ({
     width: 160,
     height: 160,
     border: `4px solid ${theme.palette.veryLightBlue.main}`,
-  }));
+}));
+
+export const FullScreenLoader = () => (
+    <>
+    <Box sx={{
+        height: "100vh", 
+        width: "auto", 
+        backgroundColor: "card.background",
+        display: "flex",
+        alignItems: "center",
+        justifyContent: "center",
+        filter: "blur(4px)"
+    }}>
+        <img height={200} width={200} src={atheraNormalLogo} alt="loader" />
+    </Box>
+    </>
+)
+
+export const SavedCard = styled(Box)(({theme}) => ({
+    height: "200px",
+    width: "auto",
+    backgroundColor: theme.palette.primary.main,
+    color: theme.palette.text.white,
+    borderRadius: "15px",
+    padding: "20px",
+    display: "flex", 
+    flexDirection: "column", 
+    justifyContent: "space-between",
+    boxSizing: "border-box"
+}));
+
+export const AddNewCard = styled(Box)(({theme}) => ({
+    height: "198px",
+    width: "auto",
+    color: theme.palette.primary.main,
+    border: `3px dashed ${theme.palette.primary.main}`,
+    borderRadius: "15px",
+    padding: "20px",
+    display: "flex",
+    flexDirection: "column", 
+    alignItems: "center",
+    justifyContent: "center",
+    boxSizing: "border-box"
+}))

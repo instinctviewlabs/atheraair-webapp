@@ -6,7 +6,7 @@ import { useState } from 'react';
 
 function CustomThemeProvider(props) {
 
-  const [mode] = useState("dark");
+  const [mode] = useState("light");
   
   return (
     <ThemeProvider theme={mode === "dark" ? DarkTheme : LightTheme}>

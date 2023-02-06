@@ -17,7 +17,7 @@ function AccountTab() {
                         size='small'
                         value="John Doe"
                         InputProps={{
-                            disableUnderline: true, // <== added this
+                            disableUnderline: true, // <== added this to disable border line
                         }}
                     />
                 </ListItem>
@@ -29,7 +29,7 @@ function AccountTab() {
                         size='small'
                         value="johndoe@gmail.com"
                         InputProps={{
-                            disableUnderline: true, // <== added this
+                            disableUnderline: true, // <== added this to disable border line
                         }}
                     />
                 </ListItem>
@@ -41,7 +41,7 @@ function AccountTab() {
                         size='small'
                         value="123456789"
                         InputProps={{
-                            disableUnderline: true, // <== added this
+                            disableUnderline: true, // <== added this to disable border line
                         }}
                     />
                 </ListItem>
@@ -53,7 +53,7 @@ function AccountTab() {
                         size='small'
                         value="+1 123 456 789"
                         InputProps={{
-                            disableUnderline: true, // <== added this
+                            disableUnderline: true, // <== added this to disable border line
                         }}
                     />
                 </ListItem>
@@ -65,7 +65,7 @@ function AccountTab() {
                         size='small'
                         value="No.221, Baker st, London"
                         InputProps={{
-                            disableUnderline: true, // <== added this
+                            disableUnderline: true, // <== added this to disable border line
                         }}
                     />
                 </ListItem>

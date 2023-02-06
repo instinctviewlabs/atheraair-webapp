@@ -1,8 +1,8 @@
 import { Box } from '@mui/material';
 import React from 'react';
+import { Outlet } from 'react-router-dom';
 import Footer from '../ReusableComponents/Footer';
 import Navbar from '../ReusableComponents/Navbar';
-import AccountTab from './ProfileFragments/AccountTab';
 import DisplayPicture from './ProfileFragments/DisplayPicture';
 import ProfileLists from './ProfileFragments/ProfileLists';
 
@@ -26,7 +26,7 @@ function Profile() {
         }}>
             <DisplayPicture></DisplayPicture>
             <ProfileLists></ProfileLists>
-            <AccountTab></AccountTab>
+            <Outlet></Outlet>
         </Box>
         <Footer></Footer>
     </>

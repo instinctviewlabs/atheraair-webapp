@@ -58,13 +58,13 @@ function AddPayment() {
             ))}
             </Stepper>
             <Stack direction="row" justifyContent="space-between">
-                <AnchorText onClick={() => navigate(-1)} sx={{display: "flex", alignItems: "center"}}>
+                <AnchorText onClick={() => navigate(-1)}>
                     <MdOutlineKeyboardArrowLeft/>
                     <Typography variant='subtitle1' component="span">
                         Back
                     </Typography>
                 </AnchorText>
-                <AnchorText sx={{display: "flex", alignItems: "center"}}>
+                <AnchorText>
                     <Typography variant='subtitle1' component="span">
                         Skip for now
                     </Typography>

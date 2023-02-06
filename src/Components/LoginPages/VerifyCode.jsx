@@ -54,7 +54,7 @@ function VerifyCode() {
                 </Step>
             ))}
             </Stepper>
-            <AnchorText onClick={() => navigate(-1)} sx={{display: "flex", alignItems: "center"}}>
+            <AnchorText onClick={() => navigate(-1)}>
                     <MdOutlineKeyboardArrowLeft/>
                     <Typography variant='subtitle1' component="span">
                         Back

@@ -30,22 +30,22 @@ export default function Navbar(){
                 <Tabs value={value} onChange={(e, newVal) => setValue(newVal)} centered>
                     <Tab label={
                         <Box 
-                        color="text.main"
-                        display={{
-                            xs: "none",
-                            sm: "flex"
-                        }}
-                        flexDirection="row" 
-                        alignItems="center" 
-                        gap="5px"
-                        onClick={() => console.log("Find flight")}
+                            color="text.main"
+                            display={{
+                                xs: "none",
+                                sm: "flex"
+                            }}
+                            flexDirection="row" 
+                            alignItems="center" 
+                            gap="5px"
+                            onClick={() => console.log("Find flight")}
                         >
                         <TbPlaneInflight/>
                         <Typography 
                             color="text.main"
                             variant='h6' 
                         >
-                        Find Flight
+                            Find Flight
                         </Typography>
                         </Box>
                     } />
