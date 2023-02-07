@@ -15,10 +15,11 @@ function SearchFlightBox() {
         height: "auto",
         width: "auto",
         backgroundColor: "common.background",
-        p: {
+        px: {
             xs: 1,
             sm: 10
-        }
+        },
+        py: 5
     }}>
         <WhiteCard>
             <Typography variant='h5' color="text.main">
