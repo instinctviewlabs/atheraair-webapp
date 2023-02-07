@@ -2,7 +2,7 @@ import React from 'react';
 import { Box, Checkbox, Divider, IconButton, InputAdornment, Stack, TextField, Typography } from '@mui/material';
 import { atheraNormalLogo } from '../../Assests/assets';
 import {VscEye, VscEyeClosed} from "react-icons/vsc";
-import { AnchorText, BlueButton, GoogleButton } from '../../Lib/MuiThemes/MuiComponents';
+import { AnchorText, BlueButton, GoogleButton, SpanText } from '../../Lib/MuiThemes/MuiComponents';
 import { usePasswordVisibility } from '../../Lib/CustomHooks/usePasswordVisibility';
 import SideCarousel from './SideCarousel';
 import { useNavigate } from 'react-router-dom';
@@ -96,7 +96,7 @@ function Login() {
                 flexDirection="row" 
                 justifyContent="center"
             >
-                <Typography>Don't have an account? <AnchorText onClick={() => navigate("/signup")} component="span"> Sign up</AnchorText></Typography>
+                <Typography>Don't have an account? <SpanText onClick={() => navigate("/signup")} component="span"> Sign up</SpanText></Typography>
             </Box>
             <Divider><Typography variant='subtitle2'>Or Login with</Typography></Divider>
             <GoogleButton>Sign In with Google</GoogleButton>

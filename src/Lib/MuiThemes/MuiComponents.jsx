@@ -81,6 +81,11 @@ export const AnchorText = styled(Typography)(() => ({   // Yellow color link tex
     cursor: "pointer"
 }));
 
+export const SpanText = styled(Typography)(() => ({   // Yellow color span text
+    color: "#FF8682",
+    cursor: "pointer"
+}));
+
 export const GoogleButton = (props) => {                // Google button component
     return(
         <Button 

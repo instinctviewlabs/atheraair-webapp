@@ -3,7 +3,7 @@ import { Box, Checkbox, Divider, IconButton, InputAdornment, Stack, Step, StepLa
 import { usePasswordVisibility } from '../../Lib/CustomHooks/usePasswordVisibility';
 import { atheraNormalLogo } from '../../Assests/assets';
 import {VscEye, VscEyeClosed} from "react-icons/vsc";
-import { AnchorText, BlueButton, GoogleButton } from '../../Lib/MuiThemes/MuiComponents';
+import { BlueButton, GoogleButton, SpanText } from '../../Lib/MuiThemes/MuiComponents';
 import SideCarousel from './SideCarousel';
 import { useNavigate } from 'react-router-dom';
 
@@ -159,7 +159,7 @@ function Signup() {
                         alignItems="center"
                     >
                         <Checkbox aria-label='terms-and-conditions'/>
-                        <Typography>I agree to all the<AnchorText component="span"> terms </AnchorText> and <AnchorText component="span"> privacy policies </AnchorText></Typography>
+                        <Typography>I agree to all the<SpanText component="span"> terms </SpanText> and <SpanText component="span"> privacy policies </SpanText></Typography>
                     </Box>
                 </Stack>
                 <BlueButton>Create account</BlueButton>
@@ -168,7 +168,7 @@ function Signup() {
                 display="flex" 
                 justifyContent="center"
             >
-                <Typography>Already have an account? <AnchorText onClick={() => navigate("/login")} component="span">Login</AnchorText></Typography>
+                <Typography>Already have an account? <SpanText onClick={() => navigate("/login")} component="span">Login</SpanText></Typography>
             </Box>
             <Divider><Typography variant='subtitle2'>Or Sign up with</Typography></Divider>
             <GoogleButton>Sign up with Google</GoogleButton>

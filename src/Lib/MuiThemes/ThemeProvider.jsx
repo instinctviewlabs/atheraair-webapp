@@ -2,14 +2,14 @@ import React from 'react';
 import { ThemeProvider } from '@mui/material';
 import { LightTheme } from './LightTheme';
 import { DarkTheme } from './DarkTheme';
-import { useState } from 'react';
+import { useSelector } from 'react-redux';
 
 function CustomThemeProvider(props) {
 
-  const [mode] = useState("light");
+  const {theme} = useSelector(data => data);
   
   return (
-    <ThemeProvider theme={mode === "dark" ? DarkTheme : LightTheme}>
+    <ThemeProvider theme={theme ? DarkTheme : LightTheme}>
       {props.children}
     </ThemeProvider>
   )

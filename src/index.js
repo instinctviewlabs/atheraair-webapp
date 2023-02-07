@@ -6,13 +6,22 @@ import reportWebVitals from './reportWebVitals';
 import CustomThemeProvider from './Lib/MuiThemes/ThemeProvider';
 import { BrowserRouter as Router } from 'react-router-dom';
 
+//Redux
+import { Provider } from 'react-redux';
+import {store} from "./Lib/Redux/Store";
+import { AuthContextProvider } from './Lib/Contexts/AuthContext';
+
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
   <React.StrictMode>
     <Router>
-      <CustomThemeProvider>
-        <App />
-      </CustomThemeProvider>
+      <Provider store={store}>
+        <AuthContextProvider>
+          <CustomThemeProvider>
+            <App />
+          </CustomThemeProvider>
+        </AuthContextProvider>
+      </Provider>
     </Router>
   </React.StrictMode>
 );
