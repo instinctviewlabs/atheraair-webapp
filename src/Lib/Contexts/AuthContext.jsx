@@ -3,7 +3,7 @@ import React, { createContext, useContext } from "react";
 const AuthContext = createContext();
 
 function AuthContextProvider(props){
-    const [user] = React.useState({token: true, role: "user"});
+    const [user] = React.useState({token: false, role: "guest"});
 
     return(
         <AuthContext.Provider value={user}>

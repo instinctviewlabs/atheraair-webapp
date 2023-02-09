@@ -7,6 +7,13 @@ import { BlueButton, GoogleButton, SpanText } from '../../Lib/MuiThemes/MuiCompo
 import SideCarousel from './SideCarousel';
 import { useNavigate } from 'react-router-dom';
 
+//Dependencies
+import { auth } from "../../Lib/Firebase/FirebaseConfig";
+import useAxios from '../../Lib/CustomHooks/useAxios';
+import { AxiosConfig } from '../../Lib/Axios/AxiosConfig';
+import { createUserWithEmailAndPassword } from 'firebase/auth';
+import axios from 'axios';
+
 
 function Signup() {
   
@@ -18,6 +25,53 @@ function Signup() {
     'Verify code via email',
     'Add payment method',
   ];
+
+  //useaxios hook
+  const [response, error, loading, axiosFetch] = useAxios();
+
+  const signup = async() => {
+    const createuser = await createUserWithEmailAndPassword(auth, "ramanan23@mail.com", "12345678");
+    console.log(createuser)
+
+    axiosFetch({
+        axiosInstance: AxiosConfig,
+        method: "POST",
+        url: "/createUser",
+        requestConfig: {
+            data: {
+                userId: auth.currentUser.uid,
+                name: "ramanan", 
+                email: "ramanan23@gmail.com", 
+                password: "12345678"
+            }
+        }
+    })
+  }
+// console.log("response => ", response)
+// console.log("Error => ", error)
+
+//   const signup = async() => {
+//     try{         
+//         const userCreate = await createUserWithEmailAndPassword(auth, "ramanan12@gmail.com", "12345678");
+//         console.log(userCreate)
+
+//         const response = await axios({
+//             method: "post",
+//             url: `https://us-central1-atheraair.cloudfunctions.net/createUser`,
+//             data: {
+//                 userId: auth.currentUser.uid,
+//                 name: "ramanan", 
+//                 email: "ramanan12@gmail.com", 
+//                 pass: "12345678"
+//             }
+//         })
+        
+//         console.log(response)
+//     }catch(error){
+//         console.log(error)
+//     }
+//   }
+
 
   return (
     <Stack 
@@ -162,7 +216,7 @@ function Signup() {
                         <Typography>I agree to all the<SpanText component="span"> terms </SpanText> and <SpanText component="span"> privacy policies </SpanText></Typography>
                     </Box>
                 </Stack>
-                <BlueButton>Create account</BlueButton>
+                <BlueButton disabled={loading} onClick={signup}>Create account</BlueButton>
             </Stack>
             <Box 
                 display="flex" 

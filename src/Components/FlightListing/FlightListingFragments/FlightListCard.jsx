@@ -14,35 +14,35 @@ function FlightListCard() {
                 <Stack direction="row" spacing={4} alignItems="center">
                     <Box>
                         <Typography variant='body2'>Emirates</Typography>
-                        <Typography color="text.main" variant='h5'>12:00 pm</Typography>
+                        <Typography color="text.main" variant='h6'>12:00 pm</Typography>
                     </Box>
                     <Divider sx={{color: "text.main"}}>----</Divider>
                     <Box>
                         <Typography variant='body2'>Emirates</Typography>
-                        <Typography color="text.main" variant='h5'>6:00 pm</Typography>
+                        <Typography color="text.main" variant='h6'>6:00 pm</Typography>
                     </Box>
                     <Box>
                         <Typography variant="subtitle2">non stop</Typography>
                     </Box>
                     <Box>
-                        <Typography variant="h5" color="text.main">2h 28m</Typography>
+                        <Typography variant="h6" color="text.main">2h 28m</Typography>
                     </Box>
                 </Stack>
                 <Stack direction="row" spacing={4} alignItems="center">
                     <Box>
                         <Typography variant='body2'>Emirates</Typography>
-                        <Typography color="text.main" variant='h5'>12:00 pm</Typography>
+                        <Typography color="text.main" variant='h6'>12:00 pm</Typography>
                     </Box>
                     <Divider sx={{color: "text.main"}}>----</Divider>
                     <Box>
                         <Typography variant='body2'>Emirates</Typography>
-                        <Typography color="text.main" variant='h5'>6:00 pm</Typography>
+                        <Typography color="text.main" variant='h6'>6:00 pm</Typography>
                     </Box>
                     <Box>
                         <Typography variant="subtitle2">non stop</Typography>
                     </Box>
                     <Box>
-                        <Typography variant="h5" color="text.main">2h 28m</Typography>
+                        <Typography variant="h6" color="text.main">2h 28m</Typography>
                     </Box>
                 </Stack>
                 <Divider></Divider>

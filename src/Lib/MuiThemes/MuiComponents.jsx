@@ -68,6 +68,7 @@ export const AtheraTitle = () => (                          // Athera tiltle wit
         gap="5px"
     >
         <img src={atheraNormalLogo} alt="logo" />
+        
         <Typography variant='h4' color="text.main">
             ATHERA AIR
         </Typography>
