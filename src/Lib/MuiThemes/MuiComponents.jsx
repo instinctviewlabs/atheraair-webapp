@@ -1,5 +1,5 @@
 import React from 'react';
-import { Button, styled, Card, TextField, Box, Typography, Avatar  } from '@mui/material';
+import { Button, styled, Card, TextField, Box, Typography, Avatar, FormControlLabel  } from '@mui/material';
 import { appleColorIcon, atheraNormalLogo, facebookColorIcon, googleColorIcon } from '../../Assests/assets';
 
 
@@ -169,4 +169,14 @@ export const AddNewCard = styled(Box)(({theme}) => ({
     alignItems: "center",
     justifyContent: "center",
     boxSizing: "border-box"
+}))
+
+
+export const StyledRadioControl = styled(FormControlLabel)(({theme}) => ({
+    padding: "10px",
+    marginRight: 2, 
+    borderRadius: "10px",
+    display: "flex",
+    gap: 10,
+    transition: "all 0.2s ease-in",
 }))

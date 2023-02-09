@@ -1,5 +1,6 @@
 import React, {lazy, Suspense} from 'react';
 import { Routes, Route } from "react-router-dom";
+import BookingDetails from '../Components/BookingDetails/BookingDetails';
 import FlightSearch from "../Components/FightSearch/FlightSearch";
 import FlightDetailPage from '../Components/FlightDetailPage/FlightDetailPage';
 import FlightListingsLayout from '../Components/FlightListing/FlightListingsLayout';
@@ -33,6 +34,7 @@ function AppRoutes() {
         <Route index element={<FlightSearch/>}/>
         <Route path="/flightslist" element={<FlightListingsLayout/>}/>
         <Route path="/flightdetails" element={<FlightDetailPage/>} />
+        <Route path="/bookingdetails" element={<BookingDetails/>} />
         <Route element={<ProtectedRoutes/>}>
           <Route path="profile" element={<Profile/>}>
             <Route index element={<AccountTab/>}></Route>
