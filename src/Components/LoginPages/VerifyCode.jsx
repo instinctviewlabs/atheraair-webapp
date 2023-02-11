@@ -72,7 +72,7 @@ function VerifyCode() {
                     }}
                 />
                 <Typography>Didn't receive a code? <SpanText component="span"> Resend </SpanText></Typography>
-                <BlueButton>Verify</BlueButton>
+                <BlueButton onClick={() => navigate("/payment_method")}>Verify</BlueButton>
             </Stack>
         </Stack>
     </Stack>

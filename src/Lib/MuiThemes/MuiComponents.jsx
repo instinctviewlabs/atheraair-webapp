@@ -89,6 +89,7 @@ export const GoogleButton = (props) => {                // Google button compone
         <Button 
             variant="outlined"
             sx={{gap: "10px"}}
+            {...props}
         >
             <img src={googleColorIcon} alt="img" height={21} width={21} />
             {props.children}
@@ -176,4 +177,4 @@ export const StyledRadioControl = styled(FormControlLabel)(() => ({
     display: "flex",
     gap: 10,
     transition: "all 0.2s ease-in",
-}))
+}));

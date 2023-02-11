@@ -24,6 +24,7 @@ function SearchFlightBox() {
   const [searchKey, setSearchKey] = useState("");
   const suggestRef = useRef(false);
   const [isLoading, startLoading, restLoading] = useLoader();
+  const [seachLoading, startSearchLoading, restSearchLoading] = useLoader();
   const [searchData, setSearchData] = useState({
     origin: "",
     desination: "",
@@ -62,8 +63,28 @@ function SearchFlightBox() {
     }
   },[searchKey])
 
+/***************************API call : Search Flight ******************************/
 
-
+  async function searchFlight(){
+    if(searchData.origin === "" || searchData.desination === ""){
+        console.error("please fill the required field");
+        return;
+    }
+    try{
+        startSearchLoading();
+        const controller = axios.CancelToken.source();
+        const response = await axios(`${BASE_URL}/oneway?origin=${searchData.origin}&destination=${searchData.desination}&departureDate=${searchData.departureDate}&returnDate=${searchData.returnDate}&adults=${searchData.adult}&children=${searchData.children}&infants=${searchData.infants}`,{cancelToken: controller.token});
+        console.log(response)
+        // if(response.status === 200 && response.data === "Success"){
+        //     restLoading();
+        //     // navigate("/verify");
+        // }
+    }catch(error){
+        console.error(error)
+    }finally{
+        restSearchLoading();
+    }
+  }
 
   return (
     <Box sx={{
@@ -224,7 +245,7 @@ function SearchFlightBox() {
                     }}
                 />
             </Box>
-            <BlueButton sx={{my: 2, float: "right"}}>
+            <BlueButton sx={{my: 2, float: "right"}} onClick={searchFlight}>
                 <FiSend/>
                 Show flights
             </BlueButton>

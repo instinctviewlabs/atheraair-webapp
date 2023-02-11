@@ -1,7 +1,6 @@
 import React, { useState } from 'react';
 import { usePasswordVisibility } from '../../Lib/CustomHooks/usePasswordVisibility';
 import { Box, Checkbox, Stack, TextField, Typography, IconButton, InputAdornment, MenuItem, Stepper, Step, StepLabel } from '@mui/material';
-import { normalLogo } from '../../Assests/assets';
 import {VscEye, VscEyeClosed} from "react-icons/vsc";
 import { AnchorText, BlueButton, TitleLogo } from '../../Lib/MuiThemes/MuiComponents';
 import SideCarousel from './SideCarousel';
@@ -50,7 +49,7 @@ function AddPayment() {
                         Back
                     </Typography>
                 </AnchorText>
-                <AnchorText>
+                <AnchorText onClick={() => navigate("/login")}>
                     <Typography variant='subtitle1' component="span">
                         Skip for now
                     </Typography>

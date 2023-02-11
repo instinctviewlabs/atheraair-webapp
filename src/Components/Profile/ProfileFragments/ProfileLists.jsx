@@ -21,7 +21,7 @@ function ProfileLists() {
       <Tab onClick={() => navigate("account")} sx={{width: "25%", color: "text.main"}} label={<Typography variant='body1'>Account</Typography>} value="1" />
       <Tab onClick={() => navigate("master_passenger_list")} sx={{width: "25%", color: "text.main"}} label={<Typography variant='body1'>Master Passenger list</Typography>} value="2" />
       <Tab onClick={() => navigate("ticket_bookings_history")} sx={{width: "25%", color: "text.main"}} label={<Typography variant='body1'>Tickets / Bookings</Typography>} value="3" />
-      <Tab onClick={() => navigate("payment_method")} sx={{width: "25%", color: "text.main"}} label={<Typography variant='body1'>Payment methods</Typography>} value="4" />
+      <Tab onClick={() => navigate("payment/add")} sx={{width: "25%", color: "text.main"}} label={<Typography variant='body1'>Payment methods</Typography>} value="4" />
     </Tabs>
   )
 }

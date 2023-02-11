@@ -14,6 +14,7 @@ import { AxiosConfig, BASE_URL } from '../../Lib/Axios/AxiosConfig';
 import { createUserWithEmailAndPassword } from 'firebase/auth';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
+import useLoader from '../../Lib/CustomHooks/useLoader';
 
 
 
@@ -22,8 +23,9 @@ function Signup() {
   /****************** States *******************/
 
   const navigate = useNavigate();
+  const [loading, startLoading, restLoading] = useLoader();
   const [signupData, setSignupData] = useState({firstname: "", lastname: "", email: "",phoneno: "", password: "", confirmPassword: "", isTCchecked: false});
-  const [isDataValidated, setDataValidated] = useState({firstname: false, lastname: false, email: false, phoneno: false, password: false})
+  const [isDataValidated, setDataValidated] = useState({firstname: false, lastname: false, email: false, phoneno: false, password: false, confirmPassword: false})
   const [hidePassword, setHidePassword] = usePasswordVisibility();
   const [hideConfirmPassword, setHideConfirmPassword] = usePasswordVisibility();
   const steps = [
@@ -31,14 +33,20 @@ function Signup() {
     'Verify code via email',
     'Add payment method',
   ];
-  const [open, setOpen] = useState(false);
 
-  const handleClose = (event, reason) => {
-    if (reason === 'clickaway') {
-      return;
-    }
+  const [state, setState] = React.useState({
+    open: false,
+    vertical: 'top',
+    horizontal: 'right',
+  });
+  const { vertical, horizontal, open } = state;
 
-    setOpen(false);
+  const handleClick = (newState) => () => {
+    setState({ open: true, ...newState });
+  };
+
+  const handleClose = () => {
+    setState({ ...state, open: false });
   };
 
   /************** Form handling function ***************/
@@ -55,17 +63,17 @@ function Signup() {
 
     let isValidated = true;
 
-    if(signupData.firstname.length > 20){
+    if(signupData.firstname.length > 20 || signupData.firstname.length === 0){
         setDataValidated(prev => ({...prev, firstname: true}))
         isValidated = false;
     }
 
-    if(signupData.lastname.length > 20){
+    if(signupData.lastname.length > 20 || signupData.lastname.length === 0){
         setDataValidated(prev => ({...prev, lastname: true}))
         isValidated = false;
     }
 
-    if(signupData.email.length > 50){
+    if(signupData.email.length === 0 || !/^(("[\w-\s]+")|([\w-]+(?:\.[\w-]+)*)|("[\w-\s]+")([\w-]+(?:\.[\w-]+)*))(@((?:[\w-]+\.)*\w[\w-]{0,66})\.([a-z]{2,6}(?:\.[a-z]{2})?)$)|(@\[?((25[0-5]\.|2[0-4][0-9]\.|1[0-9]{2}\.|[0-9]{1,2}\.))((25[0-5]|2[0-4][0-9]|1[0-9]{2}|[0-9]{1,2})\.){2}(25[0-5]|2[0-4][0-9]|1[0-9]{2}|[0-9]{1,2})\]?$)/i.test(signupData.email)){
         setDataValidated(prev => ({...prev, email: true}))
         isValidated = false;
     }
@@ -75,8 +83,13 @@ function Signup() {
         isValidated = false;
     }
 
-    if(signupData.password !== signupData.confirmPassword){
+    if(signupData.password.length < 6 || signupData.password.length > 18 || !/^(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$%^&*-]).{6,16}$/.test(signupData.password)){
         setDataValidated(prev => ({...prev, password: true}))
+        isValidated = false;
+    }
+
+    if(signupData.password !== signupData.confirmPassword){
+        setDataValidated(prev => ({...prev, confirmPassword: true}))
         isValidated = false;
     }
 
@@ -89,39 +102,45 @@ function Signup() {
 
   /************** API call : Post method ***************/
 
-  const signup = async(event) => {
-    event.preventDefault();
+    const signup = async(event) => {
+        event.preventDefault();
 
-    if(handleDataValidation()){
-        
-        try{
-            
-            const createuser = await createUserWithEmailAndPassword(auth, signupData.email, signupData.password);
-            console.log(createuser)
-            const response = await axios.post(`${BASE_URL}/createUser`, {
-                userId: auth.currentUser.uid,
-                name: `${signupData.firstname} ${signupData.lastname}`, 
-                email: signupData.email, 
-                pass: signupData.password
-            });
-
-            if(response.status === 200 && response.data === "Success"){
-                navigate("/user/verify")
+        if(handleDataValidation()){
+            try{
+                startLoading();
+                const controller = axios.CancelToken.source();
+                const createuser = await createUserWithEmailAndPassword(auth, signupData.email, signupData.password);
+                console.log(createuser)
+                const response = await axios.post(`${BASE_URL}/createUser`, {
+                    userId: auth.currentUser.uid,
+                    name: `${signupData.firstname} ${signupData.lastname}`, 
+                    email: signupData.email, 
+                    pass: signupData.password
+                },{cancelToken: controller.token});
+                console.log(response)
+                if(response.status === 200 && response.data === "Success"){
+                    restLoading();
+                    navigate("/verify");
+                }
+            }catch(error){
+                console.error(error)
+            }finally{
+                restLoading();
             }
-        }catch(error){
-            console.error(error)
+            
+        }else{
+            console.error("validation error");
+            // <Snackbar
+            //     open={open} 
+            //     message="Hello there" 
+            //     autoHideDuration={6000} 
+            //     onClose={handleClose}
+            //     anchorOrigin={{vertical: "bottom", horizontal: "center"}}
+            // ></Snackbar>
+            
         }
-    }else{
-        console.error("validation error");
-        // <Snackbar 
-        //     open={open} 
-        //     message="Hello there" 
-        //     autoHideDuration={6000} 
-        //     onClose={handleClose}
-        //     anchorOrigin={{vertical: "bottom", horizontal: "center"}}
-        // ></Snackbar>
     }
-  }
+
 
   return (
     <Stack 
@@ -164,7 +183,7 @@ function Signup() {
                         size='small'
                         type="text"
                         label="First Name"
-                        required
+                        // required
                         value={signupData.firstname}
                         onChange={handleChange}
                     />
@@ -176,7 +195,7 @@ function Signup() {
                         size='small'
                         type="text"
                         label="Last Name"
-                        required
+                        // required
                         value={signupData.lastname}
                         onChange={handleChange}
 
@@ -195,7 +214,7 @@ function Signup() {
                         size='small'
                         type="email"
                         label="Email"
-                        required
+                        // required
                         value={signupData.email}
                         onChange={handleChange}
                         error={isDataValidated.email}
@@ -208,16 +227,16 @@ function Signup() {
                         size='small'
                         type="text"
                         label="Phone number"
-                        required
+                        // required
                         value={signupData.phoneno}
                         onChange={handleChange}
                         error={isDataValidated.phoneno}
-                        helperText={isDataValidated.phoneno && "Please enter a valid mobile number format"}
+                        helperText={isDataValidated.phoneno && "Phone number must be in valid format"}
                     />
                 </Box>
                 <TextField
                     fullWidth
-                    required
+                    // required
                     name='password'
                     size='small'
                     label="Password"
@@ -225,6 +244,8 @@ function Signup() {
                     edge="end"
                     value={signupData.password}
                     onChange={handleChange}
+                    error={isDataValidated.password}
+                    helperText={isDataValidated.password && "Password must contains alpha-numeric characters and length should be above 6 digit"}
                     InputProps={{
                         endAdornment: <InputAdornment position="end">{hidePassword ? 
                             <IconButton onClick={() => setHidePassword(false)}>
@@ -239,7 +260,7 @@ function Signup() {
                 />
                 <TextField
                     fullWidth
-                    required
+                    // required
                     name='confirmPassword'
                     size='small'
                     label="Confirm Password"
@@ -247,8 +268,8 @@ function Signup() {
                     edge="end"
                     value={signupData.confirmPassword}
                     onChange={handleChange}
-                    error={isDataValidated.password}
-                    helperText={isDataValidated.password && "Password does not match"}
+                    error={isDataValidated.confirmPassword}
+                    helperText={isDataValidated.confirmPassword && "Password does not match"}
                     InputProps={{
                         endAdornment: <InputAdornment position="end">{hideConfirmPassword ? 
                             <IconButton onClick={() => setHideConfirmPassword(false)}>
@@ -277,7 +298,7 @@ function Signup() {
                         />
                     </FormGroup>
                 </Stack>
-                <BlueButton type="submit">Create account</BlueButton>
+                <BlueButton disabled={loading} type="submit">Create account</BlueButton>
             </Stack>
             </form>
             <Box 
@@ -289,6 +310,11 @@ function Signup() {
             <Divider><Typography variant='subtitle2'>Or Sign up with</Typography></Divider>
             <GoogleButton>Sign up with Google</GoogleButton>
         </Stack>
+        {/* <Snackbar
+            anchorOrigin={{ vertical, horizontal }}
+            open={true}
+            onClose={handleClose}
+        ><Alert severity="error">This is an error message!</Alert></Snackbar> */}
     </Stack>
   )
 }

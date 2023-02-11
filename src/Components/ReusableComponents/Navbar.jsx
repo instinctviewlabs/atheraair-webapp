@@ -7,15 +7,26 @@ import {
     Button,
     Tabs,
     Tab,
-    IconButton
+    IconButton,
+    Badge,
+    Stack,
+    Avatar,
+    Menu,
+    List,
+    ListItemButton,
+    ListItemText,
+    ListItem,
+    ListItemIcon,
+    MenuItem
 } from '@mui/material';
 import {TbPlaneInflight} from "react-icons/tb"
 import { BlackButtonOutlined, TitleLogo } from '../../Lib/MuiThemes/MuiComponents';
 import { BiSun, BiMoon } from "react-icons/bi";
-import { useNavigate } from 'react-router-dom';
+import { Navigate, useNavigate } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import { setTheme } from '../../Lib/Redux/ThemeSlice';
-import { useAuth } from '../../Lib/Contexts/AuthContext';
+import { AccountCircle, Logout, Payment } from '@mui/icons-material';
+import { removeUser } from '../../Lib/Redux/AuthSlice';
 
 
 
@@ -23,10 +34,107 @@ export default function Navbar(){
 
   const navigate = useNavigate();
   const dispatch = useDispatch();
-  const {theme} = useSelector(data => data);
+  const {auth, theme} = useSelector(data => data);
   const [value, setValue] = React.useState(0);
-  const user = useAuth();
-  console.log(user)
+  const [openMenu, setOpenMenu] = React.useState(null);
+
+  const handleMenu = (event) => {
+    setOpenMenu(event.currentTarget);
+  }
+
+
+  function logout(){
+    dispatch(removeUser());
+    return navigate("/", {replace: true})
+  }
+
+  
+
+  const renderNavbar =  auth.auth && auth.role === "user" ? (
+    <>
+        <Badge
+            overlap="circular"
+            anchorOrigin={{ vertical: 'top', horizontal: 'right' }}
+            // badgeContent={<BsCheckCircleFill style={{color: "black", fontSize: 18}}/>}
+        >
+            <Avatar onClick={handleMenu} sx={{height: "50px", width: "50px", border: "3px solid rgb(184, 218, 255)", cursor: "pointer"}} alt="Remy Sharp" src="https://www.bethesdaheadshots.com/wp-content/uploads/2021/06/JONATHAN_5022P_ppFIN.jpg"/>
+        </Badge>
+        <Typography variant="h5" color="text.main">John Doe</Typography>
+        <Menu
+            anchorEl={openMenu}
+            open={Boolean(openMenu)}
+            onClose={() => setOpenMenu(null)}
+            anchorOrigin={{
+                vertical: 'bottom',
+                horizontal: 'right',
+            }}
+            transformOrigin={{
+                vertical: 'top',
+                horizontal: 'right',
+            }}
+            sx={{
+                top: "20px",
+            }}
+            PaperProps={{
+                elevation: 0,
+                sx: {
+                  overflow: 'visible',
+                  filter: 'drop-shadow(0px 2px 8px rgba(0,0,0,0.32))',
+                  mt: 1.5,
+                  '& .MuiAvatar-root': {
+                    width: 32,
+                    height: 32,
+                    ml: -0.5,
+                    mr: 1,
+                  },
+                  '&:before': {
+                    content: '""',
+                    display: 'block',
+                    position: 'absolute',
+                    top: 0,
+                    right: 14,
+                    width: 10,
+                    height: 10,
+                    bgcolor: 'background.paper',
+                    transform: 'translateY(-50%) rotate(45deg)',
+                    zIndex: 0,
+                  }
+                }
+            }}
+        >
+            <ListItemButton onClick={() => {
+                navigate("/profile/account")
+                setOpenMenu(null)
+            }}>
+                <ListItemIcon>
+                    <AccountCircle></AccountCircle>
+                </ListItemIcon>
+                <ListItemText primary="Profile" />
+            </ListItemButton>
+            <ListItemButton onClick={() => setOpenMenu(null)}>
+                <ListItemIcon>
+                    <Payment></Payment>
+                </ListItemIcon>
+                <ListItemText primary="Support" />
+            </ListItemButton>
+                
+            <ListItemButton onClick={() => {
+                logout() 
+                setOpenMenu(null)
+            }}>
+                <ListItemIcon>
+                    <Logout></Logout>
+                </ListItemIcon>
+                <ListItemText primary="Logout" />
+            </ListItemButton>
+        </Menu>
+    </>
+  ) : (
+    <>
+        <Button onClick={() => navigate("login")} variant='text'>Login</Button>
+        <BlackButtonOutlined onClick={() => navigate("signup")}>Sign up</BlackButtonOutlined>
+    </>
+  )
 
   return (
     <AppBar position='sticky' sx={{backgroundColor: "card.background"}}>
@@ -40,7 +148,9 @@ export default function Navbar(){
                 gap="5px"
             >
                 <Tabs value={value} onChange={(e, newVal) => setValue(newVal)} centered>
-                    <Tab label={
+                    <Tab 
+                        onClick={() => navigate("/")}
+                        label={
                         <Box 
                             color="text.main"
                             display={{
@@ -64,12 +174,11 @@ export default function Navbar(){
                 </Tabs>
             </Box>
             <TitleLogo/>
-            <Box display="flex" gap="15px">
+            <Box display="flex" flexDirection="row" alignItems="center" gap="15px">
                 <IconButton color='primary' onClick={() => dispatch(setTheme())}>
                     {theme ? <BiMoon/> : <BiSun/>}
                 </IconButton>
-                <Button onClick={() => navigate("login")} variant='text'>Login</Button>
-                <BlackButtonOutlined onClick={() => navigate("signup")}>Sign up</BlackButtonOutlined>
+                {renderNavbar}
             </Box>
         </Toolbar>
     </AppBar>

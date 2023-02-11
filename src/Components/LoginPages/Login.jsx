@@ -7,12 +7,17 @@ import SideCarousel from './SideCarousel';
 import { useNavigate } from 'react-router-dom';
 import { signInWithEmailAndPassword } from 'firebase/auth';
 import { auth } from '../../Lib/Firebase/FirebaseConfig';
+import useLoader from '../../Lib/CustomHooks/useLoader';
+import { useDispatch } from 'react-redux';
+import { setUser } from '../../Lib/Redux/AuthSlice';
 
 
 
 function Login() {
 
   const navigate = useNavigate();
+  const dispatch = useDispatch();
+  const [loading, startLoading, restLoading] = useLoader();
   const [hidePassword, setHidePassword] = usePasswordVisibility();
   const [loginData, setLoginData] = useState({email: "", password: ""});
   const [isDataValidated, setDataValidated] = useState({email: false, password: false})
@@ -31,12 +36,12 @@ function Login() {
 
     let isValidated = true;
 
-    if(loginData.email.length > 50){
+    if(loginData.email.length === 0 || !/^(("[\w-\s]+")|([\w-]+(?:\.[\w-]+)*)|("[\w-\s]+")([\w-]+(?:\.[\w-]+)*))(@((?:[\w-]+\.)*\w[\w-]{0,66})\.([a-z]{2,6}(?:\.[a-z]{2})?)$)|(@\[?((25[0-5]\.|2[0-4][0-9]\.|1[0-9]{2}\.|[0-9]{1,2}\.))((25[0-5]|2[0-4][0-9]|1[0-9]{2}|[0-9]{1,2})\.){2}(25[0-5]|2[0-4][0-9]|1[0-9]{2}|[0-9]{1,2})\]?$)/i.test(loginData.email)){
         setDataValidated(prev => ({...prev, email: true}))
         isValidated = false;
     }
 
-    if(loginData.password === ""){
+    if(loginData.password.length < 6 || loginData.password.length > 18 || !/^(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$%^&*-]).{6,16}$/.test(loginData.password)){
         setDataValidated(prev => ({...prev, password: true}))
         isValidated = false;
     }
@@ -51,12 +56,15 @@ function Login() {
 
     if(handleDataValidation()){
         try{
-            
+            startLoading();
             const loginUser = await signInWithEmailAndPassword(auth, loginData.email, loginData.password);
-            console.log(loginUser)
+            console.log(loginUser);
+            dispatch(setUser({auth: true, role: "user", email: loginData.email}))
             navigate("/")
         }catch(error){
             console.error(error)
+        }finally{
+            restLoading();
         }
     }else{
         console.error("validation error");
@@ -105,7 +113,7 @@ function Login() {
                     value={loginData.password}
                     onChange={handleChange}
                     error={isDataValidated.password}
-                    helperText={isDataValidated.password && "Password is must"}
+                    helperText={isDataValidated.password && "Password must contains alpha-numeric characters and length should be above 6 digit"}
                     InputProps={{
                         endAdornment: <InputAdornment position="end">{hidePassword ? 
                             <IconButton onClick={() => setHidePassword(false)}>
@@ -133,7 +141,7 @@ function Login() {
                     </Box>
                     <AnchorText onClick={() => navigate("/password/forgot")}>Forgot Password?</AnchorText>
                 </Stack>
-                <BlueButton type='submit'>Login</BlueButton>
+                <BlueButton disabled={loading} type='submit'>Login</BlueButton>
             </Stack>
             </form>
             <Box 

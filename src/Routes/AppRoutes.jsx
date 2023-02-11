@@ -41,7 +41,7 @@ function AppRoutes() {
             <Route path="account" element={<AccountTab/>}></Route>
             <Route path="master_passenger_list" element={<MasterPassengerList/>}></Route>
             <Route path="ticket_bookings_history" element={<TicketBookingsList/>}></Route>
-            <Route path="payment_method" element={<PaymentMethods/>}></Route>
+            <Route path="payment/add" element={<PaymentMethods/>}></Route>
           </Route>
         </Route>
         <Route path="*" element={<h1>Error</h1>}/>
@@ -50,8 +50,8 @@ function AppRoutes() {
       <Route path="signup" element={<Suspense fallback={<FullScreenLoader/>}><Signup/></Suspense>}/>
       <Route path="password/forgot" element={<Suspense fallback={<FullScreenLoader/>}><ForgotPassword/></Suspense>}/>
       <Route path="password/set" element={<Suspense fallback={<FullScreenLoader/>}><SetPassword/></Suspense>}/>
-      <Route path="user/verify" element={<Suspense fallback={<FullScreenLoader/>}><VerifyCode/></Suspense>}/>
-      <Route path="user/payment/add" element={<Suspense fallback={<FullScreenLoader/>}><AddPayment/></Suspense>}/>
+      <Route path="verify" element={<Suspense fallback={<FullScreenLoader/>}><VerifyCode/></Suspense>}/>
+      <Route path="payment_method" element={<Suspense fallback={<FullScreenLoader/>}><AddPayment/></Suspense>}/>
     </Routes>
     </>
   )
