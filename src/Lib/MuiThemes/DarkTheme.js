@@ -3,14 +3,14 @@ import { createTheme } from "@mui/material"
 export const DarkTheme = createTheme({
     palette: {
       common: {
-        background: "#1E1E1E"   //dark color
+        background: "#4B4B4B"   //dark color
         //containes common black and white color too
       },
       card: {
-        background: "#4B4B4B"  //mild dark
+        background: "#1E1E1E"  //mild dark
       },
       primary: {
-        main: "#007AFF",  // Primary blue
+        main: "#2E3191",  // Primary blue
       },
       veryLightBlue: {
         main: "rgb(184, 218, 255)"      //Need this light blue in few place

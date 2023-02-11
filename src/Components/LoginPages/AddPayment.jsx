@@ -1,9 +1,9 @@
 import React, { useState } from 'react';
 import { usePasswordVisibility } from '../../Lib/CustomHooks/usePasswordVisibility';
 import { Box, Checkbox, Stack, TextField, Typography, IconButton, InputAdornment, MenuItem, Stepper, Step, StepLabel } from '@mui/material';
-import { atheraNormalLogo } from '../../Assests/assets';
+import { normalLogo } from '../../Assests/assets';
 import {VscEye, VscEyeClosed} from "react-icons/vsc";
-import { AnchorText, BlueButton } from '../../Lib/MuiThemes/MuiComponents';
+import { AnchorText, BlueButton, TitleLogo } from '../../Lib/MuiThemes/MuiComponents';
 import SideCarousel from './SideCarousel';
 import { DatePicker, LocalizationProvider } from '@mui/x-date-pickers';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
@@ -17,7 +17,7 @@ function AddPayment() {
   const [hideCvc, setHideCvc] = usePasswordVisibility();
   const [date, setDate] = useState(new Date());
   const steps = [
-    'Set up Athera account',
+    'Set up your account',
     'Verify code via email',
     'Add payment method',
   ];
@@ -35,21 +35,7 @@ function AddPayment() {
             flexDirection="column"
             gap={2}
         >
-            <Box 
-                display="flex" 
-                flexDirection="row" 
-                alignItems="center" 
-                gap="5px"
-                justifyContent={{
-                    xs: "center",
-                    md: "flex-start"
-                }}
-            >
-                <img src={atheraNormalLogo} alt="logo" />
-                <Typography variant='h4' color="black">
-                    ATHERA AIR
-                </Typography>
-            </Box>
+            <TitleLogo></TitleLogo>
             <Stepper activeStep={2} alternativeLabel >
             {steps.map((label) => (
                 <Step key={label}>

@@ -10,7 +10,7 @@ import {
     IconButton
 } from '@mui/material';
 import {TbPlaneInflight} from "react-icons/tb"
-import { AtheraTitle, BlackButtonOutlined } from '../../Lib/MuiThemes/MuiComponents';
+import { BlackButtonOutlined, TitleLogo } from '../../Lib/MuiThemes/MuiComponents';
 import { BiSun, BiMoon } from "react-icons/bi";
 import { useNavigate } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
@@ -29,7 +29,7 @@ export default function Navbar(){
   console.log(user)
 
   return (
-    <AppBar position='sticky' sx={{backgroundColor: "common.background"}}>
+    <AppBar position='sticky' sx={{backgroundColor: "card.background"}}>
         <Toolbar sx={{display: "flex", justifyContent: "space-between", height: "90px"}}>
             <Box display={{
                 xs: "none",
@@ -63,7 +63,7 @@ export default function Navbar(){
                     } />
                 </Tabs>
             </Box>
-            <AtheraTitle/>
+            <TitleLogo/>
             <Box display="flex" gap="15px">
                 <IconButton color='primary' onClick={() => dispatch(setTheme())}>
                     {theme ? <BiMoon/> : <BiSun/>}

@@ -2,7 +2,7 @@ import React from 'react';
 import { Box, IconButton, ListItem, Typography, Stack } from '@mui/material';
 import { FaYoutube, FaTwitter, FaFacebook } from "react-icons/fa";
 import { AiFillInstagram } from "react-icons/ai";
-import { atheraTransparentLogo } from '../../Assests/assets';
+import { normalLogo } from '../../Assests/assets';
 
 function Footer() {
   return (
@@ -26,8 +26,7 @@ function Footer() {
             alignItems="center"
         >
             <Box sx={{display: "flex", flexDirection: "row", gap: 2}}>
-                <img src={atheraTransparentLogo} alt="logo" />
-                <Typography variant='h4' color="common.white">ATHERA</Typography>
+                <img src={normalLogo} alt="logo" />
             </Box>
             <Stack direction="row">
                 <ListItem disablePadding>

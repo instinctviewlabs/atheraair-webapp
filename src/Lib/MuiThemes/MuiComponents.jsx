@@ -1,6 +1,6 @@
 import React from 'react';
 import { Button, styled, Card, TextField, Box, Typography, Avatar, FormControlLabel  } from '@mui/material';
-import { appleColorIcon, atheraNormalLogo, facebookColorIcon, googleColorIcon } from '../../Assests/assets';
+import { appleColorIcon, normalLogo, facebookColorIcon, googleColorIcon, transparentLogo } from '../../Assests/assets';
 
 
 export const BlueButton = styled(Button)(({theme}) => ({    //Contained Blue button
@@ -60,18 +60,15 @@ export const InputField = styled(TextField)(({theme}) => ({     //Styled input f
     }
 }));
 
-export const AtheraTitle = () => (                          // Athera tiltle with logo
+export const TitleLogo = () => (                          // tiltle with logo
     <Box 
         display="flex" 
-        flexDirection="row" 
+        flexDirection="row"
+        justifyContent="center" 
         alignItems="center" 
         gap="5px"
     >
-        <img src={atheraNormalLogo} alt="logo" />
-        
-        <Typography variant='h4' color="text.main">
-            ATHERA AIR
-        </Typography>
+        <img src={transparentLogo} alt="logo" />
     </Box>
 );
 
@@ -139,7 +136,7 @@ export const FullScreenLoader = () => (
         justifyContent: "center",
         filter: "blur(4px)"
     }}>
-        <img height={200} width={200} src={atheraNormalLogo} alt="loader" />
+        <img height={200} width={200} src={normalLogo} alt="loader" />
     </Box>
     </>
 )
@@ -172,7 +169,7 @@ export const AddNewCard = styled(Box)(({theme}) => ({
 }))
 
 
-export const StyledRadioControl = styled(FormControlLabel)(({theme}) => ({
+export const StyledRadioControl = styled(FormControlLabel)(() => ({
     padding: "10px",
     marginRight: 2, 
     borderRadius: "10px",

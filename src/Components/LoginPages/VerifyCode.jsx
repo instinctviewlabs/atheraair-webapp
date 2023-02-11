@@ -1,8 +1,7 @@
 import React from 'react';
 import { Box, Stack, TextField, Typography, InputAdornment, IconButton, Stepper, Step, StepLabel } from '@mui/material';
 import {VscEye, VscEyeClosed} from "react-icons/vsc";
-import { atheraNormalLogo} from '../../Assests/assets';
-import { AnchorText, BlueButton } from '../../Lib/MuiThemes/MuiComponents';
+import { AnchorText, BlueButton, SpanText, TitleLogo } from '../../Lib/MuiThemes/MuiComponents';
 import {MdOutlineKeyboardArrowLeft} from "react-icons/md";
 import SideCarousel from './SideCarousel';
 import { usePasswordVisibility } from '../../Lib/CustomHooks/usePasswordVisibility';
@@ -13,7 +12,7 @@ function VerifyCode() {
   const navigate = useNavigate();
   const [hidePassword, setHidePassword] = usePasswordVisibility();
   const steps = [
-    'Set up Athera account',
+    'Set up your account',
     'Verify code via email',
     'Add payment method',
   ];
@@ -32,21 +31,7 @@ function VerifyCode() {
             gap={2}
 
         >
-            <Box 
-                display="flex" 
-                flexDirection="row" 
-                alignItems="center" 
-                gap="5px"
-                justifyContent={{
-                    xs: "center",
-                    md: "flex-start"
-                }}
-            >
-                <img src={atheraNormalLogo} alt="logo" />
-                <Typography variant='h4' color="black">
-                    ATHERA AIR
-                </Typography>
-            </Box>
+            <TitleLogo></TitleLogo>
             <Stepper activeStep={1} alternativeLabel >
             {steps.map((label) => (
                 <Step key={label}>
@@ -86,7 +71,7 @@ function VerifyCode() {
                         </InputAdornment>,
                     }}
                 />
-                <Typography>Didn't receive a code? <AnchorText component="span"> Resend </AnchorText></Typography>
+                <Typography>Didn't receive a code? <SpanText component="span"> Resend </SpanText></Typography>
                 <BlueButton>Verify</BlueButton>
             </Stack>
         </Stack>

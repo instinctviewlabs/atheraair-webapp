@@ -1,15 +1,70 @@
-import React from 'react';
-import { Box, MenuItem, Typography } from '@mui/material';
+// functional and config imports
+import React, { useEffect, useRef, useState } from 'react';
+import { BASE_URL } from '../../Lib/Axios/AxiosConfig';
+import { capitalize } from '../../Lib/utils/helperFunctions';
+import moment from 'moment/moment';
+import axios from 'axios';
+import useLoader from '../../Lib/CustomHooks/useLoader';
+
+// ui imports
+import { Autocomplete, Box, MenuItem, Typography } from '@mui/material';
 import { BlueButton, InputField, WhiteCard } from '../../Lib/MuiThemes/MuiComponents';
 import {FiSend} from "react-icons/fi";
 import { DesktopDatePicker } from '@mui/x-date-pickers';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
+import { FaMinus, FaPlus } from 'react-icons/fa';
 
 
 function SearchFlightBox() {
-  const [date, setDate] = React.useState(new Date());
-  console.log(date);
+
+  /************************** States and Variables ******************************/  
+
+  const [response, setResponse] = useState([]);
+  const [searchKey, setSearchKey] = useState("");
+  const suggestRef = useRef(false);
+  const [isLoading, startLoading, restLoading] = useLoader();
+  const [searchData, setSearchData] = useState({
+    origin: "",
+    desination: "",
+    trip: "oneway",
+    departureDate: moment().format("YYYY-MM-DD"),
+    returnDate: moment().format("YYYY-MM-DD"),
+    adult: "1",
+    children: "0",
+    infants: "0"
+  })
+
+  /**************API call : Flight suggestion for origin and destination****************/
+
+  useEffect(() => {
+      const controller = axios.CancelToken.source();
+      if(suggestRef.current){
+          if(searchKey !== ""){
+            startLoading();
+            (async() => {
+                try{
+                    const fetch = await axios(`${BASE_URL}/airports?keyword=${searchKey}`, {cancelToken: controller.token});
+                    setResponse(fetch.data);
+                    restLoading();
+                }catch(err){
+                    console.error(err)
+                }
+            })()
+            suggestRef.current = false;
+        }
+    }
+
+    return () => {
+        suggestRef.current = true;
+        restLoading();
+        controller.cancel();
+    }
+  },[searchKey])
+
+
+
+
   return (
     <Box sx={{
         height: "auto",
@@ -36,23 +91,58 @@ function SearchFlightBox() {
                 gap: 3,
             }}>
 
-                <InputField
-                    label="From"
+                <Autocomplete
+                    loading={isLoading}
+                    onChange={(event, newVal) => setSearchData(prev => ({...prev, origin: newVal ? newVal.iataCode : ""}))}
                     size="small"
-                    // value="Lahore"
+                    sx={{ width: 400}}
+                    options={response}
+                    getOptionLabel={(option) => `${capitalize(option.name)} - ${option.iataCode}` || ""}
+                    isOptionEqualToValue={(option, value) => capitalize(option.name) === capitalize(value.name)}
+                    noOptionsText="No flights available"
+                    renderInput={(params) => (
+                        <InputField
+                            {...params}
+                            label="From"
+                            value={searchKey}
+                            onChange={(e) => setSearchKey(e.target.value)}
+                            inputProps={{
+                                ...params.inputProps,
+                                autoComplete: 'new-password',
+                            }}
+                        />
+                    )}
                 />
                 
-                <InputField 
-                    label="To"
+                <Autocomplete
+                    loading={isLoading}
+                    onChange={(event, newVal) => setSearchData(prev => ({...prev, desination: newVal ? newVal.iataCode : ""}))}
                     size="small"
-                    // value="Karachi"
-
+                    sx={{ width: 400 }}
+                    options={response}
+                    getOptionLabel={(option) => `${capitalize(option.name)} - ${option.iataCode}` || ""}
+                    isOptionEqualToValue={(option, value) => capitalize(option.name) === capitalize(value.name)}
+                    noOptionsText="No flights available"
+                    renderInput={(params) => (
+                        <InputField
+                            autoComplete='off'
+                            {...params}
+                            value={searchKey}
+                            onChange={(e) => setSearchKey(e.target.value)}
+                            label="To"
+                            inputProps={{
+                                ...params.inputProps,
+                                autoComplete: 'new-password',
+                            }}
+                        />
+                    )}
                 />
                 <InputField
                     size='small'
                     select
                     label="Trip"
-                    value="return"
+                    value={searchData.trip}
+                    onChange={(event) => setSearchData(prev => ({...prev, trip: event.target.value}))}
                     InputProps={{ inputProps: { sx: { color: 'text.main' }}}}
                     sx={{
                         minWidth: 150,
@@ -60,29 +150,84 @@ function SearchFlightBox() {
                     }}
 
                 >
-                    <MenuItem value="return">Return</MenuItem>
-                    <MenuItem value="return">Return</MenuItem>
-                    <MenuItem value="return">Return</MenuItem>
+                    <MenuItem value="roundtrip">Round trip</MenuItem>
+                    <MenuItem value="oneway">One way</MenuItem>
+                    <MenuItem value="multi">Multi city</MenuItem>
                 </InputField>
                 <LocalizationProvider dateAdapter={AdapterDayjs}>
                     <DesktopDatePicker
-                        // label="Depart - Return"
+                        disablePast
+                        label="Departure date"
                         renderInput={(params) => <InputField size="small" {...params} />}
-                        value={date}
-                        onChange={(newValue) => {
-                            setDate(newValue);
-                        }}
+                        value={searchData.departureDate}
+                        onChange={(newValue) => setSearchData(prev => ({...prev, departureDate: moment(newValue["$d"]).format("YYYY-MM-DD")}))}
                     />
                 </LocalizationProvider>
-                <InputField 
-                    label="Passenger - Class"
-                    size="small"
+                <LocalizationProvider dateAdapter={AdapterDayjs}>
+                    <DesktopDatePicker
+                        disablePast
+                        label="Return date"
+                        renderInput={(params) => <InputField size="small" {...params} />}
+                        value={searchData.returnDate}
+                        onChange={(newValue) => setSearchData(prev => ({...prev, returnDate: moment(newValue["$d"]).format("YYYY-MM-DD")}))}
+
+                    />
+                </LocalizationProvider>
+                
+                 {/* <Menu
+                    anchorEl={anchorEl}
+                    open={open}
+                    onClose={handleClose}
+                    MenuListProps={{
+                    'aria-labelledby': 'basic-button',
+                    }}
+                >
+                    <Stack direction="row">
+                        <Typography>Adults</Typography>
+                        <Stack direction='row' alignItems="center">
+                            <IconButton size="small">
+                                <FaMinus/>
+                            </IconButton>
+                            <Typography>1</Typography>
+                            <IconButton size='small'>
+                                <FaPlus/>
+                            </IconButton>
+                        </Stack>
+                    </Stack>
+                </Menu> */}
+
+                <InputField
+                    size='small'
+                    label="Adults"
+                    type="number"
+                    value={searchData.adult}
+                    onChange={(e) => {
+                        return e.target.value > 1 && e.target.value <= 9 ? setSearchData(prev => ({...prev, adult: e.target.value})) :  setSearchData(prev => ({...prev, adult: "1"}))
+                    }}
                 />
-                <BlueButton>
-                    <FiSend/>
-                    Show flights
-                </BlueButton>
+                <InputField
+                    size='small'
+                    label="Children"
+                    type="number"
+                    value={searchData.children}
+                    onChange={(e) => {
+                        return e.target.value > 0 && e.target.value <= 9 ? setSearchData(prev => ({...prev, children: e.target.value})) :  setSearchData(prev => ({...prev, children: "0"}))
+                    }}
+                />
+                <InputField
+                    size='small'
+                    label="Infants"
+                    type="number"
+                    value={searchData.infants}
+                    onChange={(e) => {
+                        return e.target.value > 0 && e.target.value <= 9 ? setSearchData(prev => ({...prev, infants: e.target.value})) :  setSearchData(prev => ({...prev, infants: "0"}))
+                    }}
+                />
             </Box>
+            <BlueButton sx={{my: 2, float: "right"}}>
+                <FiSend/>
+                Show flights
+            </BlueButton>
         </WhiteCard>
     </Box>
   )

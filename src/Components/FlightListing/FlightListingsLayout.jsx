@@ -3,9 +3,10 @@ import React from 'react';
 import SearchFlightBox from '../ReusableComponents/SearchFlightBox';
 import FiltersSetting from './FlightListingFragments/FiltersSetting';
 import FlightListings from './FlightListingFragments/FlightListings';
+import { flightLists } from './mockdata';
 
 function FlightListingsLayout() {
-
+  
   return (
     <>
     <SearchFlightBox></SearchFlightBox>
@@ -21,7 +22,7 @@ function FlightListingsLayout() {
         }
     }}>
         <FiltersSetting></FiltersSetting>
-        <FlightListings></FlightListings>
+        <FlightListings cardData={flightLists}></FlightListings>
     </Box>
     </>
   )

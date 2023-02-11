@@ -4,7 +4,8 @@ import FlightSortingTabs from "./FlightSortingTabs";
 import { BlackButtonOutlined } from "../../../Lib/MuiThemes/MuiComponents";
 import FlightListCard from "./FlightListCard";
 
-function FlightListings(){
+function FlightListings({cardData}){
+
     return(
         <Box sx={{
             height: "auto",
@@ -18,11 +19,9 @@ function FlightListings(){
                 gap: "15px",
                 py: 2
             }}>
-                <FlightListCard></FlightListCard>
-                <FlightListCard></FlightListCard>
-                <FlightListCard></FlightListCard>
-                <FlightListCard></FlightListCard>
-                <FlightListCard></FlightListCard>
+                {cardData.data.map((card, index) => (
+                    <FlightListCard key={index} cardData={card}></FlightListCard>
+                ))}
                 <BlackButtonOutlined>Show more results</BlackButtonOutlined>
             </Box>
         </Box>

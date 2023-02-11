@@ -1,8 +1,8 @@
 import React from 'react';
 import { Box, IconButton, InputAdornment, Stack, TextField, Typography } from '@mui/material';
-import { atheraNormalLogo } from '../../Assests/assets';
+import { normalLogo } from '../../Assests/assets';
 import {VscEye, VscEyeClosed} from "react-icons/vsc";
-import { BlueButton } from '../../Lib/MuiThemes/MuiComponents';
+import { BlueButton, TitleLogo } from '../../Lib/MuiThemes/MuiComponents';
 import { usePasswordVisibility } from '../../Lib/CustomHooks/usePasswordVisibility';
 import SideCarousel from './SideCarousel';
 
@@ -24,21 +24,7 @@ function SetPassword() {
             flexDirection="column"
             gap={5}
         >
-            <Box 
-                display="flex" 
-                flexDirection="row" 
-                alignItems="center" 
-                gap="5px"
-                justifyContent={{
-                    xs: "center",
-                    md: "flex-start"
-                }}
-            >
-                <img src={atheraNormalLogo} alt="logo" />
-                <Typography variant='h4' color="black">
-                    ATHERA AIR
-                </Typography>
-            </Box>
+            <TitleLogo></TitleLogo>
             <Stack spacing={3} direction="column" width={{xs: 350, sm: 550}}>
                 <Box>
                     <Typography variant='h4'>Set a Password</Typography>

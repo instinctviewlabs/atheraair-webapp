@@ -1,6 +1,6 @@
 import axios from "axios";
 
-const BASE_URL = "https://us-central1-atheraair.cloudfunctions.net";
+export const BASE_URL = "https://us-central1-atheraair.cloudfunctions.net";
 
 
 export const AxiosConfig = axios.create({

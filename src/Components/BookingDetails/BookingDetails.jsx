@@ -25,6 +25,18 @@ function BookingDetails() {
         },
         py: 1
     }}>
+        <Box 
+            display="flex"
+            flexDirection="column"
+            gap={2}
+            flex={2} 
+            px={{
+                xs: 0,
+                md: 3
+            }}
+        >
+            <FlightDetailsCard></FlightDetailsCard>
+        </Box>
         <Box
             flex={2} 
             display="flex"
@@ -91,18 +103,6 @@ function BookingDetails() {
                     </Stack>
                 </Stack>
             </WhiteCard>
-        </Box>
-        <Box 
-            display="flex"
-            flexDirection="column"
-            gap={2}
-            flex={2} 
-            px={{
-                xs: 0,
-                md: 3
-            }}
-        >
-            <FlightDetailsCard></FlightDetailsCard>
             <WhiteCard>
                 <FormControl fullWidth>
                     <RadioGroup

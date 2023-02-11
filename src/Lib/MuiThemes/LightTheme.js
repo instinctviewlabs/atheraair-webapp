@@ -10,7 +10,7 @@ export const LightTheme = createTheme({
         background: "#fff"  //white
       },
       primary: {
-        main: "#007AFF",
+        main: "#2E3191",
       },
       veryLightBlue: {
         main: "rgb(184, 218, 255)"      //Need this light blue in few place

@@ -1,48 +1,43 @@
 import React from 'react';
 import { Box, Divider, Stack, Typography } from "@mui/material";
 import { AnchorText, BlueBox, BlueButton, WhiteCard } from "../../../Lib/MuiThemes/MuiComponents";
-import { emiratesAirlineLogo } from "../../../Assests/assets";
+import { emiratesFlight } from "../../../Assests/assets";
 
-function FlightListCard() {
+function FlightListCard({cardData}) {
   return (
     <WhiteCard>
-        <Stack direction={{xs: "column", sm: "row"}} spacing={3} justifyContent="space-between">
-            <BlueBox>
-                <img src={emiratesAirlineLogo} alt="img" height="110px" width="150px" style={{objectFit: "cover"}} />
+        <Stack 
+            direction={{xs: "column", sm: "row"}} 
+            spacing={3} 
+            justifyContent="space-between"
+        >
+            <BlueBox sx={{
+                height: "auto", 
+                width: "190px", 
+                borderRadius: 2, 
+                overflow: "hidden"
+            }}>
+                <img src={emiratesFlight} alt="img" height="100%" width="100%" style={{objectFit: "cover", borderRadius: "5px"}} />
             </BlueBox>
-            <Stack spacing={2} direction="column" >
+            <Stack spacing={2} direction="column">
                 <Stack direction="row" spacing={4} alignItems="center">
-                    <Box>
-                        <Typography variant='body2'>Emirates</Typography>
-                        <Typography color="text.main" variant='h6'>12:00 pm</Typography>
-                    </Box>
-                    <Divider sx={{color: "text.main"}}>----</Divider>
-                    <Box>
-                        <Typography variant='body2'>Emirates</Typography>
-                        <Typography color="text.main" variant='h6'>6:00 pm</Typography>
-                    </Box>
-                    <Box>
-                        <Typography variant="subtitle2">non stop</Typography>
-                    </Box>
-                    <Box>
-                        <Typography variant="h6" color="text.main">2h 28m</Typography>
-                    </Box>
+                    <Typography variant='h4'>{cardData.airlinesName}</Typography>
                 </Stack>
                 <Stack direction="row" spacing={4} alignItems="center">
                     <Box>
-                        <Typography variant='body2'>Emirates</Typography>
-                        <Typography color="text.main" variant='h6'>12:00 pm</Typography>
+                        <Typography variant='body2'>{cardData.origin}</Typography>
+                        <Typography color="text.main" variant='h6'>{cardData.originTime}</Typography>
                     </Box>
-                    <Divider sx={{color: "text.main"}}>----</Divider>
+                    <Divider sx={{color: "text.main", width: 70}}></Divider>
                     <Box>
-                        <Typography variant='body2'>Emirates</Typography>
-                        <Typography color="text.main" variant='h6'>6:00 pm</Typography>
-                    </Box>
-                    <Box>
-                        <Typography variant="subtitle2">non stop</Typography>
+                        <Typography variant='body2'>{cardData.destination}</Typography>
+                        <Typography color="text.main" variant='h6'>{cardData.destinationTime}</Typography>
                     </Box>
                     <Box>
-                        <Typography variant="h6" color="text.main">2h 28m</Typography>
+                        <Typography variant="subtitle2">{cardData.stops === 0 ? "non stop" : `${cardData.stops} stop`}</Typography>
+                    </Box>
+                    <Box>
+                        <Typography variant="h6" color="text.main">{cardData.duration}</Typography>
                     </Box>
                 </Stack>
                 <Divider></Divider>
@@ -50,7 +45,7 @@ function FlightListCard() {
             </Stack>
             <Box>
                 <Typography variant="subtitle1" color="text.main">Starting from</Typography>
-                <AnchorText variant="h5">$104</AnchorText>
+                <AnchorText variant="h5">{cardData.currency} {cardData.totalPrice}</AnchorText>
             </Box>
         </Stack>
     </WhiteCard>
