@@ -3,9 +3,11 @@ import React from 'react';
 import SearchFlightBox from '../ReusableComponents/SearchFlightBox';
 import FiltersSetting from './FlightListingFragments/FiltersSetting';
 import FlightListings from './FlightListingFragments/FlightListings';
-import { flightLists } from './mockdata';
+import { SearchFlightDataConsumer } from '../../Lib/Contexts/SearchFlightContext';
 
 function FlightListingsLayout() {
+
+  const [ resultData ] = SearchFlightDataConsumer();
   
   return (
     <>
@@ -17,12 +19,12 @@ function FlightListingsLayout() {
         flexDirection: "row",
         backgroundColor: "common.background",
         px: {
-            xs: 1,
-            sm: 10
+          xs: 1,
+          sm: 10
         }
     }}>
         <FiltersSetting></FiltersSetting>
-        <FlightListings cardData={flightLists}></FlightListings>
+        <FlightListings cardData={resultData}></FlightListings>
     </Box>
     </>
   )

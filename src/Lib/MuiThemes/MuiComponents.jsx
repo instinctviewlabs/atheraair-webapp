@@ -8,6 +8,7 @@ export const BlueButton = styled(Button)(({theme}) => ({    //Contained Blue but
     color: theme.palette.text.white,
     gap: 5,
     minWidth: 150,
+    cursor: "pointer",
     "&:hover": {
         backgroundColor: theme.palette.primary.light,
     }

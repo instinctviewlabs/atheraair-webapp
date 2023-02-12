@@ -9,7 +9,7 @@ import { signInWithEmailAndPassword } from 'firebase/auth';
 import { auth } from '../../Lib/Firebase/FirebaseConfig';
 import useLoader from '../../Lib/CustomHooks/useLoader';
 import { useDispatch } from 'react-redux';
-import { setUser } from '../../Lib/Redux/AuthSlice';
+import { loginUser } from '../../Lib/Redux/AuthSlice';
 
 
 
@@ -57,10 +57,10 @@ function Login() {
     if(handleDataValidation()){
         try{
             startLoading();
-            const loginUser = await signInWithEmailAndPassword(auth, loginData.email, loginData.password);
-            console.log(loginUser);
-            dispatch(setUser({auth: true, role: "user", email: loginData.email}))
-            navigate("/")
+            const loginWithEmailAndPassword = await signInWithEmailAndPassword(auth, loginData.email, loginData.password);
+            console.log(loginWithEmailAndPassword);
+            dispatch(loginUser({auth: true, role: "user", email: loginData.email}))
+            navigate("/", {replace: true})
         }catch(error){
             console.error(error)
         }finally{

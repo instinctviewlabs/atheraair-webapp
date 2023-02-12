@@ -6,21 +6,24 @@ export const authSlice = createSlice({
         auth: false,
         role: "",
         email: "",
+        name: "",
         emailVerified: false,
     },
     reducers: {
-        setUser: (state, action) => {
+        loginUser: (state, action) => {
             return {
                 auth: true,
                 role: action.payload.role,
+                name: action.payload.fullname,
                 email: action.payload.email,
                 emailVerified: action.payload.emailVerified
             }
         },
-        removeUser: () => {
+        logoutUser: () => {
             return {
                 auth: false,
                 role: "",
+                name: "",
                 email: "",
                 emailVerified: false
             }
@@ -28,5 +31,5 @@ export const authSlice = createSlice({
     }
 });
 
-export const {setUser, removeUser} = authSlice.actions;
+export const {loginUser, logoutUser} = authSlice.actions;
 export const authReducer = authSlice.reducer;

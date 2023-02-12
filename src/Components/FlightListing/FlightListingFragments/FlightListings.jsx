@@ -1,11 +1,12 @@
 import React from "react";
-import { Box } from "@mui/material";
+import { Box, Typography } from "@mui/material";
 import FlightSortingTabs from "./FlightSortingTabs";
 import { BlackButtonOutlined } from "../../../Lib/MuiThemes/MuiComponents";
 import FlightListCard from "./FlightListCard";
 
 function FlightListings({cardData}){
 
+    console.log(cardData)
     return(
         <Box sx={{
             height: "auto",
@@ -19,10 +20,14 @@ function FlightListings({cardData}){
                 gap: "15px",
                 py: 2
             }}>
-                {cardData.data.map((card, index) => (
+                {cardData.length === 0 ?
+                    <Typography variant="h5" color="text.main" textAlign="center">No results found</Typography>
+                :
+                cardData.map((card, index) => (
                     <FlightListCard key={index} cardData={card}></FlightListCard>
-                ))}
-                <BlackButtonOutlined>Show more results</BlackButtonOutlined>
+                ))
+            }
+            {cardData.length > 0 && <BlackButtonOutlined>Show more results</BlackButtonOutlined>} 
             </Box>
         </Box>
     )

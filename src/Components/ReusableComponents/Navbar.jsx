@@ -22,11 +22,11 @@ import {
 import {TbPlaneInflight} from "react-icons/tb"
 import { BlackButtonOutlined, TitleLogo } from '../../Lib/MuiThemes/MuiComponents';
 import { BiSun, BiMoon } from "react-icons/bi";
-import { Navigate, useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import { setTheme } from '../../Lib/Redux/ThemeSlice';
 import { AccountCircle, Logout, Payment } from '@mui/icons-material';
-import { removeUser } from '../../Lib/Redux/AuthSlice';
+import { logoutUser } from '../../Lib/Redux/AuthSlice';
 
 
 
@@ -44,7 +44,7 @@ export default function Navbar(){
 
 
   function logout(){
-    dispatch(removeUser());
+    dispatch(logoutUser());
     return navigate("/", {replace: true})
   }
 
@@ -57,9 +57,9 @@ export default function Navbar(){
             anchorOrigin={{ vertical: 'top', horizontal: 'right' }}
             // badgeContent={<BsCheckCircleFill style={{color: "black", fontSize: 18}}/>}
         >
-            <Avatar onClick={handleMenu} sx={{height: "50px", width: "50px", border: "3px solid rgb(184, 218, 255)", cursor: "pointer"}} alt="Remy Sharp" src="https://www.bethesdaheadshots.com/wp-content/uploads/2021/06/JONATHAN_5022P_ppFIN.jpg"/>
+            <Avatar onClick={handleMenu} sx={{height: "50px", width: "50px", border: "3px solid rgb(184, 218, 255)", cursor: "pointer"}} alt="Remy Sharp" src=""/>
         </Badge>
-        <Typography variant="h5" color="text.main">John Doe</Typography>
+        <Typography variant="h5" color="text.main">John D</Typography>
         <Menu
             anchorEl={openMenu}
             open={Boolean(openMenu)}

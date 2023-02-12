@@ -14,14 +14,18 @@ import { DesktopDatePicker } from '@mui/x-date-pickers';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import { FaMinus, FaPlus } from 'react-icons/fa';
+import { SearchFlightDataConsumer } from '../../Lib/Contexts/SearchFlightContext';
+import { useNavigate } from 'react-router-dom';
 
 
 function SearchFlightBox() {
 
   /************************** States and Variables ******************************/  
-
+  
+  const navigate = useNavigate()
   const [response, setResponse] = useState([]);
-  const [searchKey, setSearchKey] = useState("");
+  const [originKey, setOriginKey] = useState("")
+  const [destinationKey, setDestinationKey] = useState("")
   const suggestRef = useRef(false);
   const [isLoading, startLoading, restLoading] = useLoader();
   const [seachLoading, startSearchLoading, restSearchLoading] = useLoader();
@@ -34,24 +38,29 @@ function SearchFlightBox() {
     adult: "1",
     children: "0",
     infants: "0"
-  })
+  });
+  const [resultData, setResultData] = SearchFlightDataConsumer();
+
 
   /**************API call : Flight suggestion for origin and destination****************/
 
+  async function getAirportSuggestion(query, cancelToken){
+    try{
+        const fetch = await axios(`${BASE_URL}/airports?keyword=${query}`, cancelToken);
+        setResponse(fetch.data);
+        restLoading();
+    }catch(err){
+        console.error(err)
+    }
+  }
+
   useEffect(() => {
-      const controller = axios.CancelToken.source();
-      if(suggestRef.current){
-          if(searchKey !== ""){
+    const controller = axios.CancelToken.source();
+
+    if(suggestRef.current){
+        if(originKey !== ""){
             startLoading();
-            (async() => {
-                try{
-                    const fetch = await axios(`${BASE_URL}/airports?keyword=${searchKey}`, {cancelToken: controller.token});
-                    setResponse(fetch.data);
-                    restLoading();
-                }catch(err){
-                    console.error(err)
-                }
-            })()
+            getAirportSuggestion(originKey, {cancelToken: controller.token});
             suggestRef.current = false;
         }
     }
@@ -61,7 +70,25 @@ function SearchFlightBox() {
         restLoading();
         controller.cancel();
     }
-  },[searchKey])
+  },[originKey]);
+
+  useEffect(() => {
+    const controller = axios.CancelToken.source();
+
+    if(suggestRef.current){
+        if(destinationKey !== ""){
+            startLoading();
+            getAirportSuggestion(destinationKey, {cancelToken: controller.token});
+            suggestRef.current = false;
+        }
+    }
+
+    return () => {
+        suggestRef.current = true;
+        restLoading();
+        controller.cancel();
+    }
+  },[destinationKey]);
 
 /***************************API call : Search Flight ******************************/
 
@@ -74,11 +101,10 @@ function SearchFlightBox() {
         startSearchLoading();
         const controller = axios.CancelToken.source();
         const response = await axios(`${BASE_URL}/oneway?origin=${searchData.origin}&destination=${searchData.desination}&departureDate=${searchData.departureDate}&returnDate=${searchData.returnDate}&adults=${searchData.adult}&children=${searchData.children}&infants=${searchData.infants}`,{cancelToken: controller.token});
-        console.log(response)
-        // if(response.status === 200 && response.data === "Success"){
-        //     restLoading();
-        //     // navigate("/verify");
-        // }
+        // console.log(response);
+        setResultData(response.data.data);
+        restLoading();
+        navigate("/flightslist");
     }catch(error){
         console.error(error)
     }finally{
@@ -119,17 +145,17 @@ function SearchFlightBox() {
                     sx={{ width: 400}}
                     options={response}
                     getOptionLabel={(option) => `${capitalize(option.name)} - ${option.iataCode}` || ""}
-                    isOptionEqualToValue={(option, value) => capitalize(option.name) === capitalize(value.name)}
+                    isOptionEqualToValue={(option, value) => option.id === value.id}
                     noOptionsText="No flights available"
                     renderInput={(params) => (
                         <InputField
                             {...params}
                             label="From"
-                            value={searchKey}
-                            onChange={(e) => setSearchKey(e.target.value)}
+                            value={originKey}
+                            onChange={(e) => setOriginKey(e.target.value)}
                             inputProps={{
                                 ...params.inputProps,
-                                autoComplete: 'new-password',
+                                autoComplete: 'off',
                             }}
                         />
                     )}
@@ -142,18 +168,18 @@ function SearchFlightBox() {
                     sx={{ width: 400 }}
                     options={response}
                     getOptionLabel={(option) => `${capitalize(option.name)} - ${option.iataCode}` || ""}
-                    isOptionEqualToValue={(option, value) => capitalize(option.name) === capitalize(value.name)}
+                    isOptionEqualToValue={(option, value) => option.id === value.id}
                     noOptionsText="No flights available"
                     renderInput={(params) => (
                         <InputField
                             autoComplete='off'
                             {...params}
-                            value={searchKey}
-                            onChange={(e) => setSearchKey(e.target.value)}
+                            value={destinationKey}
+                            onChange={(e) => setDestinationKey(e.target.value)}
                             label="To"
                             inputProps={{
                                 ...params.inputProps,
-                                autoComplete: 'new-password',
+                                autoComplete: 'off',
                             }}
                         />
                     )}
@@ -245,7 +271,7 @@ function SearchFlightBox() {
                     }}
                 />
             </Box>
-            <BlueButton sx={{my: 2, float: "right"}} onClick={searchFlight}>
+            <BlueButton sx={{my: 2, float: "right"}} disabled={seachLoading} onClick={searchFlight}>
                 <FiSend/>
                 Show flights
             </BlueButton>

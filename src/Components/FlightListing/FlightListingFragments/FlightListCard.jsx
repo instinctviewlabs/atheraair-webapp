@@ -21,7 +21,7 @@ function FlightListCard({cardData}) {
             </BlueBox>
             <Stack spacing={2} direction="column">
                 <Stack direction="row" spacing={4} alignItems="center">
-                    <Typography variant='h4'>{cardData.airlinesName}</Typography>
+                    <Typography variant='h4' color="text.main">{cardData.airlinesName}</Typography>
                 </Stack>
                 <Stack direction="row" spacing={4} alignItems="center">
                     <Box>
