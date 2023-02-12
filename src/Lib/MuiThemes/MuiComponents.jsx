@@ -55,8 +55,27 @@ export const WhiteCard = (props) => {      //white card component
 export const InputField = styled(TextField)(({theme}) => ({     //Styled input field
     backgroundColor: theme.palette.card.background,
     borderRadius: theme.shape.borderRadius,
+    border: theme.palette.text.main,
     input: {
-        color: theme.palette.text.main
+        color: theme.palette.text.main,
+    },
+    '& label': {
+        color: theme.palette.text.main,
+    },
+    '& label.Mui-focused': {
+        color: theme.palette.text.main,
+    },
+
+    '& .MuiOutlinedInput-root': {
+        '& fieldset': {
+          borderColor: theme.palette.text.main,
+        },
+        '&:hover fieldset': {
+          borderColor: theme.palette.text.main,
+        },
+        '&.Mui-focused fieldset': {
+          borderColor: theme.palette.text.main,
+        },
     }
 }));
 
