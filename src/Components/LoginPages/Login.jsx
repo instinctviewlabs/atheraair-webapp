@@ -70,8 +70,13 @@ function Login() {
             // console.log(loginWithEmailAndPassword);
             const getuser = await axios.post(`${BASE_URL}/getUser`, {userId: auth.currentUser.uid})
             console.log(getuser);
-            // dispatch(loginUser({auth: true, role: "user", email: loginData.email}))
-            // navigate("/", {replace: true})
+            dispatch(loginUser({
+                auth: true, 
+                role: getuser.data.type, 
+                email: getuser.data.email,
+                name: getuser.data.name 
+            }))
+            navigate("/", {replace: true})
 
         }catch(error){
 
@@ -96,7 +101,7 @@ function Login() {
         console.log(getuser);
         dispatch(loginUser({
             auth: true,
-            role: "user", 
+            role: "admin", 
             name: response.user.displayName, 
             email: response.user.email,
             emailVerified: response.user.emailVerified,

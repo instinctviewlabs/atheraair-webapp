@@ -11,7 +11,10 @@ import MasterPassengerList from '../Components/Profile/ProfileFragments/MasterPa
 import PaymentMethods from '../Components/Profile/ProfileFragments/PaymentMethods';
 import TicketBookingsList from '../Components/Profile/ProfileFragments/TicketBookingsList';
 import { FullScreenLoader } from '../Lib/MuiThemes/MuiComponents';
-import ProtectedRoutes from './ProtectedRoutes';
+import UserRoutes from './UserRoutes';
+import AdminRoutes from './AdminRoutes';
+import AdminLayout from '../Components/AdminComponents/AdminLayout/AdminLayout';
+import Dashboard from '../Components/AdminComponents/Dashboard/Dashboard';
 const Login = lazy(() => import("../Components/LoginPages/Login"));
 const Signup = lazy(() => import("../Components/LoginPages/Signup"));
 const ForgotPassword = lazy(() => import("../Components/LoginPages/ForgotPassword"));
@@ -32,10 +35,15 @@ function AppRoutes() {
     <Routes>
       <Route path="/" element={<HomeLayout/>}>
         <Route index element={<FlightSearch/>}/>
+        <Route element={<AdminRoutes/>}>
+          <Route path="admin" element={<AdminLayout/>}>
+            <Route index element={<Dashboard/>}></Route>
+          </Route>
+        </Route>
         <Route path="/flightslist" element={<FlightListingsLayout/>}/>
         <Route path="/flightdetails" element={<FlightDetailPage/>} />
         <Route path="/bookingdetails" element={<BookingDetails/>} />
-        <Route element={<ProtectedRoutes/>}>
+        <Route element={<UserRoutes/>}>
           <Route path="profile" element={<Profile/>}>
             <Route index element={<AccountTab/>}></Route>
             <Route path="account" element={<AccountTab/>}></Route>
