@@ -9,12 +9,15 @@ import SideCarousel from './SideCarousel';
 
 // Config imports
 import { auth } from "../../Lib/Firebase/FirebaseConfig";
-import useAxios from '../../Lib/CustomHooks/useAxios';
-import { AxiosConfig, BASE_URL } from '../../Lib/Axios/AxiosConfig';
-import { createUserWithEmailAndPassword } from 'firebase/auth';
+import { BASE_URL } from '../../Lib/Axios/AxiosConfig';
+import { createUserWithEmailAndPassword, GoogleAuthProvider, signInWithPopup } from 'firebase/auth';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import useLoader from '../../Lib/CustomHooks/useLoader';
+import { loginUser } from '../../Lib/Redux/AuthSlice';
+import { useDispatch } from 'react-redux';
+import { LoaderConsumer } from '../../Lib/Contexts/LoaderContext';
+import useSnackBar from '../../Lib/CustomHooks/useSnackBar';
 
 
 
@@ -23,7 +26,9 @@ function Signup() {
   /****************** States *******************/
 
   const navigate = useNavigate();
-  const [loading, startLoading, restLoading] = useLoader();
+  const dispatch = useDispatch();
+  const {showSnackBar} = useSnackBar();
+  const [loading, startLoading, restLoading] = LoaderConsumer();
   const [signupData, setSignupData] = useState({firstname: "", lastname: "", email: "",phoneno: "", password: "", confirmPassword: "", isTCchecked: false});
   const [isDataValidated, setDataValidated] = useState({firstname: false, lastname: false, email: false, phoneno: false, password: false, confirmPassword: false})
   const [hidePassword, setHidePassword] = usePasswordVisibility();
@@ -34,20 +39,6 @@ function Signup() {
     'Add payment method',
   ];
 
-  const [state, setState] = React.useState({
-    open: false,
-    vertical: 'top',
-    horizontal: 'right',
-  });
-  const { vertical, horizontal, open } = state;
-
-  const handleClick = (newState) => () => {
-    setState({ open: true, ...newState });
-  };
-
-  const handleClose = () => {
-    setState({ ...state, open: false });
-  };
 
   /************** Form handling function ***************/
 
@@ -100,7 +91,7 @@ function Signup() {
     return isValidated;
   }
 
-  /************** API call : Post method ***************/
+  /************** API call : Create account ***************/
 
     const signup = async(event) => {
         event.preventDefault();
@@ -109,38 +100,55 @@ function Signup() {
             try{
                 startLoading();
                 const controller = axios.CancelToken.source();
-                const createuser = await createUserWithEmailAndPassword(auth, signupData.email, signupData.password);
-                console.log(createuser)
+                await createUserWithEmailAndPassword(auth, signupData.email, signupData.password);
+
                 const response = await axios.post(`${BASE_URL}/createUser`, {
                     userId: auth.currentUser.uid,
                     name: `${signupData.firstname} ${signupData.lastname}`, 
                     email: signupData.email, 
                     pass: signupData.password
                 },{cancelToken: controller.token});
-                console.log(response)
+
                 if(response.status === 200 && response.data === "Success"){
                     restLoading();
                     navigate("/verify");
                 }
             }catch(error){
-                console.error(error)
+                console.log(error)
+                showSnackBar("error", "Error occured please try again later") 
             }finally{
                 restLoading();
             }
             
         }else{
-            console.error("validation error");
-            // <Snackbar
-            //     open={open} 
-            //     message="Hello there" 
-            //     autoHideDuration={6000} 
-            //     onClose={handleClose}
-            //     anchorOrigin={{vertical: "bottom", horizontal: "center"}}
-            // ></Snackbar>
-            
+            showSnackBar("warning", "Please enter valid inputs to create your account") 
         }
     }
 
+    /******************************Api call : Signup with Google***************************** */
+
+    const SignupWithGoogle = async() => {
+        try{
+            const provider = new GoogleAuthProvider();
+            const response = await signInWithPopup(auth, provider);
+            // console.log(response.user.uid);
+            // const getuser = await axios.post(`${BASE_URL}/getUser`, {userId: auth.currentUser.uid})
+            // console.log(getuser);
+            dispatch(loginUser({
+                auth: true,
+                role: "user", 
+                name: response.user.displayName, 
+                email: response.user.email,
+                emailVerified: response.user.emailVerified,
+                phoneNumber: response.user.phoneNumber,
+                photoUrl: response.user.photoURL
+            }))
+            navigate("/", {replace: true})
+        }catch(err){
+            console.log(err)
+            showSnackBar("error", "Error occured please try again later") 
+        }
+      }
 
   return (
     <Stack 
@@ -308,7 +316,7 @@ function Signup() {
                 <Typography>Already have an account? <SpanText onClick={() => navigate("/login")} component="span">Login</SpanText></Typography>
             </Box>
             <Divider><Typography variant='subtitle2'>Or Sign up with</Typography></Divider>
-            <GoogleButton>Sign up with Google</GoogleButton>
+            <GoogleButton onClick={SignupWithGoogle}>Sign up with Google</GoogleButton>
         </Stack>
         {/* <Snackbar
             anchorOrigin={{ vertical, horizontal }}

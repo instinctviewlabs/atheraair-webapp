@@ -1,15 +1,19 @@
-import React, { useState } from 'react';
-import { Box, Checkbox, Divider, IconButton, InputAdornment, Stack, TextField, Typography } from '@mui/material';
+import React, { useContext, useState } from 'react';
+import { Box, Checkbox, Divider, IconButton, InputAdornment, Snackbar, Stack, TextField, Typography } from '@mui/material';
 import {VscEye, VscEyeClosed} from "react-icons/vsc";
 import { AnchorText, BlueButton, GoogleButton, SpanText, TitleLogo } from '../../Lib/MuiThemes/MuiComponents';
 import { usePasswordVisibility } from '../../Lib/CustomHooks/usePasswordVisibility';
 import SideCarousel from './SideCarousel';
 import { useNavigate } from 'react-router-dom';
-import { signInWithEmailAndPassword } from 'firebase/auth';
-import { auth } from '../../Lib/Firebase/FirebaseConfig';
+import { GoogleAuthProvider, signInWithEmailAndPassword, signInWithPopup } from 'firebase/auth';
+import { auth, SignInWithGoogle } from '../../Lib/Firebase/FirebaseConfig';
 import useLoader from '../../Lib/CustomHooks/useLoader';
 import { useDispatch } from 'react-redux';
 import { loginUser } from '../../Lib/Redux/AuthSlice';
+import { LoaderConsumer } from '../../Lib/Contexts/LoaderContext';
+import useSnackBar from '../../Lib/CustomHooks/useSnackBar';
+import axios from 'axios';
+import { BASE_URL } from '../../Lib/Axios/AxiosConfig';
 
 
 
@@ -17,10 +21,14 @@ function Login() {
 
   const navigate = useNavigate();
   const dispatch = useDispatch();
-  const [loading, startLoading, restLoading] = useLoader();
+  const { showSnackBar } = useSnackBar();
+  const [loading, startLoading, restLoading] = LoaderConsumer();
   const [hidePassword, setHidePassword] = usePasswordVisibility();
   const [loginData, setLoginData] = useState({email: "", password: ""});
-  const [isDataValidated, setDataValidated] = useState({email: false, password: false})
+  const [isDataValidated, setDataValidated] = useState({email: false, password: false});
+
+
+  
 
   /************** Form handling function ***************/
 
@@ -49,25 +57,56 @@ function Login() {
     return isValidated;
   }
 
-  /************************** Api call : Post method  ******************/
+  /************************** Api call : Login with credentials  ******************/
 
   const login = async(event) => {
     event.preventDefault();
 
     if(handleDataValidation()){
         try{
+
             startLoading();
             const loginWithEmailAndPassword = await signInWithEmailAndPassword(auth, loginData.email, loginData.password);
-            console.log(loginWithEmailAndPassword);
-            dispatch(loginUser({auth: true, role: "user", email: loginData.email}))
-            navigate("/", {replace: true})
+            // console.log(loginWithEmailAndPassword);
+            const getuser = await axios.post(`${BASE_URL}/getUser`, {userId: auth.currentUser.uid})
+            console.log(getuser);
+            // dispatch(loginUser({auth: true, role: "user", email: loginData.email}))
+            // navigate("/", {replace: true})
+
         }catch(error){
-            console.error(error)
+
+            console.log(error)
+            showSnackBar("error", "Error occured please try again later");
+
         }finally{
             restLoading();
         }
     }else{
-        console.error("validation error");
+        showSnackBar("warning", "Please enter valid inputs to login")
+    }
+  }
+
+  /******************************Api call : Login with google***************************** */
+
+  const loginWithGoogle = async() => {
+    try{
+        const provider = new GoogleAuthProvider();
+        const response = await signInWithPopup(auth, provider)
+        const getuser = await axios.post(`${BASE_URL}/getUser`, {userId: auth.currentUser.uid})
+        console.log(getuser);
+        dispatch(loginUser({
+            auth: true,
+            role: "user", 
+            name: response.user.displayName, 
+            email: response.user.email,
+            emailVerified: response.user.emailVerified,
+            phoneNumber: response.user.phoneNumber,
+            photoUrl: response.user.photoURL
+        }))
+        navigate("/", {replace: true})
+    }catch(err){
+        console.log(err)
+        showSnackBar("error", "Error occured please try again later") 
     }
   }
 
@@ -152,7 +191,7 @@ function Login() {
                 <Typography>Don't have an account? <SpanText onClick={() => navigate("/signup")} component="span"> Sign up</SpanText></Typography>
             </Box>
             <Divider><Typography variant='subtitle2'>Or Login with</Typography></Divider>
-            <GoogleButton>Sign In with Google</GoogleButton>
+            <GoogleButton onClick={loginWithGoogle}>Sign In with Google</GoogleButton>
         </Stack>
     </Stack>
   )

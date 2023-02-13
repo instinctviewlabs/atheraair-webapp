@@ -34,7 +34,7 @@ export default function Navbar(){
 
   const navigate = useNavigate();
   const dispatch = useDispatch();
-  const {auth, theme} = useSelector(data => data);
+  const {auth, theme} = useSelector(data => data.persistedReducer);
   const [value, setValue] = React.useState(0);
   const [openMenu, setOpenMenu] = React.useState(null);
 
@@ -57,9 +57,9 @@ export default function Navbar(){
             anchorOrigin={{ vertical: 'top', horizontal: 'right' }}
             // badgeContent={<BsCheckCircleFill style={{color: "black", fontSize: 18}}/>}
         >
-            <Avatar onClick={handleMenu} sx={{height: "50px", width: "50px", border: "3px solid rgb(184, 218, 255)", cursor: "pointer"}} alt="Remy Sharp" src=""/>
+            <Avatar onClick={handleMenu} sx={{height: "50px", width: "50px", border: "3px solid rgb(184, 218, 255)", cursor: "pointer"}} alt="Remy Sharp" src={auth.photoUrl}/>
         </Badge>
-        <Typography variant="h5" color="text.main">John D</Typography>
+        <Typography variant="h5" color="text.main">{auth.name ? auth.name : "user"}</Typography>
         <Menu
             anchorEl={openMenu}
             open={Boolean(openMenu)}
@@ -109,13 +109,13 @@ export default function Navbar(){
                 <ListItemIcon>
                     <AccountCircle></AccountCircle>
                 </ListItemIcon>
-                <ListItemText primary="Profile" />
+                <ListItemText primary={<Typography variant='subtitle1'>Profile</Typography>} />
             </ListItemButton>
             <ListItemButton onClick={() => setOpenMenu(null)}>
                 <ListItemIcon>
                     <Payment></Payment>
                 </ListItemIcon>
-                <ListItemText primary="Support" />
+                <ListItemText primary={<Typography variant='subtitle1'>Support</Typography>} />
             </ListItemButton>
                 
             <ListItemButton onClick={() => {
@@ -125,7 +125,7 @@ export default function Navbar(){
                 <ListItemIcon>
                     <Logout></Logout>
                 </ListItemIcon>
-                <ListItemText primary="Logout" />
+                <ListItemText primary={<Typography variant='subtitle1'>Logout</Typography>} />
             </ListItemButton>
         </Menu>
     </>
@@ -138,7 +138,7 @@ export default function Navbar(){
 
   return (
     <AppBar position='sticky' sx={{backgroundColor: "card.background"}}>
-        <Toolbar sx={{display: "flex", justifyContent: "space-between", height: "90px"}}>
+        <Toolbar sx={{display: "flex", justifyContent: "space-between", height: "80px"}}>
             <Box display={{
                 xs: "none",
                 sm: "flex"
@@ -160,7 +160,6 @@ export default function Navbar(){
                             flexDirection="row" 
                             alignItems="center" 
                             gap="5px"
-                            onClick={() => console.log("Find flight")}
                         >
                         <TbPlaneInflight/>
                         <Typography 

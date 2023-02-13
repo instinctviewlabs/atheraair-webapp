@@ -1,5 +1,5 @@
 import React from 'react';
-import { Button, styled, Card, TextField, Box, Typography, Avatar, FormControlLabel  } from '@mui/material';
+import { Button, styled, Card, TextField, Box, Typography, Avatar, FormControlLabel,  } from '@mui/material';
 import { appleColorIcon, normalLogo, facebookColorIcon, googleColorIcon, transparentLogo } from '../../Assests/assets';
 
 

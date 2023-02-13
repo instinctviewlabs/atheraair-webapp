@@ -6,7 +6,7 @@ import { useSelector } from 'react-redux';
 
 function DisplayPicture() {
 
-  const {auth} = useSelector(data => data);
+  const {auth} = useSelector(data => data.persistedReducer);
 
   return (
     <>
@@ -17,9 +17,9 @@ function DisplayPicture() {
                 anchorOrigin={{ vertical: 'bottom', horizontal: 'right' }}
                 badgeContent={<IconButton sx={{backgroundColor: "veryLightBlue.main", "&:hover" : { backgroundColor: "veryLightBlue.main"}}}><HiPencil/></IconButton>}
             >
-                <AvatarProfile alt="Remy Sharp" src=""/>
+                <AvatarProfile alt="Remy Sharp" src={auth.photoUrl}/>
             </Badge>
-            <Typography variant="h5" color="text.main">John Doe</Typography>
+            <Typography variant="h5" color="text.main">{auth.name}</Typography>
             <Typography variant='body2'>{auth.email}</Typography>
         </Box>
     </>

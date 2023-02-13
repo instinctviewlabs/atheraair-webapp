@@ -6,7 +6,7 @@ import { useSelector } from 'react-redux';
 
 function CustomThemeProvider(props) {
 
-  const {theme} = useSelector(data => data);
+  const {theme} = useSelector(data => data.persistedReducer);
   
   return (
     <ThemeProvider theme={theme ? DarkTheme : LightTheme}>

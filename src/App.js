@@ -1,12 +1,15 @@
 import React from "react";
-import { SearchFlightDataProvider } from "./Lib/Contexts/SearchFlightContext";
+import { LoaderContextProvider } from "./Lib/Contexts/LoaderContext";
+import { SnackbarContextProvider } from "./Lib/Contexts/SnackbarContext";
 import AppRoutes from "./Routes/AppRoutes";
 
 function App() {
   return (
-    <SearchFlightDataProvider>
-    <AppRoutes/>
-    </SearchFlightDataProvider>
+    <LoaderContextProvider>
+      <SnackbarContextProvider>
+        <AppRoutes/>
+      </SnackbarContextProvider>
+    </LoaderContextProvider>
   );
 }
 

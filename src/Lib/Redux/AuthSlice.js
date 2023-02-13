@@ -7,6 +7,8 @@ export const authSlice = createSlice({
         role: "",
         email: "",
         name: "",
+        phoneNumber: "",
+        photoUrl: "",
         emailVerified: false,
     },
     reducers: {
@@ -14,9 +16,11 @@ export const authSlice = createSlice({
             return {
                 auth: true,
                 role: action.payload.role,
-                name: action.payload.fullname,
+                name: action.payload.name,
                 email: action.payload.email,
-                emailVerified: action.payload.emailVerified
+                emailVerified: action.payload.emailVerified,
+                phoneNumber: action.payload.phoneNumber,
+                photoUrl: action.payload.photoUrl,
             }
         },
         logoutUser: () => {
@@ -25,7 +29,9 @@ export const authSlice = createSlice({
                 role: "",
                 name: "",
                 email: "",
-                emailVerified: false
+                emailVerified: false,
+                phoneNumber: "",
+                photoUrl: "",
             }
         },
     }

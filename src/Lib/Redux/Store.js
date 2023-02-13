@@ -4,6 +4,7 @@ import { persistStore, persistReducer } from "redux-persist";
 import thunk from "redux-thunk";
 import storage from "redux-persist/lib/storage";
 import { authReducer } from "./AuthSlice";
+import { flightSearchResultReducer } from "./FlightSearchResultSlice";
 
 const persistConfig = {
     key: "root",
@@ -19,7 +20,10 @@ const rootReducer = combineReducers({
 const persistedReducer = persistReducer(persistConfig, rootReducer);
 
 export const store = configureStore({
-    reducer: persistedReducer,
+    reducer: {
+        persistedReducer,
+        flightSearchResultReducer
+    },
     middleware: [thunk]
 })
 

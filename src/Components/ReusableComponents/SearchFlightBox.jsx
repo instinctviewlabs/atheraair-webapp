@@ -13,9 +13,11 @@ import {FiSend} from "react-icons/fi";
 import { DesktopDatePicker } from '@mui/x-date-pickers';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
-import { FaMinus, FaPlus } from 'react-icons/fa';
-import { SearchFlightDataConsumer } from '../../Lib/Contexts/SearchFlightContext';
+// import { FaMinus, FaPlus } from 'react-icons/fa';
 import { useNavigate } from 'react-router-dom';
+import { useDispatch } from 'react-redux';
+import { getFlightsData } from '../../Lib/Redux/FlightSearchResultSlice';
+import { LoaderConsumer, loaderConsumer } from '../../Lib/Contexts/LoaderContext';
 
 
 function SearchFlightBox() {
@@ -23,12 +25,13 @@ function SearchFlightBox() {
   /************************** States and Variables ******************************/  
   
   const navigate = useNavigate()
-  const [response, setResponse] = useState([]);
-  const [originKey, setOriginKey] = useState("")
-  const [destinationKey, setDestinationKey] = useState("")
+  const [originKey, setOriginKey] = useState({searchKey: "", options: []})
+  const [destinationKey, setDestinationKey] = useState({searchKey: "", options: []})
+  const dispatch = useDispatch();
   const suggestRef = useRef(false);
   const [isLoading, startLoading, restLoading] = useLoader();
-  const [seachLoading, startSearchLoading, restSearchLoading] = useLoader();
+  const [seachLoading, startSearchLoading, restSearchLoading] = LoaderConsumer();
+//   const [seachLoading, startSearchLoading, restSearchLoading] = useLoader();
   const [searchData, setSearchData] = useState({
     origin: "",
     desination: "",
@@ -39,30 +42,27 @@ function SearchFlightBox() {
     children: "0",
     infants: "0"
   });
-  const [resultData, setResultData] = SearchFlightDataConsumer();
-
 
   /**************API call : Flight suggestion for origin and destination****************/
 
-  async function getAirportSuggestion(query, cancelToken){
-    try{
-        const fetch = await axios(`${BASE_URL}/airports?keyword=${query}`, cancelToken);
-        setResponse(fetch.data);
-        restLoading();
-    }catch(err){
-        console.error(err)
-    }
-  }
-
-  useEffect(() => {
+  useEffect(() => {   
     const controller = axios.CancelToken.source();
-
-    if(suggestRef.current){
-        if(originKey !== ""){
-            startLoading();
-            getAirportSuggestion(originKey, {cancelToken: controller.token});
-            suggestRef.current = false;
-        }
+    if(suggestRef.current && originKey.searchKey !== ""){
+        (async () => {
+            try{
+                startLoading();
+                const fetch = await axios(`${BASE_URL}/airports?keyword=${originKey.searchKey}`, {cancelToken: controller.token});
+                console.log(fetch)
+                setOriginKey(prev => ({...prev, options: fetch.data}))
+                restLoading();
+            }catch(err){
+                console.error(err)
+            }finally{
+                restLoading();
+            }
+        })()
+        suggestRef.current = false;
+        
     }
 
     return () => {
@@ -70,17 +70,25 @@ function SearchFlightBox() {
         restLoading();
         controller.cancel();
     }
-  },[originKey]);
+  },[originKey.searchKey]);
 
   useEffect(() => {
     const controller = axios.CancelToken.source();
-
-    if(suggestRef.current){
-        if(destinationKey !== ""){
-            startLoading();
-            getAirportSuggestion(destinationKey, {cancelToken: controller.token});
-            suggestRef.current = false;
-        }
+    if(suggestRef.current && destinationKey.searchKey !== ""){
+        (async () => {
+            try{
+                startLoading();
+                const fetch = await axios(`${BASE_URL}/airports?keyword=${destinationKey.searchKey}`, {cancelToken: controller.token});
+                console.log(fetch)
+                setDestinationKey(prev => ({...prev, options: fetch.data}))
+                restLoading();
+            }catch(err){
+                console.error(err)
+            }finally{
+                restLoading();
+            }
+        })()
+        suggestRef.current = false;
     }
 
     return () => {
@@ -88,7 +96,7 @@ function SearchFlightBox() {
         restLoading();
         controller.cancel();
     }
-  },[destinationKey]);
+  },[destinationKey.searchKey]);
 
 /***************************API call : Search Flight ******************************/
 
@@ -102,7 +110,7 @@ function SearchFlightBox() {
         const controller = axios.CancelToken.source();
         const response = await axios(`${BASE_URL}/oneway?origin=${searchData.origin}&destination=${searchData.desination}&departureDate=${searchData.departureDate}&returnDate=${searchData.returnDate}&adults=${searchData.adult}&children=${searchData.children}&infants=${searchData.infants}`,{cancelToken: controller.token});
         // console.log(response);
-        setResultData(response.data.data);
+        dispatch(getFlightsData(response.data.data))
         restLoading();
         navigate("/flightslist");
     }catch(error){
@@ -143,16 +151,19 @@ function SearchFlightBox() {
                     onChange={(event, newVal) => setSearchData(prev => ({...prev, origin: newVal ? newVal.iataCode : ""}))}
                     size="small"
                     sx={{ width: 400}}
-                    options={response}
+                    options={originKey.options}
                     getOptionLabel={(option) => `${capitalize(option.name)} - ${option.iataCode}` || ""}
-                    isOptionEqualToValue={(option, value) => option.id === value.id}
+                    // isOptionEqualToValue={(option, value) =>  console.log(option.name, " ---- ", value.name, option.name === value.name)}
+                    isOptionEqualToValue={(option, value) => true}
                     noOptionsText="No flights available"
                     renderInput={(params) => (
                         <InputField
+                            // error={!searchData.origin}
+                            // helperText={!searchData.origin && "Please choose your origin"}
                             {...params}
                             label="From"
-                            value={originKey}
-                            onChange={(e) => setOriginKey(e.target.value)}
+                            value={originKey.searchKey}
+                            onChange={(e) => setOriginKey(prev => ({...prev, searchKey: e.target.value}))}
                             inputProps={{
                                 ...params.inputProps,
                                 autoComplete: 'off',
@@ -166,16 +177,19 @@ function SearchFlightBox() {
                     onChange={(event, newVal) => setSearchData(prev => ({...prev, desination: newVal ? newVal.iataCode : ""}))}
                     size="small"
                     sx={{ width: 400 }}
-                    options={response}
+                    options={destinationKey.options}
                     getOptionLabel={(option) => `${capitalize(option.name)} - ${option.iataCode}` || ""}
-                    isOptionEqualToValue={(option, value) => option.id === value.id}
+                    // isOptionEqualToValue={(option, value) =>  console.log(option.name, " ---- ", value.name, option.name === value.name)}
+                    isOptionEqualToValue={(option, value) => true}
                     noOptionsText="No flights available"
                     renderInput={(params) => (
                         <InputField
+                            // error={!searchData.desination}
+                            // helperText={!searchData.desination && "Please choose destination"}
                             autoComplete='off'
                             {...params}
-                            value={destinationKey}
-                            onChange={(e) => setDestinationKey(e.target.value)}
+                            value={destinationKey.searchKey}
+                            onChange={(e) => setDestinationKey(prev => ({...prev, searchKey: e.target.value}))}
                             label="To"
                             inputProps={{
                                 ...params.inputProps,

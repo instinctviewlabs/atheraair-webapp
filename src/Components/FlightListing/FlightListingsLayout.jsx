@@ -1,13 +1,13 @@
-import { Box } from '@mui/material';
 import React from 'react';
+import { Box } from '@mui/material';
 import SearchFlightBox from '../ReusableComponents/SearchFlightBox';
 import FiltersSetting from './FlightListingFragments/FiltersSetting';
 import FlightListings from './FlightListingFragments/FlightListings';
-import { SearchFlightDataConsumer } from '../../Lib/Contexts/SearchFlightContext';
+import { useSelector } from 'react-redux';
 
 function FlightListingsLayout() {
 
-  const [ resultData ] = SearchFlightDataConsumer();
+  const {flightSearchResultReducer} = useSelector(data => data);
   
   return (
     <>
@@ -24,7 +24,7 @@ function FlightListingsLayout() {
         }
     }}>
         <FiltersSetting></FiltersSetting>
-        <FlightListings cardData={resultData}></FlightListings>
+        <FlightListings cardData={flightSearchResultReducer}></FlightListings>
     </Box>
     </>
   )
