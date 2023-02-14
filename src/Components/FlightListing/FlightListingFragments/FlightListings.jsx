@@ -4,7 +4,7 @@ import FlightSortingTabs from "./FlightSortingTabs";
 import { BlackButtonOutlined } from "../../../Lib/MuiThemes/MuiComponents";
 import FlightListCard from "./FlightListCard";
 
-function FlightListings({cardData}){
+function FlightListings({cardData, showMoreFlights, showMoreValue}){
 
     console.log(cardData)
     return(
@@ -27,7 +27,7 @@ function FlightListings({cardData}){
                     <FlightListCard key={index} cardData={card}></FlightListCard>
                 ))
             }
-            {cardData.length > 0 && <BlackButtonOutlined>Show more results</BlackButtonOutlined>} 
+            {cardData.length > 0 || showMoreValue > cardData.length  && <BlackButtonOutlined onClick={showMoreFlights}>Show more results</BlackButtonOutlined>} 
             </Box>
         </Box>
     )

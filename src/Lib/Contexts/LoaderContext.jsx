@@ -1,4 +1,4 @@
-import { LinearProgress } from "@mui/material";
+
 import React, { createContext, useContext, useState } from "react";
 
 const LoaderContext = createContext();
@@ -18,7 +18,6 @@ function LoaderContextProvider(props){
 
     return(
         <LoaderContext.Provider value={[isLoading, startLoading, restLoading]}>
-            {isLoading && <LinearProgress />}
             {props.children}
         </LoaderContext.Provider>
     )

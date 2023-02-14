@@ -45,7 +45,7 @@ function FlightListCard({cardData}) {
             </Stack>
             <Box>
                 <Typography variant="subtitle1" color="text.main">Starting from</Typography>
-                <AnchorText variant="h5">{cardData.currency} {cardData.totalPrice}</AnchorText>
+                <AnchorText variant="h5">{cardData.totalPrice}<AnchorText variant='subtitle1' component="span">&nbsp;{cardData.currency}</AnchorText></AnchorText>
             </Box>
         </Stack>
     </WhiteCard>

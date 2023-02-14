@@ -26,33 +26,33 @@ export const DarkTheme = createTheme({
     typography: {
       fontFamily: "'Montserrat', 'sans-serif'",
       h4: {
-        fontWeight: 700,
-        fontSize: "24px"
-      },
-      h5: {
-        fontWeight: 700,
+        fontWeight: 500,
         fontSize: "20px"
       },
+      h5: {
+        fontWeight: 500,
+        fontSize: "18px"
+      },
       h6: {
-        fontWeight: 700,
+        fontWeight: 500,
         fontSize: "16px"
       },
       body1: {
         fontWeight: 500,
-        fontSize: "16px"
+        fontSize: "14px"
       },
       body2: {
         fontWeight: 500,
-        fontSize: "16px",
+        fontSize: "14px",
         color: "gray"
       },
       subtitle1: {
         fontWeight: 500,
-        fontSize: "14px"
+        fontSize: "12px"
       },
       subtitle2: {
         fontWeight: 500,
-        fontSize: "14px",
+        fontSize: "12px",
         color: "gray"
       },
       button: {

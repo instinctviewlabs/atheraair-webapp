@@ -8,6 +8,7 @@ import {
     Tabs,
     Tab,
     IconButton,
+    LinearProgress,
 } from '@mui/material';
 import {TbPlaneInflight} from "react-icons/tb"
 import { BlackButtonOutlined, TitleLogo } from '../../Lib/MuiThemes/MuiComponents';
@@ -17,12 +18,14 @@ import { useDispatch, useSelector } from 'react-redux';
 import { setTheme } from '../../Lib/Redux/ThemeSlice';
 import UserNavbar from './UserNavbar';
 import { AdminPanelSettingsOutlined } from '@mui/icons-material';
+import { LoaderConsumer } from '../../Lib/Contexts/LoaderContext';
 
 
 export default function Navbar({auth}){
 
   const navigate = useNavigate();
   const dispatch = useDispatch();
+  const [isLoading] = LoaderConsumer();
   const {theme} = useSelector(data => data.persistedReducer);
   const [value, setValue] = React.useState(0);
 
@@ -50,6 +53,9 @@ export default function Navbar({auth}){
 
   return (
     <AppBar position='sticky' sx={{backgroundColor: "card.background"}}>
+        <Box>
+            {isLoading && <LinearProgress />}
+        </Box>
         <Toolbar sx={{display: "flex", justifyContent: "space-between", height: "80px"}}>
             <Box display={{
                 xs: "none",
