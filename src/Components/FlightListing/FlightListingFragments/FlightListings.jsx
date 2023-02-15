@@ -8,17 +8,19 @@ import { MdOutlineKeyboardArrowDown } from "react-icons/md";
 function FlightListings({cardData}){
 
     const [showValue, setShowValue] = useState(10);
-    const [result, setResult] = useState([]);
+    const [cardList, setCardList] = useState([]);
 
     function showMoreFlights(){
         setShowValue(prev => prev + 10);
     }
-
+        
     useEffect(() => {
-        setResult(cardData.slice(0, showValue))
-    },[showValue])
+        console.log("run");
+        setCardList(cardData.slice(0, showValue));
 
-    // console.log("result - ",result);
+        return () => {}
+    },[cardData, showValue])
+        
     return(
         <Box sx={{
             height: "auto",
@@ -33,7 +35,7 @@ function FlightListings({cardData}){
                 justifyContent: "space-between",
                 p: 1
             }}>
-                <Typography variant="body1" color="text.main">Showing {result.length} of {cardData.length} results</Typography>
+                <Typography variant="body1" color="text.main">Showing {cardList.length} of {cardData.length} results</Typography>
                 <Typography variant="subtitle1" color="text.main">Sort by <AnchorText variant="subtitle1" component="span">Recommended <MdOutlineKeyboardArrowDown/></AnchorText></Typography>
             </Box>
             <Box sx={{
@@ -45,11 +47,11 @@ function FlightListings({cardData}){
                 {cardData.length === 0 ?
                     <Typography variant="h5" color="text.main" textAlign="center">No results found</Typography>
                 :
-                result.map((card, index) => (
+                cardList.map((card, index) => (
                     <FlightListCard key={index} cardData={card}></FlightListCard>
                 ))
             }
-            {cardData.length > 0 && <BlackButtonOutlined onClick={showMoreFlights}>Show more results</BlackButtonOutlined>} 
+            {(cardData.length > 0 && showValue < cardData.length) && <BlackButtonOutlined onClick={showMoreFlights}>Show more results</BlackButtonOutlined>} 
             </Box>
         </Box>
     )
