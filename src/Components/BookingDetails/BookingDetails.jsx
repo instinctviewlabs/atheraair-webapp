@@ -3,6 +3,7 @@ import { Box, Divider, FormControl, Radio, RadioGroup, Stack, Typography } from 
 import FlightDetailsCard from '../ReusableComponents/FlightDetailsCard';
 import { AnchorText, BlueButton, StyledRadioControl, WhiteCard } from '../../Lib/MuiThemes/MuiComponents';
 import { emiratesFlight } from '../../Assests/assets';
+import ChoosePaymentMethod from './BookingDetailsFragments/ChoosePaymentMethod';
 
 function BookingDetails() {
   const [paymentMethod, setPaymentMethod] = useState("Book myself");
@@ -36,6 +37,7 @@ function BookingDetails() {
             }}
         >
             <FlightDetailsCard></FlightDetailsCard>
+            <ChoosePaymentMethod></ChoosePaymentMethod>
         </Box>
         <Box
             flex={2} 

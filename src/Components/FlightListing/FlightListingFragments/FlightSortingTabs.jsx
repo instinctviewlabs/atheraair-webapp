@@ -24,16 +24,6 @@ function FlightSortingTabs() {
       <Tab sx={{width: "33%", color: "text.main"}} label={<Typography variant='body1'>Best</Typography>} value="2" />
       <Tab sx={{width: "33%", color: "text.main"}} label={<Typography variant='body1'>Quickest</Typography>} value="3" />
     </Tabs>
-    <Box sx={{
-        display: "flex",
-        alignItems: "center",
-        flexDirection: "row",
-        justifyContent: "space-between",
-        p: 1
-    }}>
-        <Typography variant="body1" color="text.main">Showing 4 of 257 results</Typography>
-        <Typography variant="subtitle1" color="text.main">Sort by <AnchorText variant="subtitle1" component="span">Recommended <MdOutlineKeyboardArrowDown/></AnchorText></Typography>
-    </Box>
     </>
   )
 }

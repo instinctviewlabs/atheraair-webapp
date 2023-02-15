@@ -172,7 +172,8 @@ export const SavedCard = styled(Box)(({theme}) => ({
     display: "flex", 
     flexDirection: "column", 
     justifyContent: "space-between",
-    boxSizing: "border-box"
+    boxSizing: "border-box",
+    cursor: "pointer"
 }));
 
 export const AddNewCard = styled(Box)(({theme}) => ({
@@ -186,7 +187,8 @@ export const AddNewCard = styled(Box)(({theme}) => ({
     flexDirection: "column", 
     alignItems: "center",
     justifyContent: "center",
-    boxSizing: "border-box"
+    boxSizing: "border-box",
+    cursor: "pointer"
 }))
 
 
@@ -198,3 +200,4 @@ export const StyledRadioControl = styled(FormControlLabel)(() => ({
     gap: 10,
     transition: "all 0.2s ease-in",
 }));
+

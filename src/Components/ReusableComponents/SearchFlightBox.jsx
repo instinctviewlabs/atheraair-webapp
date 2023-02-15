@@ -7,7 +7,7 @@ import axios from 'axios';
 import useLoader from '../../Lib/CustomHooks/useLoader';
 
 // ui imports
-import { Autocomplete, Box, Card, Checkbox, IconButton, InputAdornment, Menu, MenuItem, Popper, Stack, ToggleButton, ToggleButtonGroup, Typography } from '@mui/material';
+import { Autocomplete, Box, Card, Checkbox, CircularProgress, IconButton, InputAdornment, Menu, MenuItem, Popper, Stack, ToggleButton, ToggleButtonGroup, Typography } from '@mui/material';
 import { BlueButton, InputField, WhiteCard } from '../../Lib/MuiThemes/MuiComponents';
 import {FiSend} from "react-icons/fi";
 import { DesktopDatePicker } from '@mui/x-date-pickers';
@@ -19,7 +19,7 @@ import { useDispatch } from 'react-redux';
 import { getFlightsData } from '../../Lib/Redux/FlightSearchResultSlice';
 import { LoaderConsumer } from '../../Lib/Contexts/LoaderContext';
 import useSnackBar from '../../Lib/CustomHooks/useSnackBar';
-import { AddCircleOutline, RemoveCircleOutline } from '@mui/icons-material';
+import { AddCircleOutline, Close, RemoveCircleOutline } from '@mui/icons-material';
 import useCounter from '../../Lib/CustomHooks/useCounter';
 
 
@@ -47,8 +47,10 @@ function SearchFlightBox() {
     returnDate: moment().format("YYYY-MM-DD"),
     class: "economy"
   });
-  console.log(searchData);
+//   console.log(searchData);
 
+
+  // popper
   const anchorRef = useRef();
   const [anchorEl, setAnchorEl] = React.useState(null);
 
@@ -57,7 +59,8 @@ function SearchFlightBox() {
   };
 
   const open = Boolean(anchorEl);
-  console.log(anchorRef);
+//   console.log(anchorRef);
+
   /**************API call : Flight suggestion for origin and destination****************/
 
   useEffect(() => {   
@@ -115,24 +118,27 @@ function SearchFlightBox() {
 
 /***************************API call : Search Flight ******************************/
 
-  async function searchFlight(){
+  async function triggerSearch(){
     if(searchData.origin === "" || searchData.desination === ""){
         console.error("please fill the required field");
         return showSnackBar("error", "Unable to search flight without from and to")
     }
-    try{
-        startSearchLoading();
-        const controller = axios.CancelToken.source();
-        const response = await axios(`${BASE_URL}/oneway?origin=${searchData.origin}&destination=${searchData.desination}&departureDate=${searchData.departureDate}&returnDate=${searchData.returnDate}&adults=${adultCount}&children=${childrenCount}&infants=${infantCount}`,{cancelToken: controller.token});
-        // console.log(response);
-        dispatch(getFlightsData(response.data.data))
-        restLoading();
-        navigate("/flightslist");
-    }catch(error){
-        console.error(error)
-    }finally{
-        restSearchLoading();
-    }
+
+    dispatch(getFlightsData({...searchData, adultCount, childrenCount,infantCount}));
+    navigate("/flightslist");
+    // try{
+    //     startSearchLoading();
+    //     const controller = axios.CancelToken.source();
+    //     const response = await axios(`${BASE_URL}/oneway?origin=${searchData.origin}&destination=${searchData.desination}&departureDate=${searchData.departureDate}&returnDate=${searchData.returnDate}&adults=${adultCount}&children=${childrenCount}&infants=${infantCount}`,{cancelToken: controller.token});
+    //     // console.log(response);
+    //     dispatch(getFlightsData(response.data.data))
+    //     restLoading();
+    //     navigate("/flightslist");
+    // }catch(error){
+    //     console.error(error)
+    // }finally{
+    //     restSearchLoading();
+    // }
   }
 
   return (
@@ -257,7 +263,7 @@ function SearchFlightBox() {
                         fullWidth
                         size='medium'
                         label="Passengers"
-                        onFocus={handleClick}
+                        onClick={handleClick}
                         value={`Adult - ${adultCount}, Children - ${childrenCount}, Infants - ${infantCount}`}
                         // onChange={(e) => {
                         //     return e.target.value > 0 && e.target.value <= 9 ? setSearchData(prev => ({...prev, infants: e.target.value})) :  setSearchData(prev => ({...prev, infants: "0"}))
@@ -321,7 +327,7 @@ function SearchFlightBox() {
                     </InputField>
                 </Stack>
                 <Stack>
-                    <BlueButton size='large' disabled={seachLoading} onClick={searchFlight}>
+                    <BlueButton size='large' disabled={seachLoading} onClick={triggerSearch}>
                         <FiSend/>
                         Show flights
                     </BlueButton>

@@ -2,7 +2,7 @@ import { createSlice } from "@reduxjs/toolkit";
 
 export const flightSearchResultSlice = createSlice({
     name: "flightSearchResult",
-    initialState: [],
+    initialState: {},
     reducers: {
         getFlightsData: (state, action) => {
             return action.payload

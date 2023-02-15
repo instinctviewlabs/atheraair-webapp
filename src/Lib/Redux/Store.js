@@ -14,7 +14,8 @@ const persistConfig = {
 
 const rootReducer = combineReducers({
     theme: ThemeReducer,
-    auth: authReducer
+    auth: authReducer,
+    flightSearchKey: flightSearchResultReducer
 })
 
 const persistedReducer = persistReducer(persistConfig, rootReducer);
@@ -22,7 +23,6 @@ const persistedReducer = persistReducer(persistConfig, rootReducer);
 export const store = configureStore({
     reducer: {
         persistedReducer,
-        flightSearchResultReducer
     },
     middleware: [thunk]
 })
