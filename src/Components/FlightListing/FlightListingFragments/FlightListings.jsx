@@ -1,11 +1,11 @@
 import React, { useEffect, useState } from "react";
-import { Box, Typography } from "@mui/material";
+import { Box, Skeleton, Typography } from "@mui/material";
 import FlightSortingTabs from "./FlightSortingTabs";
 import { AnchorText, BlackButtonOutlined } from "../../../Lib/MuiThemes/MuiComponents";
 import FlightListCard from "./FlightListCard";
 import { MdOutlineKeyboardArrowDown } from "react-icons/md";
 
-function FlightListings({cardData}){
+function FlightListings({cardData, isLoading}){
 
     const [showValue, setShowValue] = useState(10);
     const [cardList, setCardList] = useState([]);
@@ -23,7 +23,7 @@ function FlightListings({cardData}){
         
     return(
         <Box sx={{
-            height: "auto",
+            minHeight: "100vh",
             flex: 2,
             py: 1
         }}>
@@ -44,7 +44,17 @@ function FlightListings({cardData}){
                 gap: "25px",
                 py: 2
             }}>
-                {cardData.length === 0 ?
+                {isLoading && 
+                    <>
+                    <Skeleton variant="rounded" width="auto" height={200} />
+                    <Skeleton variant="rounded" width="auto" height={200} />
+                    <Skeleton variant="rounded" width="auto" height={200} />
+                    <Skeleton variant="rounded" width="auto" height={200} />
+                    <Skeleton variant="rounded" width="auto" height={200} />
+                    </>
+                }
+
+                {!isLoading && cardData.length === 0 ?
                     <Typography variant="h5" color="text.main" textAlign="center">No results found</Typography>
                 :
                 cardList.map((card, index) => (

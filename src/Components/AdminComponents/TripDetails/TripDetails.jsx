@@ -16,6 +16,7 @@ function TripDetails() {
       options: {
         filter: false,
         filterType: "dropdown",
+        display: false
       //   setCellHeaderProps: () => ({ style: {textAlign: "center"}}),
         // setCellProps: () => ({ style: {textAlign: "center", maxWidth: "700px"}})
       },
@@ -36,6 +37,7 @@ function TripDetails() {
       options: {
         filter: true,
         filterType: "dropdown",
+        display: false
       },
     },
     {
@@ -88,6 +90,7 @@ function TripDetails() {
         options: {
           filter: false,
           filterType: "dropdown",
+          display: false
         },
       },
       {
@@ -96,6 +99,7 @@ function TripDetails() {
         options: {
           filter: false,
           filterType: "dropdown",
+          display: false
         },
       },
       {

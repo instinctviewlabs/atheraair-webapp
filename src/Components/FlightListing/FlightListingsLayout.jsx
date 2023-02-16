@@ -61,7 +61,8 @@ function FlightListingsLayout() {
     }}>
         <FiltersSetting></FiltersSetting>
         <FlightListings 
-          cardData={flightResult} 
+          cardData={flightResult}
+          isLoading={isLoading} 
           // showMoreFlights={showMoreFlights} 
           // showMoreValue={showValue}
         />

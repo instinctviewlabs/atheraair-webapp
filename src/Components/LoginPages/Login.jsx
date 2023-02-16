@@ -73,8 +73,20 @@ function Login() {
             dispatch(loginUser({
                 auth: true, 
                 role: getuser.data.type, 
+                userId: auth.currentUser.uid,
                 email: getuser.data.email,
-                name: getuser.data.name 
+                name: getuser.data.name,
+                // issuingCountry: "India",
+                // nationality: "American",
+                // type: "user",
+                // gender: "male",
+                // name: "John",
+                // dob: "1863/06/02",
+                // masterList: [],
+                // number: "456456",
+                // email: "test5@test5.com",
+                // expiryDate: "2023/06/06",
+                // passportNumber: "abc123"
             }))
             navigate("/", {replace: true})
 
@@ -185,7 +197,7 @@ function Login() {
                     </Box>
                     <AnchorText onClick={() => navigate("/password/forgot")}>Forgot Password?</AnchorText>
                 </Stack>
-                <BlueButton disabled={loading} type='submit'>Login</BlueButton>
+                <BlueButton loading={loading} type='submit'>Login</BlueButton>
             </Stack>
             </form>
             <Box 

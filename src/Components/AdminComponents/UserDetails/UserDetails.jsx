@@ -16,6 +16,7 @@ function UserDetails() {
       options: {
         filter: false,
         filterType: "dropdown",
+        display: false
       //   setCellHeaderProps: () => ({ style: {textAlign: "center"}}),
         // setCellProps: () => ({ style: {textAlign: "center", maxWidth: "700px"}})
       },
@@ -68,6 +69,7 @@ function UserDetails() {
         options: {
           filter: true,
           filterType: "dropdown",
+          display: false
         },
     },
     {
@@ -76,6 +78,7 @@ function UserDetails() {
         options: {
           filter: true,
           filterType: "dropdown",
+          display: false,
         },
     },
     {
@@ -84,6 +87,7 @@ function UserDetails() {
         options: {
           filter: true,
           filterType: "dropdown",
+          display: false,
         },
     },
     {
@@ -92,6 +96,7 @@ function UserDetails() {
         options: {
           filter: true,
           filterType: "dropdown",
+          display: false
         },
     },
     {

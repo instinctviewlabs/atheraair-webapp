@@ -15,6 +15,7 @@ function AccountTab() {
             <List>
                 <ListItem secondaryAction={<BlackButtonOutlined><AiFillEdit/> Change</BlackButtonOutlined>}>
                     <InputField
+                        disabled
                         fullWidth 
                         type="text"
                         variant='standard'
@@ -28,6 +29,7 @@ function AccountTab() {
                 </ListItem>
                 <ListItem secondaryAction={<BlackButtonOutlined><AiFillEdit/> Change</BlackButtonOutlined>}>
                     <InputField
+                        disabled
                         fullWidth
                         type="email" 
                         variant='standard'
@@ -41,19 +43,7 @@ function AccountTab() {
                 </ListItem>
                 <ListItem secondaryAction={<BlackButtonOutlined><AiFillEdit/> Change</BlackButtonOutlined>}>
                     <InputField
-                        fullWidth
-                        type="password"
-                        variant='standard'
-                        label="Password"
-                        size='small'
-                        value="123456789"
-                        InputProps={{
-                            disableUnderline: true, // <== added this to disable border line
-                        }}
-                    />
-                </ListItem>
-                <ListItem secondaryAction={<BlackButtonOutlined><AiFillEdit/> Change</BlackButtonOutlined>}>
-                    <InputField
+                        disabled
                         fullWidth
                         type="text" 
                         variant='standard'
@@ -67,12 +57,83 @@ function AccountTab() {
                 </ListItem>
                 <ListItem secondaryAction={<BlackButtonOutlined><AiFillEdit/> Change</BlackButtonOutlined>}>
                     <InputField
+                        disabled
                         fullWidth
                         type="text" 
                         variant='standard'
-                        label="Address"
+                        label="Gender"
                         size='small'
-                        value="No.221, Baker st, London"
+                        value="Male"
+                        InputProps={{
+                            disableUnderline: true, // <== added this to disable border line
+                        }}
+                    />
+                </ListItem>
+                <ListItem secondaryAction={<BlackButtonOutlined><AiFillEdit/> Change</BlackButtonOutlined>}>
+                    <InputField
+                        disabled
+                        fullWidth
+                        type="text" 
+                        variant='standard'
+                        label="Date of birth"
+                        size='small'
+                        value="28 November, 1990"
+                        InputProps={{
+                            disableUnderline: true, // <== added this to disable border line
+                        }}
+                    />
+                </ListItem>
+                <ListItem secondaryAction={<BlackButtonOutlined><AiFillEdit/> Change</BlackButtonOutlined>}>
+                    <InputField
+                        disabled
+                        fullWidth
+                        type="text" 
+                        variant='standard'
+                        label="Nationality"
+                        size='small'
+                        value="Indian"
+                        InputProps={{
+                            disableUnderline: true, // <== added this to disable border line
+                        }}
+                    />
+                </ListItem>
+                <ListItem secondaryAction={<BlackButtonOutlined><AiFillEdit/> Change</BlackButtonOutlined>}>
+                    <InputField
+                        disabled
+                        fullWidth
+                        type="text" 
+                        variant='standard'
+                        label="Passport number"
+                        size='small'
+                        value="123456789"
+                        InputProps={{
+                            disableUnderline: true, // <== added this to disable border line
+                        }}
+                    />
+                </ListItem>
+                <ListItem secondaryAction={<BlackButtonOutlined><AiFillEdit/> Change</BlackButtonOutlined>}>
+                    <InputField
+                        disabled
+                        fullWidth
+                        type="text" 
+                        variant='standard'
+                        label="Expiry date"
+                        size='small'
+                        value="27-02-2027"
+                        InputProps={{
+                            disableUnderline: true, // <== added this to disable border line
+                        }}
+                    />
+                </ListItem>
+                <ListItem secondaryAction={<BlackButtonOutlined><AiFillEdit/> Change</BlackButtonOutlined>}>
+                    <InputField
+                        disabled
+                        fullWidth
+                        type="text" 
+                        variant='standard'
+                        label="Passport issuing country"
+                        size='small'
+                        value="India"
                         InputProps={{
                             disableUnderline: true, // <== added this to disable border line
                         }}
