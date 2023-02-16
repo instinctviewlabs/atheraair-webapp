@@ -17,6 +17,7 @@ import AdminLayout from '../Components/AdminComponents/AdminLayout/AdminLayout';
 import Dashboard from '../Components/AdminComponents/Dashboard/Dashboard';
 import TicketDetails from '../Components/TicketDetails/TicketDetails';
 import TripDetails from '../Components/AdminComponents/TripDetails/TripDetails';
+import UserDetails from '../Components/AdminComponents/UserDetails/UserDetails';
 const Login = lazy(() => import("../Components/LoginPages/Login"));
 const Signup = lazy(() => import("../Components/LoginPages/Signup"));
 const ForgotPassword = lazy(() => import("../Components/LoginPages/ForgotPassword"));
@@ -41,6 +42,7 @@ function AppRoutes() {
           <Route path="admin" element={<AdminLayout/>}>
             <Route index element={<Dashboard/>}></Route>
             <Route path={"trip-details"} element={<TripDetails/>}></Route>
+            <Route path={"user-details"} element={<UserDetails/>}></Route>
           </Route>
         </Route>
         <Route path="/flightslist" element={<FlightListingsLayout/>}/>

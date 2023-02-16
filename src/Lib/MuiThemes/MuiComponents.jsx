@@ -1,9 +1,10 @@
 import React from 'react';
-import { Button, styled, Card, TextField, Box, Typography, Avatar, FormControlLabel,  } from '@mui/material';
+import { Button, styled, Card, TextField, Box, Typography, Avatar, FormControlLabel, Menu,  } from '@mui/material';
 import { appleColorIcon, normalLogo, facebookColorIcon, googleColorIcon, transparentLogo } from '../../Assests/assets';
+import { LoadingButton } from '@mui/lab';
 
 
-export const BlueButton = styled(Button)(({theme}) => ({    //Contained Blue button
+export const BlueButton = styled(LoadingButton)(({theme}) => ({    //Contained Blue button
     backgroundColor: theme.palette.primary.main,
     color: theme.palette.text.white,
     gap: 5,
@@ -37,7 +38,7 @@ export const BlackButton = styled(Button)(({theme}) => ({   //Contained black bu
 }))
 
 export const BlackButtonOutlined = (props) => {     //Border lined black button
-    return <Button variant='outlined' color='text' {...props}>{props.children}</Button>
+    return <LoadingButton variant='outlined' color='text' {...props}>{props.children}</LoadingButton>
 }
 
 export const WhiteCard = (props) => {      //white card component
@@ -201,3 +202,80 @@ export const StyledRadioControl = styled(FormControlLabel)(() => ({
     transition: "all 0.2s ease-in",
 }));
 
+export const ReuseMenu = (props) => {
+    // const [openMenu, setOpenMenu] = React.useState(null);
+
+    return (
+        <Menu
+            anchorEl={props.menu}
+            open={Boolean(props.menu)}
+            onClose={props.closeMenu}
+            anchorOrigin={{
+                vertical: 'bottom',
+                horizontal: 'right',
+            }}
+            transformOrigin={{
+                vertical: 'top',
+                horizontal: 'right',
+            }}
+            sx={{
+                top: "20px",
+            }}
+            PaperProps={{
+                elevation: 1,
+                sx: {
+                    overflow: 'visible',
+                    // filter: 'drop-shadow(2px 2px 2px rgba(0,0,0,0.5))',
+                    boxShadow: 1,
+                    mt: -1,
+                    '& .MuiAvatar-root': {
+                    width: 32,
+                    height: 32,
+                    ml: -0.5,
+                    mr: 1,
+                    },
+                    // '&:before': {
+                    // content: '""',
+                    // display: 'block',
+                    // position: 'absolute',
+                    // top: 0,
+                    // right: 14,
+                    // width: 10,
+                    // height: 10,
+                    // bgcolor: 'background.paper',
+                    // transform: 'translateY(-50%) rotate(45deg)',
+                    // boxShadow: "0px 0px 2px 0px",
+                    // zIndex: 0,
+                    // }
+                }
+            }}
+        >
+            {props.children}
+            {/* <ListItemButton onClick={() => {
+                navigate("/profile/account")
+                setOpenMenu(null)
+            }}>
+                <ListItemIcon>
+                    <AccountCircle></AccountCircle>
+                </ListItemIcon>
+                <ListItemText primary={<Typography variant='subtitle1'>Profile</Typography>} />
+            </ListItemButton>
+            <ListItemButton onClick={() => setOpenMenu(null)}>
+                <ListItemIcon>
+                    <Payment></Payment>
+                </ListItemIcon>
+                <ListItemText primary={<Typography variant='subtitle1'>Support</Typography>} />
+            </ListItemButton>
+                
+            <ListItemButton onClick={() => {
+                logout() 
+                setOpenMenu(null)
+            }}>
+                <ListItemIcon>
+                    <Logout></Logout>
+                </ListItemIcon>
+                <ListItemText primary={<Typography variant='subtitle1'>Logout</Typography>} />
+            </ListItemButton> */}
+        </Menu>
+    )
+}

@@ -41,7 +41,7 @@ function FlightListings({cardData}){
             <Box sx={{
                 display: "flex", 
                 flexDirection: "column",  
-                gap: "15px",
+                gap: "25px",
                 py: 2
             }}>
                 {cardData.length === 0 ?

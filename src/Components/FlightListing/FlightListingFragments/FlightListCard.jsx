@@ -19,7 +19,7 @@ function FlightListCard({cardData}) {
             }}>
                 <img src={emiratesFlight} alt="img" height="100%" width="100%" style={{objectFit: "cover", borderRadius: "5px"}} />
             </BlueBox>
-            <Stack spacing={2} direction="column">
+            <Stack spacing={3} direction="column" minWidth={400}>
                 <Stack direction="row" spacing={4} alignItems="center">
                     <Typography variant='h4' color="text.main">{cardData.airlinesName}</Typography>
                 </Stack>
