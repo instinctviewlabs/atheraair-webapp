@@ -137,6 +137,7 @@ function Signup() {
             dispatch(loginUser({
                 auth: true,
                 role: "user", 
+                userId: auth.currentUser.uid,
                 name: response.user.displayName, 
                 email: response.user.email,
                 emailVerified: response.user.emailVerified,

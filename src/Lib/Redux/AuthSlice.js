@@ -5,53 +5,21 @@ export const authSlice = createSlice({
     initialState: {
         auth: false,
         role: "",
-        userId: "",
-        email: "",
-        name: "",
-        phoneNumber: "",
-        photoUrl: "",
-        emailVerified: false,
-        gender: "",
-        dob: "",
-        nationalitity: "",
-        passportNumber: "",
-        expiryDate: "",
-        passportIssuingCountry: ""
+        userId: ""
     },
     reducers: {
         loginUser: (state, action) => {
             return {
-                auth: true,
-                role: action.payload.role,
-                userId: action.payload.userId,
-                name: action.payload.name,
-                email: action.payload.email,
-                emailVerified: action.payload.emailVerified,
-                phoneNumber: action.payload.phoneNumber,
-                photoUrl: action.payload.photoUrl,
-                gender: action.payload.gender,
-                dob: action.payload.dob,
-                nationality: action.payload.nationality,
-                passportNumber: action.payload.passportNumber,
-                expiryDate: action.payload.expiryDate,
-                passportIssuingCountry: action.payload.passportIssuingCountry
+                auth: true, 
+                role: action.payload.role, 
+                userId: action.payload.userId
             }
         },
         logoutUser: () => {
             return {
                 auth: false,
                 role: "",
-                name: "",
-                email: "",
-                emailVerified: false,
-                phoneNumber: "",
-                photoUrl: "",
-                gender: "",
-                dob: "",
-                nationalitity: "",
-                passportNumber: "",
-                expiryDate: "",
-                passportIssuingCountry: ""
+                userId: ""
             }
         },
     }

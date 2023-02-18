@@ -21,7 +21,7 @@ import { AdminPanelSettingsOutlined } from '@mui/icons-material';
 import { LoaderConsumer } from '../../Lib/Contexts/LoaderContext';
 
 
-export default function Navbar({auth}){
+export default function Navbar({auth, profile}){
 
   const navigate = useNavigate();
   const dispatch = useDispatch();
@@ -103,7 +103,7 @@ export default function Navbar({auth}){
                 <IconButton color='primary' onClick={() => dispatch(setTheme())}>
                     {theme ? <BiMoon/> : <BiSun/>}
                 </IconButton>
-                {auth.auth && ( auth.role === "admin" || auth.role === "user" ) ? <UserNavbar auth={auth}/> :
+                {auth.auth && ( auth.role === "admin" || auth.role === "user" ) ? <UserNavbar auth={auth} profile={profile}/> :
 
                 <>
                 <Button onClick={() => navigate("login")} variant='text'>Login</Button>

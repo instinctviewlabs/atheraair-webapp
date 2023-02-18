@@ -14,6 +14,7 @@ import { LoaderConsumer } from '../../Lib/Contexts/LoaderContext';
 import useSnackBar from '../../Lib/CustomHooks/useSnackBar';
 import axios from 'axios';
 import { BASE_URL } from '../../Lib/Axios/AxiosConfig';
+import { setUserDetails } from '../../Lib/Redux/AccountSlice';
 
 
 
@@ -72,22 +73,23 @@ function Login() {
             console.log(getuser);
             dispatch(loginUser({
                 auth: true, 
-                role: getuser.data.type, 
                 userId: auth.currentUser.uid,
-                email: getuser.data.email,
-                name: getuser.data.name,
-                // issuingCountry: "India",
-                // nationality: "American",
-                // type: "user",
-                // gender: "male",
-                // name: "John",
-                // dob: "1863/06/02",
-                // masterList: [],
-                // number: "456456",
-                // email: "test5@test5.com",
-                // expiryDate: "2023/06/06",
-                // passportNumber: "abc123"
+                role: getuser.data.type,
             }))
+
+            if(getuser.status === 200){
+
+                dispatch(setUserDetails({
+                    ...getuser.data
+                }))
+            }
+            // dispatch(loginUser({
+            //     auth: true, 
+            //     userId: auth.currentUser.uid,
+            //     role: getuser.data.type,
+            //     ...getuser.data
+            // }))
+
             navigate("/", {replace: true})
 
         }catch(error){
@@ -114,11 +116,11 @@ function Login() {
         dispatch(loginUser({
             auth: true,
             role: "admin", 
-            name: response.user.displayName, 
-            email: response.user.email,
-            emailVerified: response.user.emailVerified,
-            phoneNumber: response.user.phoneNumber,
-            photoUrl: response.user.photoURL
+            userId: auth.currentUser.uid,
+            name: getuser.data.name, 
+            email: getuser.data.email,
+            phoneNumber: getuser.data.number,
+            // photoUrl: response.user.photoURL
         }))
         navigate("/", {replace: true})
     }catch(err){

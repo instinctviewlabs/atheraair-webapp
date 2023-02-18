@@ -5,6 +5,7 @@ import thunk from "redux-thunk";
 import storage from "redux-persist/lib/storage";
 import { authReducer } from "./AuthSlice";
 import { flightSearchResultReducer } from "./FlightSearchResultSlice";
+import { accountReducer } from "./AccountSlice";
 
 const persistConfig = {
     key: "root",
@@ -15,6 +16,7 @@ const persistConfig = {
 const rootReducer = combineReducers({
     theme: ThemeReducer,
     auth: authReducer,
+    account: accountReducer,
     flightSearchKey: flightSearchResultReducer
 })
 

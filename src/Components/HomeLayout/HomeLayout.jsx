@@ -5,10 +5,10 @@ import Navbar from '../Navbar/Navbar';
 import { useSelector } from 'react-redux';
 
 function HomeLayout() {
-  const {auth, theme} = useSelector(data => data.persistedReducer);
+  const {auth, account} = useSelector(data => data.persistedReducer);
   return (
     <>
-    <Navbar auth={auth}/>
+    <Navbar auth={auth} profile={account}/>
     <Outlet/>
     {/* <Box sx={{height: "300px", backgroundColor: "common.background"}}></Box> */}
     <Footer/>

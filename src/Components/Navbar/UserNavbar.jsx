@@ -14,7 +14,7 @@ import { useDispatch } from 'react-redux';
 import useMenu from '../../Lib/CustomHooks/useMenu';
 import { ReuseMenu } from '../../Lib/MuiThemes/MuiComponents';
 
-function UserNavbar({auth}) {
+function UserNavbar({auth, profile}) {
 
     const navigate = useNavigate();
     const dispatch = useDispatch();
@@ -34,7 +34,7 @@ function UserNavbar({auth}) {
         >
             <Avatar onClick={openMenu} sx={{height: "50px", width: "50px", border: "3px solid rgb(184, 218, 255)", cursor: "pointer"}} alt="Remy Sharp" src={auth.photoUrl}/>
         </Badge>
-        <Typography variant="h5" color="text.main">{auth.name}</Typography>
+        <Typography variant="h5" color="text.main">{profile.name}</Typography>
 
         <ReuseMenu menu={menu} closeMenu={closeMenu}>
             <ListItemButton onClick={() => {

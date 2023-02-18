@@ -71,7 +71,7 @@ export const InputField = styled(TextField)(({theme}) => ({     //Styled input f
         color: theme.palette.text.main
     },
     ".css-nz481w-MuiInputBase-input-MuiInput-input.Mui-disabled ": {
-        "-webkit-text-fill-color": theme.palette.text.main
+        WebkitTextFillColor: theme.palette.text.main
     },
 
     '& .MuiOutlinedInput-root': {
