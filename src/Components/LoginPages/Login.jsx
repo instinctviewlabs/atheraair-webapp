@@ -82,6 +82,7 @@ function Login() {
                 dispatch(setUserDetails({
                     ...getuser.data
                 }))
+                navigate("/", {replace: true})
             }
             // dispatch(loginUser({
             //     auth: true, 
@@ -90,7 +91,6 @@ function Login() {
             //     ...getuser.data
             // }))
 
-            navigate("/", {replace: true})
 
         }catch(error){
 
@@ -116,13 +116,17 @@ function Login() {
         dispatch(loginUser({
             auth: true,
             role: "admin", 
-            userId: auth.currentUser.uid,
-            name: getuser.data.name, 
-            email: getuser.data.email,
-            phoneNumber: getuser.data.number,
+            userId: auth.currentUser.uid
             // photoUrl: response.user.photoURL
         }))
-        navigate("/", {replace: true})
+        
+        if(getuser.status === 200){
+
+            dispatch(setUserDetails({
+                ...getuser.data
+            }))
+            navigate("/", {replace: true})
+        }
     }catch(err){
         console.log(err)
         showSnackBar("error", "Error occured please try again later") 

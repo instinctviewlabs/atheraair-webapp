@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { 
     Box,
     AppBar, 
@@ -9,9 +9,10 @@ import {
     Tab,
     IconButton,
     LinearProgress,
+    MenuItem,
 } from '@mui/material';
 import {TbPlaneInflight} from "react-icons/tb"
-import { BlackButtonOutlined, TitleLogo } from '../../Lib/MuiThemes/MuiComponents';
+import { BlackButtonOutlined, InputField, TitleLogo } from '../../Lib/MuiThemes/MuiComponents';
 import { BiSun, BiMoon } from "react-icons/bi";
 import { useNavigate } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
@@ -19,6 +20,8 @@ import { setTheme } from '../../Lib/Redux/ThemeSlice';
 import UserNavbar from './UserNavbar';
 import { AdminPanelSettingsOutlined } from '@mui/icons-material';
 import { LoaderConsumer } from '../../Lib/Contexts/LoaderContext';
+import { useTranslation } from 'react-i18next';
+import useLanguageConsumer from '../../Lib/CustomHooks/useLanguageConsumer';
 
 
 export default function Navbar({auth, profile}){
@@ -26,8 +29,13 @@ export default function Navbar({auth, profile}){
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const [isLoading] = LoaderConsumer();
+  const {language, setLanguage} = useLanguageConsumer()
   const {theme} = useSelector(data => data.persistedReducer);
-  const [value, setValue] = React.useState(0);
+  const [value, setValue] = useState(0);
+
+  //Localisation
+//   const [language, setLanguage] = useState("en");
+  const { t, i18n } = useTranslation();
 
   const adminOption = (
     <Box 
@@ -45,7 +53,7 @@ export default function Navbar({auth, profile}){
         color="text.main"
         variant='h6' 
     >
-        Admin
+        {t("admin")}
     </Typography>
     </Box>
   )
@@ -85,7 +93,7 @@ export default function Navbar({auth, profile}){
                             color="text.main"
                             variant='h6' 
                         >
-                            Find Flight
+                            {t("findFlight")}
                         </Typography>
                         </Box>
                     } />
@@ -99,18 +107,28 @@ export default function Navbar({auth, profile}){
                 </Tabs>  
             </Box>
             <TitleLogo/>
-            <Box display="flex" flexDirection="row" alignItems="center" gap="15px">
+            <Box display="flex" flexDirection="row" alignItems="center" gap="10px">
                 <IconButton color='primary' onClick={() => dispatch(setTheme())}>
                     {theme ? <BiMoon/> : <BiSun/>}
                 </IconButton>
+                <InputField
+                    size='small'
+                    variant='standard'
+                    select
+                    value={language}
+                    onChange={(e) => setLanguage(e.target.value)}
+                >
+                    <MenuItem value="en">en</MenuItem>
+                    <MenuItem value="es">es</MenuItem>
+                    <MenuItem value="fr">fr</MenuItem>
+                </InputField>
                 {auth.auth && ( auth.role === "admin" || auth.role === "user" ) ? <UserNavbar auth={auth} profile={profile}/> :
 
                 <>
-                <Button onClick={() => navigate("login")} variant='text'>Login</Button>
-                <BlackButtonOutlined onClick={() => navigate("signup")}>Sign up</BlackButtonOutlined>
+                <Button onClick={() => navigate("login")} variant='text'>{t("login")}</Button>
+                <BlackButtonOutlined onClick={() => navigate("signup")}>{t("signup")}</BlackButtonOutlined>
                 </>
                 }
-                
             </Box>
         </Toolbar>
     </AppBar>

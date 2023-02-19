@@ -1,10 +1,18 @@
-import React from 'react';
+import React, { useState } from 'react';
 import Box from '@mui/material/Box';
 import Button from '@mui/material/Button';
 import Typography from '@mui/material/Typography';
 import Modal from '@mui/material/Modal';
 import { BlueButton, InputField, WhiteCard } from '../../../Lib/MuiThemes/MuiComponents';
-import { Stack } from '@mui/material';
+import { MenuItem, Stack } from '@mui/material';
+import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
+import { DesktopDatePicker, LocalizationProvider } from '@mui/x-date-pickers';
+import moment from 'moment';
+import { useDispatch, useSelector } from 'react-redux';
+import { LoaderConsumer } from '../../../Lib/Contexts/LoaderContext';
+import axios from 'axios';
+import { BASE_URL } from '../../../Lib/Axios/AxiosConfig';
+import { setUserDetails } from '../../../Lib/Redux/AccountSlice';
 
 const style = {
     position: 'absolute',
@@ -22,6 +30,49 @@ const style = {
 };
 
 export default function AddPassengerModal({open, setOpen}) {
+
+  const { auth } = useSelector(data => data.persistedReducer);
+  const dispatch = useDispatch();
+  const [isLoading, startLoading, restLoading] = LoaderConsumer();
+  const userId = auth.userId;
+  const [passengerDetails, setPassengerDetails] = useState({
+    name: "",
+    email: "",
+    dob: "",
+    gender: "",
+    nationality: "",
+    passportNumber: "",
+    expiryDate: "",
+    issuingCountry: ""
+  })
+  console.log(passengerDetails);
+
+  function handleChanges(event){
+    const {name, value} = event.target;
+
+    setPassengerDetails(prevState => ({...prevState, [name]: value}))
+  }
+
+  async function addTraveller(){
+    try{
+        startLoading();
+        const response = await axios({
+            method: "post",
+            url: `${BASE_URL}/addTraveller`,
+            data: {userId, ...passengerDetails}
+        })
+        if(response.status === 200){
+            const getuser = await axios.post(`${BASE_URL}/getUser`,{userId});
+            console.log(getuser);
+            dispatch(setUserDetails(getuser.data))
+        }
+    }catch(error){
+        console.error(error)
+    }finally{
+        restLoading();
+    }
+  }
+
 
   return (
     <Box>
@@ -49,11 +100,8 @@ export default function AddPassengerModal({open, setOpen}) {
                         variant='outlined'
                         label="Name"
                         size='medium'
-                        // value={profileData.name}
-                        // onChange={handleChanges}
-                        // InputProps={{
-                        //     disableUnderline: !editable ? true : false, // <== added this to disable border line
-                        // }}
+                        value={passengerDetails.name}
+                        onChange={handleChanges}
                     />
                     <InputField
                         fullWidth
@@ -62,45 +110,34 @@ export default function AddPassengerModal({open, setOpen}) {
                         variant='outlined'
                         label="Email"
                         size='medium'
-                        // value={profileData.email}
-                        // onChange={handleChanges}
-                        // InputProps={{
-                        //     disableUnderline: !editable ? true : false , // <== added this to disable border line
-                        // }}
+                        value={passengerDetails.email}
+                        onChange={handleChanges}
                     />
                 </Stack>
                 <Stack direction="row" spacing={4}>
-                <InputField
-                        fullWidth
-                        // select
-                        name="gender"
-                        type="text" 
-                        variant='outlined'
-                        label="Gender"
-                        size='medium'
-                        // value={profileData.gender}
-                        // onChange={handleChanges}
-                        // InputProps={{
-                        //     disableUnderline: !editable ? true : false, // <== added this to disable border line
-                        // }}
-                    >
-                        {/* <MenuList value="Male">Male</MenuList>
-                        <MenuList value="Female">Female</MenuList>
-                        <MenuList value="Unknown">Unknown</MenuList> */}
-                    </InputField>
                     <InputField
                         fullWidth
-                        name="dob"
-                        type="text" 
-                        variant='outlined'
-                        label="Date of birth"
                         size='medium'
-                        // onChange={handleChanges}
-                        // value={profileData.dob}
-                        // InputProps={{
-                        //     disableUnderline: !editable ? true : false, // <== added this to disable border line
-                        // }}
-                    />
+                        name='gender'
+                        select
+                        label="Gender"
+                        value={passengerDetails.gender}
+                        onChange={handleChanges}
+                    >
+                        <MenuItem value="male">Male</MenuItem>
+                        <MenuItem value="female">Female</MenuItem>
+                        <MenuItem value="unknown">Unknown</MenuItem>
+                    </InputField>
+
+                    <LocalizationProvider dateAdapter={AdapterDayjs}>
+                        <DesktopDatePicker
+                            disableFuture
+                            label="Date of birth"
+                            renderInput={(params) => <InputField name='dob' fullWidth size="medium" {...params} />}
+                            value={passengerDetails.dob}
+                            onChange={(newValue) => newValue !== null && setPassengerDetails(prev => ({...prev, dob: moment(newValue["$d"]).format("YYYY-MM-DD")}))}
+                        />
+                    </LocalizationProvider>
                 </Stack>
                 <Typography variant='h5'>Optional fields</Typography>
                 <Stack direction="row" spacing={4}>
@@ -111,11 +148,8 @@ export default function AddPassengerModal({open, setOpen}) {
                         variant='outlined'
                         label="Nationality"
                         size='medium'
-                        // onChange={handleChanges}
-                        // value={profileData.nationality}
-                        // InputProps={{
-                        //     disableUnderline: !editable ? true : false, // <== added this to disable border line
-                        // }}
+                        value={passengerDetails.nationality}
+                        onChange={handleChanges}
                     />
                     <InputField
                         fullWidth
@@ -124,28 +158,20 @@ export default function AddPassengerModal({open, setOpen}) {
                         variant='outlined'
                         label="Passport number"
                         size='medium'
-                        // onChange={handleChanges}
-                        // value={profileData.passportNumber}
-                        // InputProps={{
-                        //     disableUnderline: !editable ? true : false, // <== added this to disable border line
-                        // }}
+                        value={passengerDetails.passportNumber}
+                        onChange={handleChanges}
                     />
                 </Stack>
-                <Stack direction="row" spacing={4}>
-                    
-                    <InputField
-                        fullWidth
-                        name="expiryDate"
-                        type="text" 
-                        variant='outlined'
-                        label="Expiry date"
-                        size='medium'
-                        // onChange={handleChanges}
-                        // value={profileData.expiryDate}
-                        // InputProps={{
-                        //     disableUnderline: !editable ? true : false, // <== added this to disable border line
-                        // }}
-                    />
+                <Stack direction="row" spacing={4}>   
+                    <LocalizationProvider dateAdapter={AdapterDayjs}>
+                        <DesktopDatePicker
+                            disablePast
+                            label="Expiry Date"
+                            renderInput={(params) => <InputField name='expiryDate' fullWidth size="medium" {...params} />}
+                            value={passengerDetails.expiryDate}
+                            onChange={(newValue) => newValue !== null && setPassengerDetails(prev => ({...prev, expiryDate: moment(newValue["$d"]).format("YYYY-MM-DD")}))}
+                        />
+                    </LocalizationProvider>
                     <InputField
                         fullWidth
                         name="issuingCountry"
@@ -153,15 +179,12 @@ export default function AddPassengerModal({open, setOpen}) {
                         variant='outlined'
                         label="Passport issuing country"
                         size='medium'
-                        // onChange={handleChanges}
-                        // value={profileData.issuingCountry}
-                        // InputProps={{
-                        //     disableUnderline: !editable ? true : false, // <== added this to disable border line
-                        // }}
+                        value={passengerDetails.issuingCountry}
+                        onChange={handleChanges}
                     />
                 </Stack>
                 <Stack>
-                    <BlueButton size='large'>
+                    <BlueButton loading={isLoading} onClick={addTraveller} size='large'>
                         Add passenger
                     </BlueButton>
                 </Stack>

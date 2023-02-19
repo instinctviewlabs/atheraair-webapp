@@ -5,6 +5,7 @@ import App from './App';
 import reportWebVitals from './reportWebVitals';
 import CustomThemeProvider from './Lib/MuiThemes/ThemeProvider';
 import { BrowserRouter as Router } from 'react-router-dom';
+import "./Lib/I18n/i18nConfig";
 
 //Redux
 import { Provider } from 'react-redux';

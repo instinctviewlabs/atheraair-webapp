@@ -9,7 +9,7 @@ function MasterPassengerList() {
 
   const [addPassenderModal, setAddPassengerModal] = useState(false);
   const {account} = useSelector(data => data.persistedReducer);
-  console.log(account);
+  
 
   return (
     <>

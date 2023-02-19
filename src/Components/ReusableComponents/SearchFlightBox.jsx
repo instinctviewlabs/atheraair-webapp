@@ -21,6 +21,7 @@ import { LoaderConsumer } from '../../Lib/Contexts/LoaderContext';
 import useSnackBar from '../../Lib/CustomHooks/useSnackBar';
 import { AddCircleOutline, Close, RemoveCircleOutline } from '@mui/icons-material';
 import useCounter from '../../Lib/CustomHooks/useCounter';
+import { useTranslation } from 'react-i18next';
 
 
 function SearchFlightBox() {
@@ -36,6 +37,7 @@ function SearchFlightBox() {
   const dispatch = useDispatch();
   const suggestRef = useRef(false);
   const [isLoading, startLoading, restLoading] = useLoader();
+  const { t } = useTranslation();
   const [seachLoading, startSearchLoading, restSearchLoading] = LoaderConsumer();
   const { showSnackBar } = useSnackBar();
 //   const [seachLoading, startSearchLoading, restSearchLoading] = useLoader();
@@ -154,7 +156,8 @@ function SearchFlightBox() {
     }}>
         <WhiteCard>
             <Typography variant='h5' color="text.main" textAlign="center">
-                Where are you flying?
+                {/* Where are you flying? */}
+                {t("whereAreYouFlying")}
             </Typography>
             <Box sx={{
                 display: "flex",
@@ -173,9 +176,9 @@ function SearchFlightBox() {
                         exclusive
                         onChange={(event, value) => value !== null && setSearchData(prev => ({...prev, trip: value}))}
                     >
-                        <ToggleButton value="oneway">One way</ToggleButton>
-                        <ToggleButton value="roundtrip">Round trip</ToggleButton>
-                        <ToggleButton value="multi">Multi city</ToggleButton>
+                        <ToggleButton value="oneway">{t("oneway")}</ToggleButton>
+                        <ToggleButton value="roundtrip">{t("roundtrip")}</ToggleButton>
+                        <ToggleButton value="multi">{t("multicity")}</ToggleButton>
                     </ToggleButtonGroup>
                 </Stack>
 
@@ -195,7 +198,7 @@ function SearchFlightBox() {
                                 // error={!searchData.origin}
                                 // helperText={!searchData.origin && "Please choose your origin"}
                                 {...params}
-                                label="From"
+                                label={t("from")}
                                 value={originKey.searchKey}
                                 onChange={(e) => setOriginKey(prev => ({...prev, searchKey: e.target.value}))}
                                 inputProps={{
@@ -224,7 +227,7 @@ function SearchFlightBox() {
                                 {...params}
                                 value={destinationKey.searchKey}
                                 onChange={(e) => setDestinationKey(prev => ({...prev, searchKey: e.target.value}))}
-                                label="To"
+                                label={t("to")}
                                 inputProps={{
                                     ...params.inputProps,
                                     autoComplete: 'off',
@@ -238,7 +241,7 @@ function SearchFlightBox() {
                     <LocalizationProvider dateAdapter={AdapterDayjs}>
                         <DesktopDatePicker
                             disablePast
-                            label="Departure date"
+                            label={t("departureDate")}
                             renderInput={(params) => <InputField fullWidth size="medium" {...params} />}
                             value={searchData.departureDate}
                             onChange={(newValue) => newValue !== null && setSearchData(prev => ({...prev, departureDate: moment(newValue["$d"]).format("YYYY-MM-DD")}))}
@@ -247,7 +250,7 @@ function SearchFlightBox() {
                     {searchData.trip === "roundtrip" && <LocalizationProvider dateAdapter={AdapterDayjs}>
                         <DesktopDatePicker
                             disablePast
-                            label="Return date"
+                            label={t("returnDate")}
                             renderInput={(params) => <InputField fullWidth size="medium" {...params} />}
                             value={searchData.returnDate}
                             onChange={(newValue) => newValue !== null && setSearchData(prev => ({...prev, returnDate: moment(newValue["$d"]).format("YYYY-MM-DD")}))}
@@ -262,7 +265,7 @@ function SearchFlightBox() {
                         ref={anchorRef}
                         fullWidth
                         size='medium'
-                        label="Passengers"
+                        label={t("passengers")}
                         onClick={handleClick}
                         value={`Adult - ${adultCount}, Children - ${childrenCount}, Infants - ${infantCount}`}
                         // onChange={(e) => {
@@ -273,7 +276,7 @@ function SearchFlightBox() {
                     <Popper open={open} anchorEl={anchorEl}>
                         <Card sx={{px: 4}}>
                             <Stack direction="row" py={1} gap={2} justifyContent="space-between" alignItems="center">
-                                <Typography>Adults</Typography>
+                                <Typography>{t("adult")}</Typography>
                                 <Stack direction="row" spacing={1} alignItems="center">
                                     <IconButton onClick={decreaseAdultCount}>
                                     <RemoveCircleOutline/>
@@ -285,7 +288,7 @@ function SearchFlightBox() {
                                 </Stack>
                             </Stack>
                             <Stack direction="row" py={1} gap={2} justifyContent="space-between" alignItems="center">
-                                <Typography>Children</Typography>
+                                <Typography>{t("children")}</Typography>
                                 <Stack direction="row" spacing={1} alignItems="center">
                                     <IconButton onClick={decreaseChildrenCount}>
                                     <RemoveCircleOutline/>
@@ -297,7 +300,7 @@ function SearchFlightBox() {
                                 </Stack>
                             </Stack>
                             <Stack direction="row" py={1} gap={2} justifyContent="space-between" alignItems="center">
-                                <Typography>Infants</Typography>
+                                <Typography>{t("infants")}</Typography>
                                 <Stack direction="row" spacing={1} alignItems='center'>
                                     <IconButton onClick={decreaseInfantCount}>
                                     <RemoveCircleOutline/>
@@ -315,21 +318,21 @@ function SearchFlightBox() {
                         fullWidth
                         size='medium'
                         select
-                        label="Class"
+                        label={t("class")}
                         value={searchData.class}
                         onChange={(event) => setSearchData(prev => ({...prev, class: event.target.value}))}
                         InputProps={{ inputProps: { sx: { color: 'text.main' }}}}
 
                     >
-                        <MenuItem value="economy">Economy</MenuItem>
-                        <MenuItem value="business">Business</MenuItem>
-                        <MenuItem value="firstclass">First</MenuItem>
+                        <MenuItem value="economy">{t("economy")}</MenuItem>
+                        <MenuItem value="business">{t("business")}</MenuItem>
+                        <MenuItem value="firstclass">{t("first")}</MenuItem>
                     </InputField>
                 </Stack>
                 <Stack>
                     <BlueButton size='large' disabled={seachLoading} onClick={triggerSearch}>
                         <FiSend/>
-                        Show flights
+                        {t("showFlights")}
                     </BlueButton>
                 </Stack>
             </Box>

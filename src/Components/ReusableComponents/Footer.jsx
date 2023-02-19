@@ -3,8 +3,11 @@ import { Box, IconButton, ListItem, Typography, Stack } from '@mui/material';
 import { FaYoutube, FaTwitter, FaFacebook } from "react-icons/fa";
 import { AiFillInstagram } from "react-icons/ai";
 import { normalLogo } from '../../Assests/assets';
+import { useTranslation } from 'react-i18next';
 
 function Footer() {
+  
+  const { t } = useTranslation();
   return (
     <Box sx={{
         backgroundColor: "primary.main",
@@ -58,7 +61,7 @@ function Footer() {
             justifyContent="space-around"
         >
             <Box>
-                <Typography variant='h6' color="common.white">Our Destinations</Typography>
+                <Typography variant='h6' color="common.white">{t("ourDestinations")}</Typography>
                 <Box>
                     <Typography variant='subtitle1' color="text.white">Canada</Typography>
                     <Typography variant='subtitle1' color="text.white">Alaska</Typography>
@@ -67,14 +70,14 @@ function Footer() {
                 </Box>
             </Box>
             <Box>
-                <Typography variant='h6' color="common.white">About us</Typography>
+                <Typography variant='h6' color="common.white">{t("aboutUs")}</Typography>
                 <Box>
                     <Typography variant='subtitle1' color="text.white">Our story</Typography>
                     <Typography variant='subtitle1' color="text.white">Work with us</Typography>
                 </Box>
             </Box>
             <Box>
-                <Typography variant='h6' color="common.white">Contact us</Typography>
+                <Typography variant='h6' color="common.white">{t("contactUs")}</Typography>
                 <Box>
                     <Typography variant='subtitle1' color="text.white">Our story</Typography>
                     <Typography variant='subtitle1' color="text.white">Work with us</Typography>
