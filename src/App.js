@@ -1,4 +1,5 @@
 import React, { Suspense } from "react";
+import { IntlProvider } from "react-intl";
 import { LanguageContextProvider } from "./Lib/Contexts/LanguageContext";
 import { LoaderContextProvider } from "./Lib/Contexts/LoaderContext";
 import { SnackbarContextProvider } from "./Lib/Contexts/SnackbarContext";
@@ -8,11 +9,13 @@ function App() {
   return (
     <Suspense fallback={null}>
       <LanguageContextProvider>
-        <LoaderContextProvider>
-          <SnackbarContextProvider>
-            <AppRoutes/>
-          </SnackbarContextProvider>
-        </LoaderContextProvider>
+        <IntlProvider messages={{}} locale="en" defaultLocale="en">
+          <LoaderContextProvider>
+            <SnackbarContextProvider>
+              <AppRoutes/>
+            </SnackbarContextProvider>
+          </LoaderContextProvider>
+        </IntlProvider>
       </LanguageContextProvider>
     </Suspense>
   );

@@ -76,21 +76,15 @@ function Login() {
                 userId: auth.currentUser.uid,
                 role: getuser.data.type,
             }))
+            navigate("/", {replace: true})
 
-            if(getuser.status === 200){
+            // if(getuser.status === 200){
 
-                dispatch(setUserDetails({
-                    ...getuser.data
-                }))
-                navigate("/", {replace: true})
-            }
-            // dispatch(loginUser({
-            //     auth: true, 
-            //     userId: auth.currentUser.uid,
-            //     role: getuser.data.type,
-            //     ...getuser.data
-            // }))
-
+            //     dispatch(setUserDetails({
+            //         ...getuser.data
+            //     }))
+            //     navigate("/", {replace: true})
+            // }
 
         }catch(error){
 
@@ -119,14 +113,15 @@ function Login() {
             userId: auth.currentUser.uid
             // photoUrl: response.user.photoURL
         }))
-        
-        if(getuser.status === 200){
-
-            dispatch(setUserDetails({
-                ...getuser.data
-            }))
             navigate("/", {replace: true})
-        }
+        
+        // if(getuser.status === 200){
+
+        //     dispatch(setUserDetails({
+        //         ...getuser.data
+        //     }))
+        //     navigate("/", {replace: true})
+        // }
     }catch(err){
         console.log(err)
         showSnackBar("error", "Error occured please try again later") 

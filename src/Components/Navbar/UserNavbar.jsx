@@ -6,13 +6,16 @@ import {
     ListItemButton,
     ListItemText,
     ListItemIcon,
+    MenuItem,
+    Divider,
 } from '@mui/material';
-import { AccountCircle, Logout, Payment } from '@mui/icons-material';
+import { AccountCircle, Logout, Payment, PersonAdd, Settings } from '@mui/icons-material';
 import { logoutUser } from '../../Lib/Redux/AuthSlice';
 import { useNavigate } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
 import useMenu from '../../Lib/CustomHooks/useMenu';
 import { ReuseMenu } from '../../Lib/MuiThemes/MuiComponents';
+import { clearUserDetails } from '../../Lib/Redux/AccountSlice';
 
 function UserNavbar({auth, profile}) {
 
@@ -22,6 +25,7 @@ function UserNavbar({auth, profile}) {
 
     function logout(){
         dispatch(logoutUser());
+        dispatch(clearUserDetails())
         return navigate("/", {replace: true})
     }
 
@@ -37,7 +41,7 @@ function UserNavbar({auth, profile}) {
         <Typography variant="h5" color="text.main">{profile.name}</Typography>
 
         <ReuseMenu menu={menu} closeMenu={closeMenu}>
-            <ListItemButton onClick={() => {
+            {/* <ListItemButton onClick={() => {
                 navigate("/profile/account")
                 closeMenu()
             }}>
@@ -61,7 +65,29 @@ function UserNavbar({auth, profile}) {
                     <Logout></Logout>
                 </ListItemIcon>
                 <ListItemText primary={<Typography variant='subtitle1'>Logout</Typography>} />
-            </ListItemButton>
+            </ListItemButton> */}
+        <MenuItem onClick={() => {
+            navigate("/profile/account");
+            closeMenu();
+        }}>
+          <Avatar /> Profile
+        </MenuItem>
+        <Divider />
+        <MenuItem onClick={closeMenu}>
+          <ListItemIcon>
+            <PersonAdd fontSize="small" />
+          </ListItemIcon>
+          Support
+        </MenuItem>
+        <MenuItem onClick={() => {
+            logout() 
+            closeMenu()
+        }}>
+          <ListItemIcon>
+            <Logout fontSize="small" />
+          </ListItemIcon>
+          Logout
+        </MenuItem>
         </ReuseMenu>
     </>
     )

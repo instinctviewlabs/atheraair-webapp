@@ -19,13 +19,15 @@ function DisplayPicture() {
   //   try{
   //     startLoading();
   //     const fd = new FormData();
-  //     fd.append("image", {type: picUrl.type, uri: URL.createObjectURL(picUrl), name: picUrl.name });
+  //     // fd.append("image", URL.createObjectURL(picUrl));
+  //     fd.append('image', {type: "image", uri: "file:///C:/Users/ASUS/Downloads/Vector.png", name: "Vector"});
   //     fd.append("userId", userId)
-  //     // console.log(picUrl)
-  //     const response = await axios.post(`${BASE_URL}/updatePicture`, fd, {
-  //       headers: {
-  //         'Content-Type': "multipart/form-data",
-  //     }})
+  //     // console.log(JSON.stringify(fd))
+  //     const response = await axios({
+  //       method: "post",
+  //       url: `${BASE_URL}/updatePicture`,
+  //       data: fd,
+  //     })
   //     console.log(response);
   //     // if(response.status === 200){
   //     //     const getuser = await axios.post(`${BASE_URL}/getUser`,{userId});
@@ -40,18 +42,17 @@ function DisplayPicture() {
 
   async function uploadProfilePic(){
     const fd = new FormData();
-      fd.append("image", {type: picUrl.type, uri: URL.createObjectURL(picUrl), name: picUrl.name });
-      fd.append("userId", userId)
-    await fetch(`${BASE_URL}/updatePicture`,{
-      method:'POST',
-      body: fd,
-      headers:{
-        'Accept':'application/json',
-        'Content-Type':'multipart/form-data'
-      }
-    }).then(res => {
-      console.log(res.json());// data not coming
-    });
+    fd.append("image", URL.createObjectURL(picUrl).split("blob:")[1]);
+    fd.append("userId", userId);
+    for (var key of fd.entries()) {
+      console.log(key[0] + ', ' + key[1]);
+    }
+    // await fetch(`${BASE_URL}/updatePicture`,{
+    //   method:'POST',
+    //   body: fd,
+    // }).then(res => {
+    //   console.log(res.json());// data not coming
+    // });
   }
   return (
     <>

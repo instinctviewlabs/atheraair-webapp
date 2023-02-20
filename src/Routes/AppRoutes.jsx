@@ -18,6 +18,7 @@ import Dashboard from '../Components/AdminComponents/Dashboard/Dashboard';
 import TicketDetails from '../Components/TicketDetails/TicketDetails';
 import TripDetails from '../Components/AdminComponents/TripDetails/TripDetails';
 import UserDetails from '../Components/AdminComponents/UserDetails/UserDetails';
+import AddServiceCharge from '../Components/Profile/ProfileFragments/AddServiceCharge';
 const Login = lazy(() => import("../Components/LoginPages/Login"));
 const Signup = lazy(() => import("../Components/LoginPages/Signup"));
 const ForgotPassword = lazy(() => import("../Components/LoginPages/ForgotPassword"));
@@ -38,13 +39,6 @@ function AppRoutes() {
     <Routes>
       <Route path="/" element={<HomeLayout/>}>
         <Route index element={<FlightSearch/>}/>
-        <Route element={<AdminRoutes/>}>
-          <Route path="admin" element={<AdminLayout/>}>
-            <Route index element={<Dashboard/>}></Route>
-            <Route path={"trip-details"} element={<TripDetails/>}></Route>
-            <Route path={"user-details"} element={<UserDetails/>}></Route>
-          </Route>
-        </Route>
         <Route path="/flightslist" element={<FlightListingsLayout/>}/>
         <Route path="/flightdetails" element={<FlightDetailPage/>} />
         <Route path="/bookingdetails" element={<BookingDetails/>} />
@@ -53,12 +47,25 @@ function AppRoutes() {
           <Route path="profile" element={<Profile/>}>
             <Route index element={<AccountTab/>}></Route>
             <Route path="account" element={<AccountTab/>}></Route>
-            <Route path="master_passenger_list" element={<MasterPassengerList/>}></Route>
-            <Route path="ticket_bookings_history" element={<TicketBookingsList/>}></Route>
+            <Route path="master-passenger-list" element={<MasterPassengerList/>}></Route>
+            <Route path="ticket-bookings-history" element={<TicketBookingsList/>}></Route>
             <Route path="payment/add" element={<PaymentMethods/>}></Route>
+            <Route path="service" element={<AddServiceCharge/>}></Route>
           </Route>
         </Route>
-        <Route path="*" element={<h1>Error</h1>}/>
+        <Route element={<AdminRoutes/>}>
+          <Route path="admin" element={<AdminLayout/>}>
+            <Route index element={<Dashboard/>}></Route>
+            <Route path={"trip-details"} element={<TripDetails/>}></Route>
+            <Route path={"user-details"} element={<UserDetails/>}></Route>
+          </Route>
+          <Route path="profile" element={<Profile/>}>
+            <Route index element={<AccountTab/>}></Route>
+            <Route path="account" element={<AccountTab/>}></Route>
+            <Route path="payment/add" element={<PaymentMethods/>}></Route>
+            <Route path="service" element={<AddServiceCharge/>}></Route>
+          </Route>
+        </Route>
       </Route>
       <Route path="login" element={<Suspense fallback={<FullScreenLoader/>}><Login/></Suspense>}/>
       <Route path="signup" element={<Suspense fallback={<FullScreenLoader/>}><Signup/></Suspense>}/>
@@ -66,6 +73,7 @@ function AppRoutes() {
       <Route path="password/set" element={<Suspense fallback={<FullScreenLoader/>}><SetPassword/></Suspense>}/>
       <Route path="verify" element={<Suspense fallback={<FullScreenLoader/>}><VerifyCode/></Suspense>}/>
       <Route path="payment_method" element={<Suspense fallback={<FullScreenLoader/>}><AddPayment/></Suspense>}/>
+      <Route path="*" element={<h1>Error</h1>}/>
     </Routes>
     </>
   )

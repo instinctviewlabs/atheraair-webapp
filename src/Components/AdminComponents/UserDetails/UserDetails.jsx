@@ -1,13 +1,22 @@
-import React from 'react'
+import React, { useEffect, useRef, useState } from 'react'
 import { Box, Chip, IconButton, ListItemButton, ListItemIcon, ListItemText, Tooltip, Typography } from '@mui/material';
 import MUIDataTable from "mui-datatables";
 import { ReuseMenu, WhiteCard } from '../../../Lib/MuiThemes/MuiComponents';
 import { AccountCircle, CurrencyExchange, Logout, MoneyOff, MoreVert, Payment, PriceCheck } from '@mui/icons-material';
 import useMenu from '../../../Lib/CustomHooks/useMenu';
+import { LoaderConsumer } from '../../../Lib/Contexts/LoaderContext';
+import axios from 'axios';
+import { BASE_URL } from '../../../Lib/Axios/AxiosConfig';
+import useSnackBar from '../../../Lib/CustomHooks/useSnackBar';
 
 function UserDetails() {
 
   const {menu, openMenu, closeMenu} = useMenu();
+  const [userDetailsData, setUserDetailsData] = useState([]);
+  const [isLoading, startLoading, restLoading] = LoaderConsumer();
+  const userDetailsRef = useRef(false);
+  const [isDataFetchError, setDataFetchError] = useState(false);
+  const { showSnackBar } = useSnackBar();
 
   const columns = [
     {
@@ -22,7 +31,7 @@ function UserDetails() {
       },
     },
     {
-      name: "fullname",
+      name: "name",
       label: "Fullname",
       options: {
         filter: false,
@@ -32,7 +41,7 @@ function UserDetails() {
       },
     },
     {
-      name: "email_id",
+      name: "email",
       label: "Email id",
       options: {
         filter: true,
@@ -40,7 +49,7 @@ function UserDetails() {
       },
     },
     {
-      name: "mobile_number",
+      name: "number",
       label: "Mobile no",
       options: {
         filter: true,
@@ -73,7 +82,7 @@ function UserDetails() {
         },
     },
     {
-        name: "passport_no",
+        name: "passportNumber",
         label: "Passport number",
         options: {
           filter: true,
@@ -82,7 +91,7 @@ function UserDetails() {
         },
     },
     {
-        name: "expiry_date",
+        name: "expiryDate",
         label: "Expiry date",
         options: {
           filter: true,
@@ -91,7 +100,7 @@ function UserDetails() {
         },
     },
     {
-        name: "issuing_country",
+        name: "issuingCountry",
         label: "Issuing country",
         options: {
           filter: true,
@@ -100,7 +109,7 @@ function UserDetails() {
         },
     },
     {
-        name: "user_status",
+        name: "status",
         label: "User status",
         options: {
           filter: false,
@@ -129,92 +138,65 @@ function UserDetails() {
                     </ListItemButton>
                 </ReuseMenu>
                 </>
-
             )
             }
         },
     },
   ];
-  const data = [
-    {
-        user_id: "12345",
-        fullname: "Joe Schmoe",
-        email_id: "joe@gmail.com",
-        mobile_number: "9876543210",
-        dob: "12-12-1998",
-        gender: "Male",
-        nationality: "Indian",
-        passport_no: "1234 565 656",
-        expiry_date: "12-12-2027",
-        issuing_country:  'India',
-        user_status: "active"
-    },
-    {
-        user_id: "12345",
-        fullname: "Joe Schmoe",
-        email_id: "joe@gmail.com",
-        mobile_number: "9876543210",
-        dob: "12-12-1998",
-        gender: "Male",
-        nationality: "Indian",
-        passport_no: "1234 565 656",
-        expiry_date: "12-12-2027",
-        issuing_country:  'India',
-        user_status: "active"
 
-    },
-    {
-        user_id: "12345",
-        fullname: "Joe Schmoe",
-        email_id: "joe@gmail.com",
-        mobile_number: "9876543210",
-        dob: "12-12-1998",
-        gender: "Male",
-        nationality: "Indian",
-        passport_no: "1234 565 656",
-        expiry_date: "12-12-2027",
-        issuing_country:  'India',
-        user_status: "active"
 
-    },
-    {
-        user_id: "12345",
-        fullname: "Joe Schmoe",
-        email_id: "joe@gmail.com",
-        mobile_number: "9876543210",
-        dob: "12-12-1998",
-        gender: "Male",
-        nationality: "Indian",
-        passport_no: "1234 565 656",
-        expiry_date: "12-12-2027",
-        issuing_country:  'India',
-        user_status: "inactive"
+  useEffect(() => {
+    const controller = axios.CancelToken.source();
+    if(userDetailsRef.current){
+      (async () => {
+        try{
+          startLoading();
+          const response = await axios({
+            method: "get",
+            url: `${BASE_URL}/fetchAllUsers`,
+            data: {},
+            cancelToken: controller.token
+          });
+          if(response.status === 200){
+            setUserDetailsData(response.data.data);
+          }
+        }catch(error){
+          console.log(error)
+          setDataFetchError(true)
+          showSnackBar("error", "Unable to fetch user details")
+        }finally{
+          restLoading();
+        }
+      })();
+    }
 
-    },
-    {
-        user_id: "12345",
-        fullname: "Joe Schmoe",
-        email_id: "joe@gmail.com",
-        mobile_number: "9876543210",
-        dob: "12-12-1998",
-        gender: "Male",
-        nationality: "Indian",
-        passport_no: "1234 565 656",
-        expiry_date: "12-12-2027",
-        issuing_country:  'India',
-        user_status: "inactive"
-
-    },
-  ];
+    return () => {
+      userDetailsRef.current = true;
+      controller.cancel();
+    }
+  },[])
 
   const options = {
+    textLabels: {
+      body: {
+        noMatch: isDataFetchError ? "Sorry, No Data available" : "fetching...",
+      }
+    },
     filter: true,
     filterType: "dropdown",
     responsive: "standard",
     elevation: 0,
     selectableRows: "none",
     fixedHeader: true,
+    customSearch: (searchQuery, currentRow, columns) => {
+      currentRow.forEach(col => {
+        if (col && col.toString().indexOf(searchQuery) >= 0) {
+          return setDataFetchError(true);
+        }
+      });
+    }
   };
+
   return(
     <Box sx={{
         height: "auto",
@@ -222,7 +204,7 @@ function UserDetails() {
         backgroundColor: "common.background",
         py: 5
     }}>
-        <MUIDataTable data={data} columns={columns} options={options} />
+        <MUIDataTable data={userDetailsData} columns={columns} options={options} />
     </Box>
   )
 }

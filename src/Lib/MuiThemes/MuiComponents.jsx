@@ -213,75 +213,41 @@ export const ReuseMenu = (props) => {
 
     return (
         <Menu
-            anchorEl={props.menu}
-            open={Boolean(props.menu)}
-            onClose={props.closeMenu}
-            anchorOrigin={{
-                vertical: 'bottom',
-                horizontal: 'right',
-            }}
-            transformOrigin={{
-                vertical: 'top',
-                horizontal: 'right',
-            }}
-            sx={{
-                top: "20px",
-            }}
-            PaperProps={{
-                elevation: 1,
-                sx: {
-                    overflow: 'visible',
-                    // filter: 'drop-shadow(2px 2px 2px rgba(0,0,0,0.5))',
-                    boxShadow: 1,
-                    mt: -1,
-                    '& .MuiAvatar-root': {
-                    width: 32,
-                    height: 32,
-                    ml: -0.5,
-                    mr: 1,
-                    },
-                    // '&:before': {
-                    // content: '""',
-                    // display: 'block',
-                    // position: 'absolute',
-                    // top: 0,
-                    // right: 14,
-                    // width: 10,
-                    // height: 10,
-                    // bgcolor: 'background.paper',
-                    // transform: 'translateY(-50%) rotate(45deg)',
-                    // boxShadow: "0px 0px 2px 0px",
-                    // zIndex: 0,
-                    // }
-                }
-            }}
+        anchorEl={props.menu}
+        id="account-menu"
+        open={Boolean(props.menu)}
+        onClose={props.closeMenu}
+        onClick={props.closeMenu}
+        PaperProps={{
+          elevation: 0,
+          sx: {
+            overflow: 'visible',
+            filter: 'drop-shadow(0px 2px 8px rgba(0,0,0,0.32))',
+            mt: 1.5,
+            '& .MuiAvatar-root': {
+              width: 32,
+              height: 32,
+              ml: -0.5,
+              mr: 1,
+            },
+            '&:before': {
+              content: '""',
+              display: 'block',
+              position: 'absolute',
+              top: 0,
+              right: 14,
+              width: 10,
+              height: 10,
+              bgcolor: 'background.paper',
+              transform: 'translateY(-50%) rotate(45deg)',
+              zIndex: 0,
+            },
+          },
+        }}
+        transformOrigin={{ horizontal: 'right', vertical: 'top' }}
+        anchorOrigin={{ horizontal: 'right', vertical: 'bottom' }}
         >
             {props.children}
-            {/* <ListItemButton onClick={() => {
-                navigate("/profile/account")
-                setOpenMenu(null)
-            }}>
-                <ListItemIcon>
-                    <AccountCircle></AccountCircle>
-                </ListItemIcon>
-                <ListItemText primary={<Typography variant='subtitle1'>Profile</Typography>} />
-            </ListItemButton>
-            <ListItemButton onClick={() => setOpenMenu(null)}>
-                <ListItemIcon>
-                    <Payment></Payment>
-                </ListItemIcon>
-                <ListItemText primary={<Typography variant='subtitle1'>Support</Typography>} />
-            </ListItemButton>
-                
-            <ListItemButton onClick={() => {
-                logout() 
-                setOpenMenu(null)
-            }}>
-                <ListItemIcon>
-                    <Logout></Logout>
-                </ListItemIcon>
-                <ListItemText primary={<Typography variant='subtitle1'>Logout</Typography>} />
-            </ListItemButton> */}
         </Menu>
     )
 }

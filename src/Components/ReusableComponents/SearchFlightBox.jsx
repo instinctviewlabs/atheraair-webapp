@@ -163,7 +163,7 @@ function SearchFlightBox() {
                 display: "flex",
                 justifyContent: "space-evenly",
                 flexDirection: "column",
-                px: 30,
+                px: {xs: 0, md: 30},
                 mt: 4,
                 gap: 3,
             }}>
@@ -267,7 +267,7 @@ function SearchFlightBox() {
                         size='medium'
                         label={t("passengers")}
                         onClick={handleClick}
-                        value={`Adult - ${adultCount}, Children - ${childrenCount}, Infants - ${infantCount}`}
+                        value={`${t("adult")} - ${adultCount}, ${t("children")} - ${childrenCount}, ${t("infants")} - ${infantCount}`}
                         // onChange={(e) => {
                         //     return e.target.value > 0 && e.target.value <= 9 ? setSearchData(prev => ({...prev, infants: e.target.value})) :  setSearchData(prev => ({...prev, infants: "0"}))
                         // }}

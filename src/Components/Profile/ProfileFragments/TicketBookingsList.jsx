@@ -6,8 +6,12 @@ import { TbPlaneInflight } from 'react-icons/tb'
 import { emiratesAirlineLogo } from '../../../Assests/assets'
 import { FaCalendar, FaClock, FaDoorClosed } from 'react-icons/fa'
 import { MdAirlineSeatReclineNormal } from "react-icons/md"
+import { useTranslation } from 'react-i18next'
 
 function TicketBookingsList() {
+
+  const { t } = useTranslation();
+
   return (
     <Stack 
         width={{xs: "100%", md: "80%"}} 
@@ -18,7 +22,7 @@ function TicketBookingsList() {
                 display: "flex", 
                 justifyContent: "space-between"
             }}>
-            <Typography color="text.main" variant='h4'>Tickets / Bookings</Typography>
+            <Typography color="text.main" variant='h4'>{t("ticketsBookings")}</Typography>
             <AnchorText variant='subtitle1'>Upcoming <MdOutlineKeyboardArrowDown/></AnchorText>
         </Box>
         <WhiteCard>
@@ -35,7 +39,7 @@ function TicketBookingsList() {
                     color="text.main"
                     variant='h6' 
                 >
-                    Flights
+                    {t("flights")}
                 </Typography>
             </Box>
         </WhiteCard>
@@ -125,7 +129,7 @@ function TicketBookingsList() {
                         </Stack>
                     </Stack>
                     <Box>
-                        <BlueButton>Download Ticket</BlueButton>
+                        <BlueButton>{t("downloadTicket")}</BlueButton>
                     </Box>
                 </Stack>
             </WhiteCard>

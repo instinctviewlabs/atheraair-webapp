@@ -2,6 +2,7 @@ import React from 'react';
 import { Box, Divider, Stack, Typography } from "@mui/material";
 import { AnchorText, BlueBox, BlueButton, WhiteCard } from "../../../Lib/MuiThemes/MuiComponents";
 import { emiratesFlight } from "../../../Assests/assets";
+import { FormattedNumber } from 'react-intl';
 
 function FlightListCard({cardData}) {
   return (
@@ -45,7 +46,7 @@ function FlightListCard({cardData}) {
             </Stack>
             <Box>
                 <Typography variant="subtitle1" color="text.main">Starting from</Typography>
-                <AnchorText variant="h5">{cardData.totalPrice}<AnchorText variant='subtitle1' component="span">&nbsp;{cardData.currency}</AnchorText></AnchorText>
+                <AnchorText variant="h5"><FormattedNumber value={cardData.totalPrice} style="currency" currency="EUR"/><AnchorText variant='subtitle1' component="span"></AnchorText></AnchorText>
             </Box>
         </Stack>
     </WhiteCard>

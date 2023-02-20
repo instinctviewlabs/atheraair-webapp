@@ -4,12 +4,14 @@ import { AiFillEdit, AiOutlineDelete } from 'react-icons/ai'
 import { AnchorText, BlackButtonOutlined, WhiteCard } from '../../../Lib/MuiThemes/MuiComponents'
 import AddPassengerModal from '../Modals/AddPassengerModal';
 import { useSelector } from 'react-redux';
+import MasterPassengerCard from './MasterPassengerCard';
+import { useTranslation } from 'react-i18next';
 
 function MasterPassengerList() {
 
   const [addPassenderModal, setAddPassengerModal] = useState(false);
   const {account} = useSelector(data => data.persistedReducer);
-  
+  const { t } = useTranslation();
 
   return (
     <>
@@ -19,15 +21,18 @@ function MasterPassengerList() {
               display: "flex", 
               justifyContent: "space-between"
           }}>
-          <Typography color="text.main" variant='h4'>Master passenger list</Typography>
-          <AnchorText variant='subtitle1' onClick={() => setAddPassengerModal(true)}>Add traveller</AnchorText>
+          <Typography color="text.main" variant='h4'>{t("masterPassengerList")}</Typography>
+          <AnchorText variant='subtitle1' onClick={() => setAddPassengerModal(true)}>{t("addTraveller")}</AnchorText>
         </Box>
         <Box sx={{
             display: "flex", 
             flexDirection: "column",  
             gap: "15px"
         }}>
-          <WhiteCard>
+          {account.masterList.length > 0 && account.masterList.map((traveller, index) => (
+            <MasterPassengerCard key={index} traveller={traveller} />
+          ))}
+          {/* <WhiteCard>
             <Stack direction="row" justifyContent="space-between" alignItems="center">
               <Stack spacing={1}>
                 <Typography variant='h5' color="text.main">Joe Schmoe</Typography>
@@ -37,7 +42,7 @@ function MasterPassengerList() {
                 <BlackButtonOutlined><AiOutlineDelete/> &nbsp; Delete traveller</BlackButtonOutlined>
               </Box>
             </Stack>
-          </WhiteCard>
+          </WhiteCard> */}
         </Box>
     </Stack>
     <AddPassengerModal open={addPassenderModal} setOpen={setAddPassengerModal}></AddPassengerModal>

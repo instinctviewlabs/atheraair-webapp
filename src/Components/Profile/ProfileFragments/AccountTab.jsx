@@ -1,6 +1,7 @@
 import { Button, List, ListItem, MenuList, Stack, Typography } from '@mui/material'
 import axios from 'axios'
 import React, { useEffect, useState } from 'react'
+import { useTranslation } from 'react-i18next'
 import { AiFillEdit } from 'react-icons/ai'
 import { useDispatch, useSelector } from 'react-redux'
 import { BASE_URL } from '../../../Lib/Axios/AxiosConfig'
@@ -14,6 +15,7 @@ function AccountTab() {
   /***************************States and Variables******************************/
 
   const {auth, account} = useSelector(data => data.persistedReducer);
+  const { t } = useTranslation();
   const dispatch = useDispatch();
   const userId = auth.userId;
   const [isLoading, startLoading, restLoading] = LoaderConsumer();
@@ -82,20 +84,19 @@ function AccountTab() {
     }
   }
 
-  async function getUser(){
-    try{
-        startLoading();
-        // console.log(response);
-        const getuser = await axios.post(`${BASE_URL}/getUser`,{userId});
-        console.log(getuser);
-            // dispatch(setUserDetails(getuser.data))
-    }catch(error){
-        console.log(error)
-    }finally{
-        restLoading()
-    }
-  }
-
+//   async function getUser(){
+//     try{
+//         startLoading();
+//         // console.log(response);
+//         const getuser = await axios.post(`${BASE_URL}/getUser`,{userId});
+//         console.log(getuser);
+//             // dispatch(setUserDetails(getuser.data))
+//     }catch(error){
+//         console.log(error)
+//     }finally{
+//         restLoading()
+//     }
+//   }
 
   return (
     <Stack width={{xs: "100%", md: "80%"}} spacing={2}>
@@ -104,13 +105,13 @@ function AccountTab() {
             justifyContent="space-between"
             alignItems="center"
         >
-            <Typography color="text.main" variant='h4'>Account</Typography>
+            <Typography color="text.main" variant='h4'>{t("account")}</Typography>
             {!editable ? 
-            <BlackButtonOutlined onClick={setEditable}><AiFillEdit/> Change</BlackButtonOutlined> : 
+            <BlackButtonOutlined onClick={setEditable}><AiFillEdit/> {t("change")}</BlackButtonOutlined> : 
             <BlackButtonOutlined onClick={() => {
                 setEditable()
                 editAccount()
-            }}>Save</BlackButtonOutlined>}
+            }}>{t("save")}</BlackButtonOutlined>}
         </Stack>
 
         <WhiteCard>
@@ -122,7 +123,7 @@ function AccountTab() {
                         name="name"
                         type="text"
                         variant='standard'
-                        label="Name"
+                        label={t("name")}
                         size='small'
                         value={profileData.name}
                         onChange={handleChanges}
@@ -138,7 +139,7 @@ function AccountTab() {
                         name="email"
                         type="email" 
                         variant='standard'
-                        label="Email"
+                        label={t("email")}
                         size='small'
                         value={profileData.email}
                         onChange={handleChanges}
@@ -154,7 +155,7 @@ function AccountTab() {
                         name="number"
                         type="text" 
                         variant='standard'
-                        label="Phone number"
+                        label={t("phoneNumber")}
                         size='small'
                         value={profileData.number}
                         onChange={handleChanges}
@@ -171,7 +172,7 @@ function AccountTab() {
                         name="gender"
                         type="text" 
                         variant='standard'
-                        label="Gender"
+                        label={t("gender")}
                         size='small'
                         value={profileData.gender}
                         onChange={handleChanges}
@@ -191,7 +192,7 @@ function AccountTab() {
                         name="dob"
                         type="text" 
                         variant='standard'
-                        label="Date of birth"
+                        label={t("dateOfBirth")}
                         size='small'
                         onChange={handleChanges}
                         value={profileData.dob}
@@ -207,7 +208,7 @@ function AccountTab() {
                         name="nationality"
                         type="text" 
                         variant='standard'
-                        label="Nationality"
+                        label={t("nationality")}
                         size='small'
                         onChange={handleChanges}
                         value={profileData.nationality}
@@ -223,7 +224,7 @@ function AccountTab() {
                         name="passportNumber"
                         type="text" 
                         variant='standard'
-                        label="Passport number"
+                        label={t("passportNumber")}
                         size='small'
                         onChange={handleChanges}
                         value={profileData.passportNumber}
@@ -239,7 +240,7 @@ function AccountTab() {
                         name="expiryDate"
                         type="text" 
                         variant='standard'
-                        label="Expiry date"
+                        label={t("expiryDate")}
                         size='small'
                         onChange={handleChanges}
                         value={profileData.expiryDate}
@@ -255,7 +256,7 @@ function AccountTab() {
                         name="issuingCountry"
                         type="text" 
                         variant='standard'
-                        label="Passport issuing country"
+                        label={t("passportIssuingCountry")}
                         size='small'
                         onChange={handleChanges}
                         value={profileData.issuingCountry}

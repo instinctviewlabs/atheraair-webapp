@@ -4,7 +4,7 @@ import Button from '@mui/material/Button';
 import Typography from '@mui/material/Typography';
 import Modal from '@mui/material/Modal';
 import { BlueButton, InputField, WhiteCard } from '../../../Lib/MuiThemes/MuiComponents';
-import { MenuItem, Stack } from '@mui/material';
+import { IconButton, MenuItem, Stack } from '@mui/material';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import { DesktopDatePicker, LocalizationProvider } from '@mui/x-date-pickers';
 import moment from 'moment';
@@ -13,9 +13,10 @@ import { LoaderConsumer } from '../../../Lib/Contexts/LoaderContext';
 import axios from 'axios';
 import { BASE_URL } from '../../../Lib/Axios/AxiosConfig';
 import { setUserDetails } from '../../../Lib/Redux/AccountSlice';
+import { Close } from '@mui/icons-material';
 
 const style = {
-    position: 'absolute',
+  position: 'absolute',
   top: '50%',
   left: '50%',
   transform: 'translate(-50%, -50%)',
@@ -45,7 +46,7 @@ export default function AddPassengerModal({open, setOpen}) {
     expiryDate: "",
     issuingCountry: ""
   })
-  console.log(passengerDetails);
+
 
   function handleChanges(event){
     const {name, value} = event.target;
@@ -63,8 +64,8 @@ export default function AddPassengerModal({open, setOpen}) {
         })
         if(response.status === 200){
             const getuser = await axios.post(`${BASE_URL}/getUser`,{userId});
-            console.log(getuser);
-            dispatch(setUserDetails(getuser.data))
+            dispatch(setUserDetails(getuser.data));
+            setOpen(false);
         }
     }catch(error){
         console.error(error)
@@ -91,6 +92,12 @@ export default function AddPassengerModal({open, setOpen}) {
               gap: 3,
             }}> */}
             <Box sx={style}>
+                <Stack direction="row" alignItems="center" justifyContent="space-between">
+                    <Typography variant='h4'>Add traveller</Typography>
+                    <IconButton onClick={() => setOpen(false)}>
+                        <Close></Close>
+                    </IconButton>
+                </Stack>
                 <Typography variant='h5'>Mandatory</Typography>
                 <Stack direction="row" spacing={4}>
                     <InputField

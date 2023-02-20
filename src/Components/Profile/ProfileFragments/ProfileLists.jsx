@@ -1,11 +1,15 @@
 import React, { useState } from 'react';
 import { Tab, Tabs, Typography } from '@mui/material';
 import { useNavigate } from 'react-router-dom';
+import { useSelector } from 'react-redux';
+import { useTranslation } from 'react-i18next';
 
 
 function ProfileLists() {
   const navigate = useNavigate();
-  const [value, setValue] = useState("1");
+  const { t } = useTranslation();
+  const {auth} = useSelector(data => data.persistedReducer);
+  const [value, setValue] = useState("account");
   return (
     <Tabs 
       sx={{ 
@@ -15,13 +19,16 @@ function ProfileLists() {
         borderRadius: "10px",
       }}
         value={value}
-        onChange={(e, val) => setValue(val)}
+        onChange={(e, val) => {
+          setValue(val);
+          navigate(val);
+        }}
         centered
       >
-      <Tab onClick={() => navigate("account")} sx={{width: "25%", color: "text.main"}} label={<Typography variant='body1'>Account</Typography>} value="1" />
-      <Tab onClick={() => navigate("master_passenger_list")} sx={{width: "25%", color: "text.main"}} label={<Typography variant='body1'>Master Passenger list</Typography>} value="2" />
-      <Tab onClick={() => navigate("ticket_bookings_history")} sx={{width: "25%", color: "text.main"}} label={<Typography variant='body1'>Tickets / Bookings</Typography>} value="3" />
-      <Tab onClick={() => navigate("payment/add")} sx={{width: "25%", color: "text.main"}} label={<Typography variant='body1'>Payment methods</Typography>} value="4" />
+      <Tab sx={{width: "25%", color: "text.main"}} label={<Typography variant='body1'>{t("account")}</Typography>} value="account" />
+      <Tab sx={{width: "25%", color: "text.main"}} label={<Typography variant='body1'>{t("masterPassengerList")}</Typography>} value="master-passenger-list" />
+      <Tab sx={{width: "25%", color: "text.main"}} label={<Typography variant='body1'>{t("ticketsBookings")}</Typography>} value="ticket-bookings-history" />
+      <Tab sx={{width: "25%", color: "text.main"}} label={<Typography variant='body1'>{t("paymentMethods")}</Typography>} value="payment/add" />
     </Tabs>
   )
 }
