@@ -12,12 +12,11 @@ function FlightListingsLayout() {
   const {flightSearchKey} = useSelector(data => data.persistedReducer);
   const [flightResult, setFlightResult] = useState([]);
   const [isLoading, startLoading, restLoading] = LoaderConsumer();
-  const effectRef = useRef();
+  // const effectRef = useRef();
   // console.log(flightSearchKey);
   console.log(flightResult);
   useEffect(() => {
     const controller = axios.CancelToken.source();
-    if(effectRef.current){
       (async () => {
         try{
           startLoading();
@@ -37,13 +36,12 @@ function FlightListingsLayout() {
           restLoading();
         }
       })()
-    }
 
-    return () => {
-      effectRef.current = true;
+    // return () => {
+      // effectRef.current = true;
       // controller.cancel();
-    }
-  },[flightSearchKey])
+    // }
+  },[])
   
   return (
     <>
