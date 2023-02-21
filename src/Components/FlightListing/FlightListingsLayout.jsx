@@ -14,7 +14,7 @@ function FlightListingsLayout() {
   const [isLoading, startLoading, restLoading] = LoaderConsumer();
   const effectRef = useRef();
   // console.log(flightSearchKey);
-
+  console.log(flightResult);
   useEffect(() => {
     const controller = axios.CancelToken.source();
     if(effectRef.current){

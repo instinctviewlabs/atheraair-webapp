@@ -72,7 +72,6 @@ function SearchFlightBox() {
             try{
                 startLoading();
                 const fetch = await axios(`${BASE_URL}/airports?keyword=${originKey.searchKey}`, {cancelToken: controller.token});
-                console.log(fetch)
                 setOriginKey(prev => ({...prev, options: fetch.data}))
                 restLoading();
             }catch(err){
@@ -99,7 +98,6 @@ function SearchFlightBox() {
             try{
                 startLoading();
                 const fetch = await axios(`${BASE_URL}/airports?keyword=${destinationKey.searchKey}`, {cancelToken: controller.token});
-                console.log(fetch)
                 setDestinationKey(prev => ({...prev, options: fetch.data}))
                 restLoading();
             }catch(err){
