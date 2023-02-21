@@ -3,7 +3,7 @@ import { Box, Stack } from '@mui/system'
 import axios from 'axios'
 import React from 'react'
 import { useTranslation } from 'react-i18next'
-import { AiOutlineDelete } from 'react-icons/ai'
+import { AiFillEdit, AiOutlineDelete } from 'react-icons/ai'
 import { useDispatch, useSelector } from 'react-redux'
 import { BASE_URL } from '../../../Lib/Axios/AxiosConfig'
 import { LoaderConsumer } from '../../../Lib/Contexts/LoaderContext'
@@ -48,9 +48,10 @@ function MasterPassengerCard({traveller}) {
             <Typography variant='h5' color="text.main">{traveller.name}</Typography>
             <Typography variant='body2'>{traveller.gender}, {traveller.dob}</Typography>
         </Stack>
-        <Box>
-            <BlackButtonOutlined onClick={deleteTraveller}><AiOutlineDelete/> &nbsp; {t("deleteTraveller")}</BlackButtonOutlined>
-        </Box>
+        <Stack direction="row" spacing={2}>
+            <BlackButtonOutlined size="large" onClick={deleteTraveller}><AiOutlineDelete/></BlackButtonOutlined>
+            <BlackButtonOutlined size="large"><AiFillEdit/></BlackButtonOutlined>
+        </Stack>
         </Stack>
     </WhiteCard>
   )

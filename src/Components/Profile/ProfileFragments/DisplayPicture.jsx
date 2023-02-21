@@ -9,11 +9,13 @@ import { useSelector } from "react-redux";
 import { LoaderConsumer } from "../../../Lib/Contexts/LoaderContext";
 import axios from "axios";
 import { BASE_URL } from "../../../Lib/Axios/AxiosConfig";
+import useSnackBar from "../../../Lib/CustomHooks/useSnackBar";
 
 
 function DisplayPicture() {
   const { auth, account } = useSelector((data) => data.persistedReducer);
   const userId = auth.userId;
+  const { showSnackBar } = useSnackBar()
   const [isLoading, startLoading, restLoading] = LoaderConsumer();
   const [picUrl, setPicUrl] = useState(null);
   // console.log(picUrl);
@@ -60,10 +62,13 @@ function DisplayPicture() {
     startLoading();
     fetch(`${BASE_URL}/updatePicture`, requestOptions)
       .then((response) => response.text())
-      .then((result) => {
+      .then(() => {
         restLoading();
       })
-      .catch((error) => console.log("error", error));
+      .catch((error) => {
+        console.log(error);
+        showSnackBar("error", "Error uploading profile picture")
+      });
   }
   return (
     <>
@@ -90,19 +95,19 @@ function DisplayPicture() {
               </IconButton>
               {picUrl && 
               <IconButton
-              onClick={uploadProfilePic}
-              component="label"
-              sx={{
-                backgroundColor: "veryLightBlue.main",
-                "&:hover": { backgroundColor: "veryLightBlue.main" },
-              }}
-            >
-              <HiCheck />
-            </IconButton>}
+                onClick={uploadProfilePic}
+                component="label"
+                sx={{
+                  backgroundColor: "veryLightBlue.main",
+                  "&:hover": { backgroundColor: "veryLightBlue.main" },
+                }}
+              >
+                <HiCheck />
+              </IconButton>}
             </Stack>
           }
         >
-          <AvatarProfile alt="Remy Sharp" src={account.profilePicture} />
+          <AvatarProfile alt="Remy Sharp" src={!!picUrl ? URL.createObjectURL(picUrl) : account.profilePicture} />
         </Badge>
         <Typography variant="h5" color="text.main">
           {account.name}

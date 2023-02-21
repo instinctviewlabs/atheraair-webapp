@@ -106,7 +106,8 @@ function Signup() {
                     userId: auth.currentUser.uid,
                     name: `${signupData.firstname} ${signupData.lastname}`, 
                     email: signupData.email, 
-                    pass: signupData.password
+                    pass: signupData.password,
+                    number: signupData.phoneno
                 },{cancelToken: controller.token});
 
                 if(response.status === 200 && response.data === "Success"){
@@ -134,16 +135,6 @@ function Signup() {
             // console.log(response.user.uid);
             // const getuser = await axios.post(`${BASE_URL}/getUser`, {userId: auth.currentUser.uid})
             // console.log(getuser);
-            dispatch(loginUser({
-                auth: true,
-                role: "user", 
-                userId: auth.currentUser.uid,
-                name: response.user.displayName, 
-                email: response.user.email,
-                emailVerified: response.user.emailVerified,
-                phoneNumber: response.user.phoneNumber,
-                photoUrl: response.user.photoURL
-            }))
             navigate("/", {replace: true})
         }catch(err){
             console.log(err)

@@ -14,6 +14,7 @@ import axios from 'axios';
 import { BASE_URL } from '../../../Lib/Axios/AxiosConfig';
 import { setUserDetails } from '../../../Lib/Redux/AccountSlice';
 import { Close } from '@mui/icons-material';
+import useSnackBar from '../../../Lib/CustomHooks/useSnackBar';
 
 const style = {
   position: 'absolute',
@@ -35,18 +36,21 @@ export default function AddPassengerModal({open, setOpen}) {
   const { auth } = useSelector(data => data.persistedReducer);
   const dispatch = useDispatch();
   const [isLoading, startLoading, restLoading] = LoaderConsumer();
+  const { showSnackBar } = useSnackBar();
   const userId = auth.userId;
+  const [isDataValidated, setDataValidated] = useState({name: false, email: false, dob: false});
   const [passengerDetails, setPassengerDetails] = useState({
     name: "",
     email: "",
     dob: "",
-    gender: "",
+    gender: "Unknown",
     nationality: "",
     passportNumber: "",
     expiryDate: "",
     issuingCountry: ""
   })
 
+  /****************************Handling changes**************************** */
 
   function handleChanges(event){
     const {name, value} = event.target;
@@ -54,7 +58,63 @@ export default function AddPassengerModal({open, setOpen}) {
     setPassengerDetails(prevState => ({...prevState, [name]: value}))
   }
 
+  /****************************Form validation functions*******************************/
+
+  const handleDataValidation = () => {
+
+    let isValidated = true;
+
+    if(passengerDetails.name.length > 50 || passengerDetails.name.length === 0){
+        setDataValidated(prev => ({...prev, name: true}))
+        isValidated = false;
+    }
+
+    if(passengerDetails.email.length === 0 || !/^(("[\w-\s]+")|([\w-]+(?:\.[\w-]+)*)|("[\w-\s]+")([\w-]+(?:\.[\w-]+)*))(@((?:[\w-]+\.)*\w[\w-]{0,66})\.([a-z]{2,6}(?:\.[a-z]{2})?)$)|(@\[?((25[0-5]\.|2[0-4][0-9]\.|1[0-9]{2}\.|[0-9]{1,2}\.))((25[0-5]|2[0-4][0-9]|1[0-9]{2}|[0-9]{1,2})\.){2}(25[0-5]|2[0-4][0-9]|1[0-9]{2}|[0-9]{1,2})\]?$)/i.test(passengerDetails.email)){
+        setDataValidated(prev => ({...prev, email: true}))
+        isValidated = false;
+    }
+    
+    if(passengerDetails.dob.length === 0){
+        setDataValidated(prev => ({...prev, dob: true}))
+        isValidated = false;
+    }
+
+    // if(profileData.number.length !== 10){
+    //     setDataValidated(prev => ({...prev, number: true}))
+    //     isValidated = false;
+    // }
+
+
+    // if(profileData.nationality.length === 0){
+    //     setDataValidated(prev => ({...prev, nationality: true}))
+    //     isValidated = false;
+    // }
+
+    // if(profileData.passportNumber.length === 0){
+    //     setDataValidated(prev => ({...prev, passportNumber: true}))
+    //     isValidated = false;
+    // }
+
+    // if(profileData.expiryDate.length === 0){
+    //     setDataValidated(prev => ({...prev, expiryDate: true}))
+    //     isValidated = false;
+    // }
+
+    // if(profileData.issuingCountry.length === 0){
+    //     setDataValidated(prev => ({...prev, issuingCountry: true}))
+    //     isValidated = false;
+    // }
+
+    
+    return isValidated;
+  }
+
+  /**************************API call : Add master passenger *******************************/
+
   async function addTraveller(){
+    if(!handleDataValidation()){
+        return showSnackBar("error", "Please fill the mandatory fields")
+    }
     try{
         startLoading();
         const response = await axios({
@@ -109,6 +169,8 @@ export default function AddPassengerModal({open, setOpen}) {
                         size='medium'
                         value={passengerDetails.name}
                         onChange={handleChanges}
+                        error={isDataValidated.name}
+                        helperText={isDataValidated.name && "Please enter a valid passenger name"}
                     />
                     <InputField
                         fullWidth
@@ -119,6 +181,8 @@ export default function AddPassengerModal({open, setOpen}) {
                         size='medium'
                         value={passengerDetails.email}
                         onChange={handleChanges}
+                        error={isDataValidated.email}
+                        helperText={isDataValidated.email && "Please enter a valid email format"}
                     />
                 </Stack>
                 <Stack direction="row" spacing={4}>
@@ -131,17 +195,26 @@ export default function AddPassengerModal({open, setOpen}) {
                         value={passengerDetails.gender}
                         onChange={handleChanges}
                     >
-                        <MenuItem value="male">Male</MenuItem>
-                        <MenuItem value="female">Female</MenuItem>
-                        <MenuItem value="unknown">Unknown</MenuItem>
+                        <MenuItem value="Unknown">Unknown</MenuItem>
+                        <MenuItem value="Male">Male</MenuItem>
+                        <MenuItem value="Female">Female</MenuItem>
                     </InputField>
 
                     <LocalizationProvider dateAdapter={AdapterDayjs}>
                         <DesktopDatePicker
                             disableFuture
                             label="Date of birth"
-                            renderInput={(params) => <InputField name='dob' fullWidth size="medium" {...params} />}
-                            value={passengerDetails.dob}
+                            renderInput={(params) => <InputField
+                                {...params}
+                                onKeyDown={(e) => e.preventDefault()}
+                                name='dob' 
+                                fullWidth 
+                                size="medium" 
+                                error={isDataValidated.dob}
+                                helperText={isDataValidated.dob && "Please enter a valid date format"}
+                                inputProps={{"aria-readonly": true}}
+                                value={passengerDetails.dob}
+                                />}
                             onChange={(newValue) => newValue !== null && setPassengerDetails(prev => ({...prev, dob: moment(newValue["$d"]).format("YYYY-MM-DD")}))}
                         />
                     </LocalizationProvider>
@@ -174,8 +247,15 @@ export default function AddPassengerModal({open, setOpen}) {
                         <DesktopDatePicker
                             disablePast
                             label="Expiry Date"
-                            renderInput={(params) => <InputField name='expiryDate' fullWidth size="medium" {...params} />}
-                            value={passengerDetails.expiryDate}
+                            renderInput={(params) => <InputField 
+                                name='expiryDate' 
+                                fullWidth 
+                                size="medium" 
+                                {...params}
+                                onKeyDown={(e) => e.preventDefault()}
+                                inputProps={{"aria-readonly": true}}
+                                value={passengerDetails.expiryDate}
+                            />}
                             onChange={(newValue) => newValue !== null && setPassengerDetails(prev => ({...prev, expiryDate: moment(newValue["$d"]).format("YYYY-MM-DD")}))}
                         />
                     </LocalizationProvider>

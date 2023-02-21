@@ -76,15 +76,14 @@ function Login() {
                 userId: auth.currentUser.uid,
                 role: getuser.data.type,
             }))
-            navigate("/", {replace: true})
 
-            // if(getuser.status === 200){
+            if(getuser.status === 200){
 
-            //     dispatch(setUserDetails({
-            //         ...getuser.data
-            //     }))
-            //     navigate("/", {replace: true})
-            // }
+                dispatch(setUserDetails({
+                    ...getuser.data
+                }))
+                navigate("/", {replace: true})
+            }
 
         }catch(error){
 
@@ -103,28 +102,52 @@ function Login() {
 
   const loginWithGoogle = async() => {
     try{
+        startLoading();
         const provider = new GoogleAuthProvider();
-        const response = await signInWithPopup(auth, provider)
-        const getuser = await axios.post(`${BASE_URL}/getUser`, {userId: auth.currentUser.uid})
-        console.log(getuser);
-        dispatch(loginUser({
-            auth: true,
-            role: "admin", 
-            userId: auth.currentUser.uid
-            // photoUrl: response.user.photoURL
-        }))
-            navigate("/", {replace: true})
-        
-        // if(getuser.status === 200){
+        const response = await signInWithPopup(auth, provider);
+        console.log(response);
+        const myHeaders = new Headers();
+        myHeaders.append("Content-Type", "application/x-www-form-urlencoded");
 
-        //     dispatch(setUserDetails({
-        //         ...getuser.data
-        //     }))
-        //     navigate("/", {replace: true})
-        // }
+        const urlencoded = new URLSearchParams();
+        urlencoded.append("name", response.user.displayName);
+        urlencoded.append("email", response.user.email);
+        urlencoded.append("userId", response.user.uid);
+        urlencoded.append("number", response.user.phoneNumber);
+        urlencoded.append("profilePicture", response.user.photoURL);
+
+        const gSignin = await axios({
+            method: "post",
+            url: `${BASE_URL}/gSignIn`,
+            data : urlencoded,
+            headers: myHeaders
+        });
+        console.log(gSignin);
+        if(gSignin.status === 200){
+            const getuser = await axios({
+                method: "post",
+                url: `${BASE_URL}/getUser`,
+                data: {
+                    userId: response.user.uid
+                }
+            })
+            dispatch(loginUser({
+                auth: true, 
+                userId: response.user.uid,
+                role: getuser.data.type,
+            }))
+
+            if(getuser.status === 200){
+                dispatch(setUserDetails(getuser.data))
+                navigate("/", {replace: true})
+            }
+
+        }
     }catch(err){
         console.log(err)
         showSnackBar("error", "Error occured please try again later") 
+    }finally{
+        restLoading();
     }
   }
 

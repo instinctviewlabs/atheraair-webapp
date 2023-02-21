@@ -6,6 +6,7 @@ import { AiFillEdit } from 'react-icons/ai'
 import { useDispatch, useSelector } from 'react-redux'
 import { BASE_URL } from '../../../Lib/Axios/AxiosConfig'
 import { LoaderConsumer } from '../../../Lib/Contexts/LoaderContext'
+import useSnackBar from '../../../Lib/CustomHooks/useSnackBar'
 import useSwitch from '../../../Lib/CustomHooks/useSwitch'
 import { BlackButtonOutlined, InputField, WhiteCard } from '../../../Lib/MuiThemes/MuiComponents'
 import { setUserDetails } from '../../../Lib/Redux/AccountSlice'
@@ -19,7 +20,7 @@ function AccountTab() {
   const dispatch = useDispatch();
   const userId = auth.userId;
   const [isLoading, startLoading, restLoading] = LoaderConsumer();
-
+  const {showSnackBar} = useSnackBar();
   const [editable, setEditable] = useSwitch();
 
   const [profileData, setProfileData] = useState({
@@ -33,6 +34,7 @@ function AccountTab() {
       expiryDate: "",
       issuingCountry: ""
   });
+  const [isDataValidated, setDataValidated] = useState({name: false, number: false, dob: false, nationality: false, passportNumber: false, expiryDate: false, issuingCountry: false})
 
 //   console.log(profileData);
 
@@ -42,7 +44,7 @@ function AccountTab() {
         email: account.email,
         number: account.number,
         dob: account.dob,
-        gender: account.gender,
+        gender: account.gender ?? "Unknown",
         nationality: account.nationality,
         passportNumber: account.passportNumber,
         expiryDate: account.expiryDate,
@@ -61,9 +63,60 @@ function AccountTab() {
       }))
     }
 
+  /****************************Data validations******************************/
+  const handleDataValidation = () => {
+
+    let isValidated = true;
+
+    if(profileData.name.length > 50 || profileData.name.length === 0){
+        setDataValidated(prev => ({...prev, name: true}))
+        isValidated = false;
+    }
+
+    // if(profileData.email.length === 0 || !/^(("[\w-\s]+")|([\w-]+(?:\.[\w-]+)*)|("[\w-\s]+")([\w-]+(?:\.[\w-]+)*))(@((?:[\w-]+\.)*\w[\w-]{0,66})\.([a-z]{2,6}(?:\.[a-z]{2})?)$)|(@\[?((25[0-5]\.|2[0-4][0-9]\.|1[0-9]{2}\.|[0-9]{1,2}\.))((25[0-5]|2[0-4][0-9]|1[0-9]{2}|[0-9]{1,2})\.){2}(25[0-5]|2[0-4][0-9]|1[0-9]{2}|[0-9]{1,2})\]?$)/i.test(signupData.email)){
+    //     setDataValidated(prev => ({...prev, email: true}))
+    //     isValidated = false;
+    // }
+
+    if(profileData.number.length !== 10){
+        setDataValidated(prev => ({...prev, number: true}))
+        isValidated = false;
+    }
+
+    if(profileData.dob.length === 0){
+        setDataValidated(prev => ({...prev, dob: true}))
+        isValidated = false;
+    }
+
+    if(profileData.nationality.length === 0){
+        setDataValidated(prev => ({...prev, nationality: true}))
+        isValidated = false;
+    }
+
+    if(profileData.passportNumber.length === 0){
+        setDataValidated(prev => ({...prev, passportNumber: true}))
+        isValidated = false;
+    }
+
+    if(profileData.expiryDate.length === 0){
+        setDataValidated(prev => ({...prev, expiryDate: true}))
+        isValidated = false;
+    }
+
+    if(profileData.issuingCountry.length === 0){
+        setDataValidated(prev => ({...prev, issuingCountry: true}))
+        isValidated = false;
+    }
+
+    
+    return isValidated;
+  }
   /***********************API Call : Edit account method***************************/
 
   async function editAccount(){
+    if(!handleDataValidation()){
+        return showSnackBar("error", "Please fill the required fields")
+    }
     try{
         startLoading();
         console.log(profileData);
@@ -119,6 +172,21 @@ function AccountTab() {
                 <ListItem>
                     <InputField
                         fullWidth
+                        disabled={true}
+                        name="email"
+                        type="email" 
+                        variant='standard'
+                        label={t("email")}
+                        size='small'
+                        value={profileData.email}
+                        InputProps={{
+                            disableUnderline: true , // <== added this to disable border line
+                        }}
+                    />
+                </ListItem>
+                <ListItem>
+                    <InputField
+                        fullWidth
                         disabled={!editable}
                         name="name"
                         type="text"
@@ -129,22 +197,6 @@ function AccountTab() {
                         onChange={handleChanges}
                         InputProps={{
                             disableUnderline: !editable ? true : false, // <== added this to disable border line
-                        }}
-                    />
-                </ListItem>
-                <ListItem>
-                    <InputField
-                        fullWidth
-                        disabled={!editable}
-                        name="email"
-                        type="email" 
-                        variant='standard'
-                        label={t("email")}
-                        size='small'
-                        value={profileData.email}
-                        onChange={handleChanges}
-                        InputProps={{
-                            disableUnderline: !editable ? true : false , // <== added this to disable border line
                         }}
                     />
                 </ListItem>
@@ -168,7 +220,7 @@ function AccountTab() {
                     <InputField
                         fullWidth
                         disabled={!editable}
-                        // select
+                        select
                         name="gender"
                         type="text" 
                         variant='standard'
@@ -180,9 +232,9 @@ function AccountTab() {
                             disableUnderline: !editable ? true : false, // <== added this to disable border line
                         }}
                     >
-                        {/* <MenuList value="Male">Male</MenuList>
+                        <MenuList value="Unknown">Unknown</MenuList>
+                        <MenuList value="Male">Male</MenuList>
                         <MenuList value="Female">Female</MenuList>
-                        <MenuList value="Unknown">Unknown</MenuList> */}
                     </InputField>
                 </ListItem>
                 <ListItem>

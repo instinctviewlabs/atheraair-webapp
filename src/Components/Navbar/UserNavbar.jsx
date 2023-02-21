@@ -17,7 +17,7 @@ import { useNavigate } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import useMenu from '../../Lib/CustomHooks/useMenu';
 import { ReuseMenu } from '../../Lib/MuiThemes/MuiComponents';
-import { clearUserDetails } from '../../Lib/Redux/AccountSlice';
+import { accountReducer, clearUserDetails } from '../../Lib/Redux/AccountSlice';
 import useSwitch from '../../Lib/CustomHooks/useSwitch';
 
 function UserNavbar({auth, profile}) {
@@ -40,7 +40,7 @@ function UserNavbar({auth, profile}) {
             anchorOrigin={{ vertical: 'top', horizontal: 'right' }}
             // badgeContent={<BsCheckCircleFill style={{color: "black", fontSize: 18}}/>}
         >
-            <Avatar onClick={openMenu} sx={{height: "50px", width: "50px", border: "3px solid rgb(184, 218, 255)", cursor: "pointer"}} alt="Remy Sharp" src={auth.photoUrl}/>
+            <Avatar onClick={openMenu} sx={{height: "50px", width: "50px", border: "3px solid rgb(184, 218, 255)", cursor: "pointer"}} alt="Remy Sharp" src={profile.profilePicture }/>
         </Badge>
         <Typography variant="h5" color="text.main">{profile.name}</Typography>
 
