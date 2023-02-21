@@ -73,7 +73,7 @@ export default function Navbar({auth, profile}){
                 alignItems="center" 
                 gap="5px"
             >
-                <Tabs value={value} onChange={(e, newVal) => setValue(newVal)} centered>
+                <Tabs TabIndicatorProps={{sx: {height: 2}}} value={value} onChange={(e, newVal) => setValue(newVal)} centered>
                     <Tab 
                         onClick={() => navigate("/")}
                         value={0}
@@ -87,11 +87,13 @@ export default function Navbar({auth, profile}){
                             flexDirection="row" 
                             alignItems="center" 
                             gap="5px"
+                            py={2}
                         >
                         <TbPlaneInflight/>
                         <Typography 
                             color="text.main"
-                            variant='h6' 
+                            variant='h6'
+                             
                         >
                             {t("findFlight")}
                         </Typography>
@@ -102,7 +104,8 @@ export default function Navbar({auth, profile}){
                     <Tab 
                         onClick={() => navigate(`/${auth.role}`)}
                         value={1}
-                        label={adminOption} 
+                        label={adminOption}
+                        py={2} 
                     />}
                 </Tabs>  
             </Box>

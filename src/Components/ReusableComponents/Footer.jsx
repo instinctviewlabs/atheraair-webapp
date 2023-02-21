@@ -10,9 +10,11 @@ function Footer() {
   const { t } = useTranslation();
   return (
     <Box sx={{
+        width: 'auto',
+        position: 'static',
+        bottom: 0,
         backgroundColor: "primary.main",
         height: "auto",
-        width: "auto",
         display: "flex",
         flexDirection: {
             xs: "column",

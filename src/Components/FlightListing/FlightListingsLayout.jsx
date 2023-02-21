@@ -37,10 +37,9 @@ function FlightListingsLayout() {
         }
       })()
 
-    // return () => {
-      // effectRef.current = true;
-      // controller.cancel();
-    // }
+    return () => {
+      controller.cancel();
+    }
   },[])
   
   return (

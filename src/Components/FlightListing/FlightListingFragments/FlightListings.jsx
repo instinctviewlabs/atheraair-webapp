@@ -15,7 +15,6 @@ function FlightListings({cardData, isLoading}){
     }
         
     useEffect(() => {
-        console.log("run");
         setCardList(cardData.slice(0, showValue));
 
         return () => {}
