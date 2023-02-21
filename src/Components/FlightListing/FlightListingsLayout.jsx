@@ -41,7 +41,7 @@ function FlightListingsLayout() {
 
     return () => {
       effectRef.current = true;
-      controller.cancel();
+      // controller.cancel();
     }
   },[flightSearchKey])
   
