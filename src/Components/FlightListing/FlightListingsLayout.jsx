@@ -43,7 +43,7 @@ function FlightListingsLayout() {
       effectRef.current = true;
       controller.cancel();
     }
-  },[])
+  },[flightSearchKey])
   
   return (
     <>

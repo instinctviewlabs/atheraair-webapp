@@ -10,6 +10,7 @@ import { LoaderConsumer } from "../../../Lib/Contexts/LoaderContext";
 import axios from "axios";
 import { BASE_URL } from "../../../Lib/Axios/AxiosConfig";
 
+
 function DisplayPicture() {
   const { auth, account } = useSelector((data) => data.persistedReducer);
   const userId = auth.userId;
@@ -20,19 +21,18 @@ function DisplayPicture() {
   // async function uploadProfilePic(){
   //   try{
   //     startLoading();
-  //     // const fd = new FormData();
-  //     // fd.append("image", URL.createObjectURL(picUrl));
-  //     // fd.append('image', {type: "image", uri: "file:///C:/Users/ASUS/Downloads/Vector.png", name: "Vector"});
+  //     const data = new FormData();
+  //     data.append('image', fs.createReadStream(picUrl));
+  //     data.append('userId', '123xyz');
+  //     // fd.append("image", picUrl);
   //     // fd.append("userId", userId)
-  //     // console.log(JSON.stringify(fd))
-  //     const fd = {
-  //       image: picUrl,
-  //       userId
-  //     }
+
   //     const response = await axios({
   //       method: "post",
+  //       maxBodyLength: Infinity,
   //       url: `${BASE_URL}/updatePicture`,
-  //       data: fd,
+  //       headers: {...data.getHeaders()},
+  //       data: data,
   //     })
   //     console.log(response);
   //     // if(response.status === 200){
@@ -46,36 +46,6 @@ function DisplayPicture() {
   //   }
   // }
 
-  // async function uploadProfilePic(){
-  //   const local_image= {};
-  //   // let local_uri = URL.createObjectURL(picUrl).split("blob:")[1];
-  //   local_image.type = 'image';
-  //   local_image.uri = picUrl;
-  //   local_image.name = picUrl.name;
-  //   console.log(local_image);
-
-  //   const formData = new FormData();
-  //   formData.append("image", local_image );
-  //   formData.append("userId", userId);
-  //   console.log('formdata', formData);
-  //   for (var key of formData.entries()) {
-  //     console.log(key);
-  //     for(var item of key.entries()){
-  //       console.log(item);
-  //     }
-  //   }
-  //   let result="";
-  //   await axios.post(`${BASE_URL}/updatePicture`, formData).then((response)=>{
-  //     console.log(response);
-  //     result = response.data;
-  //   });
-  // await fetch(`${BASE_URL}/updatePicture`,{
-  //   method:'POST',
-  //   body: fd,
-  // }).then(res => {
-  //   console.log(res.json());// data not coming
-  // }).catch((err) => console.log(err));
-  // }
 
   async function uploadProfilePic() {
     var formdata = new FormData();
@@ -87,10 +57,12 @@ function DisplayPicture() {
       body: formdata,
       redirect: "follow",
     };
-
+    startLoading();
     fetch(`${BASE_URL}/updatePicture`, requestOptions)
       .then((response) => response.text())
-      .then((result) => console.log(result))
+      .then((result) => {
+        restLoading();
+      })
       .catch((error) => console.log("error", error));
   }
   return (
