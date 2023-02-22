@@ -63,11 +63,14 @@ function DisplayPicture() {
     fetch(`${BASE_URL}/updatePicture`, requestOptions)
       .then((response) => response.text())
       .then(() => {
-        restLoading();
+        window.location.reload();
+        showSnackBar("success", "Profile picture uploaded succesfully")
       })
       .catch((error) => {
         console.log(error);
         showSnackBar("error", "Error uploading profile picture")
+      }).finally(() => {
+        restLoading();
       });
   }
   return (

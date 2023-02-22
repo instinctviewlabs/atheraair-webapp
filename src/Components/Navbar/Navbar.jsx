@@ -73,7 +73,7 @@ export default function Navbar({auth, profile}){
                 alignItems="center" 
                 gap="5px"
             >
-                <Tabs TabIndicatorProps={{sx: {height: 2}}} value={value} onChange={(e, newVal) => setValue(newVal)} centered>
+                <Tabs TabIndicatorProps={{sx: {height: 3}}} value={value} onChange={(e, newVal) => setValue(newVal)} centered>
                     <Tab 
                         onClick={() => navigate("/")}
                         value={0}

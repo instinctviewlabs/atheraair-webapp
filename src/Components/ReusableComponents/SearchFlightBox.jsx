@@ -152,6 +152,7 @@ function SearchFlightBox() {
         },
         py: 5
     }}>
+        <Box sx={{position: "relative", top: -200, zIndex: 2}}>
         <WhiteCard>
             <Typography variant='h5' color="text.main" textAlign="center">
                 {/* Where are you flying? */}
@@ -271,7 +272,7 @@ function SearchFlightBox() {
                         // }}
                             
                     ></InputField>
-                    <Popper open={open} anchorEl={anchorEl}>
+                    <Popper sx={{zIndex: 2}} open={open} anchorEl={anchorEl}>
                         <Card sx={{px: 4}}>
                             <Stack direction="row" py={1} gap={2} justifyContent="space-between" alignItems="center">
                                 <Typography>{t("adult")}</Typography>
@@ -335,6 +336,7 @@ function SearchFlightBox() {
                 </Stack>
             </Box>
         </WhiteCard>
+        </Box>
     </Box>
   )
 }

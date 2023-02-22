@@ -7,6 +7,7 @@ import emiratesFlight from "./emirates-flight.png";
 import normalLogo from "./errances-normal-logo.svg"
 import transparentLogo from "./errances-transparent-logo.svg";
 import logoWithoutTitle from "./logo-without-title.svg";
+import homeBanner from "./home-banner.jpg";
 
 export {
     normalLogo, 
@@ -17,5 +18,6 @@ export {
     flightImage,
     emiratesAirlineLogo,
     emiratesFlight,
-    logoWithoutTitle
+    logoWithoutTitle,
+    homeBanner
 };

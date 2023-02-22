@@ -11,6 +11,18 @@ function FiltersSetting() {
   
   const [price, setPrice] = useState([100, 500]);
   const [time, setTime] = useState([]);
+  const [expanded, setExpanded] = useState(["panel1", "panel2", "panel3", "panel4"])
+
+
+  const handleChange = (panel) => {
+    console.log(panel);
+    // console.log(newExpanded);
+    if(expanded.includes(panel)){
+        setExpanded(prevState => prevState.filter(data => data !== panel));
+    }else{
+        setExpanded(prevState => [...prevState, panel]);
+    }
+  };
 //   const [rating, setRating] = useState(5);
 
   return (
@@ -25,7 +37,12 @@ function FiltersSetting() {
         px: 3
     }}>
         <Typography variant="h6" color="text.main">Filters</Typography>
-        <Accordion elevation={0} sx={{bgcolor: "common.background"}}>
+        <Accordion 
+            elevation={0} 
+            sx={{bgcolor: "common.background"}}
+            expanded={expanded.includes("panel1")}
+            onChange={() => handleChange("panel1")}
+        >
             <AccordionSummary
                 expandIcon={<ExpandMoreIcon sx={{color: "text.main"}}/>}
             >
@@ -44,7 +61,12 @@ function FiltersSetting() {
             />
             </AccordionDetails>
         </Accordion>
-        <Accordion elevation={0} sx={{bgcolor: "common.background", borderTop: "1px solid #bdbdbd"}}>
+        <Accordion 
+            elevation={0} 
+            sx={{bgcolor: "common.background", borderTop: "1px solid #bdbdbd"}}
+            expanded={expanded.includes("panel2")}
+            onChange={() => handleChange("panel2")}
+        >
             <AccordionSummary
             expandIcon={<ExpandMoreIcon sx={{color: "text.main"}}/>}
             >
@@ -78,7 +100,12 @@ function FiltersSetting() {
             />
             </AccordionDetails>
         </Accordion> */}
-        <Accordion elevation={0} sx={{bgcolor: "common.background", borderTop: "1px solid #bdbdbd"}}>
+        <Accordion 
+            elevation={0} 
+            sx={{bgcolor: "common.background", borderTop: "1px solid #bdbdbd"}}
+            expanded={expanded.includes("panel3")}
+            onChange={() => handleChange("panel3")}
+        >
             <AccordionSummary
             expandIcon={<ExpandMoreIcon sx={{color: "text.main"}}/>}
             >
@@ -93,7 +120,12 @@ function FiltersSetting() {
             </FormGroup>
             </AccordionDetails>
         </Accordion>
-        <Accordion elevation={0} sx={{bgcolor: "common.background", borderTop: "1px solid #bdbdbd"}}>
+        <Accordion 
+            elevation={0} 
+            sx={{bgcolor: "common.background", borderTop: "1px solid #bdbdbd"}}
+            expanded={expanded.includes("panel4")}
+            onChange={() => handleChange("panel4")}
+        >
             <AccordionSummary
             expandIcon={<ExpandMoreIcon sx={{color: "text.main"}}/>}
             >

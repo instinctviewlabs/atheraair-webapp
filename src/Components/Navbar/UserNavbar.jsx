@@ -42,8 +42,6 @@ function UserNavbar({auth, profile}) {
         >
             <Avatar onClick={openMenu} sx={{height: "50px", width: "50px", border: "3px solid rgb(184, 218, 255)", cursor: "pointer"}} alt="Remy Sharp" src={profile.profilePicture }/>
         </Badge>
-        <Typography variant="h5" color="text.main">{profile.name}</Typography>
-
         <ReuseMenu menu={menu} closeMenu={closeMenu}>
             <ListItemButton onClick={() => {
                 navigate("/profile/account")

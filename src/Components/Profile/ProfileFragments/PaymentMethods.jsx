@@ -1,17 +1,20 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Stack, Typography, Box, Grid, IconButton } from '@mui/material'
 import { CgTrash } from 'react-icons/cg'
 import { FaCcVisa } from 'react-icons/fa';
 import { IoIosAddCircleOutline } from "react-icons/io"
 import { AddNewCard, SavedCard, WhiteCard } from '../../../Lib/MuiThemes/MuiComponents'
 import { useTranslation } from 'react-i18next';
+import AddNewPaymentCard from '../Modals/AddNewPaymentCard';
 
 
 function PaymentMethods() {
 
   const { t } = useTranslation();
+  const [addNewCardModal, setAddNewCardModal] = useState(false);
 
   return (
+    <>
     <Stack width={{xs: "100%", md: "80%"}} spacing={2}>
         <Typography color="text.main" variant='h4'>{t("paymentMethods")}</Typography>
         <WhiteCard>
@@ -48,7 +51,7 @@ function PaymentMethods() {
                     </SavedCard>
                 </Grid>
                 <Grid item xs={4}>
-                    <AddNewCard>
+                    <AddNewCard onClick={() => setAddNewCardModal(true)}>
                         <IoIosAddCircleOutline fontSize={40}/>
                         <Typography variant='subtitle1'>{t("addNewCard")}</Typography>
                     </AddNewCard>
@@ -56,6 +59,8 @@ function PaymentMethods() {
             </Grid>
         </WhiteCard>
     </Stack>
+    <AddNewPaymentCard open={addNewCardModal} handleClose={setAddNewCardModal}></AddNewPaymentCard>
+    </>
   )
 }
 

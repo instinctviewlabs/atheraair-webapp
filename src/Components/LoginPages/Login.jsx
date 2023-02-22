@@ -6,7 +6,7 @@ import { usePasswordVisibility } from '../../Lib/CustomHooks/usePasswordVisibili
 import SideCarousel from './SideCarousel';
 import { useNavigate } from 'react-router-dom';
 import { GoogleAuthProvider, signInWithEmailAndPassword, signInWithPopup } from 'firebase/auth';
-import { auth, SignInWithGoogle } from '../../Lib/Firebase/FirebaseConfig';
+import { auth, SignInWithGoogle } from '../../Lib/Firebase/firebase.config';
 import useLoader from '../../Lib/CustomHooks/useLoader';
 import { useDispatch } from 'react-redux';
 import { loginUser } from '../../Lib/Redux/AuthSlice';

@@ -8,7 +8,7 @@ import { BlueButton, GoogleButton, SpanText, TitleLogo } from '../../Lib/MuiThem
 import SideCarousel from './SideCarousel';
 
 // Config imports
-import { auth } from "../../Lib/Firebase/FirebaseConfig";
+import { auth } from "../../Lib/Firebase/firebase.config";
 import { BASE_URL } from '../../Lib/Axios/AxiosConfig';
 import { createUserWithEmailAndPassword, GoogleAuthProvider, signInWithPopup } from 'firebase/auth';
 import { useNavigate } from 'react-router-dom';
