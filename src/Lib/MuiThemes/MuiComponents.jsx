@@ -222,8 +222,9 @@ export const ReuseMenu = (props) => {
           elevation: 1,
           sx: {
             overflow: 'visible',
+            p: 1,
             // filter: 'drop-shadow(0px 2px 8px rgba(0,0,0,0.32))',
-            mt: 1.5,
+            mt: 4,
             '& .MuiAvatar-root': {
               width: 32,
               height: 32,

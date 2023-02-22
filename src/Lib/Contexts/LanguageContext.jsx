@@ -6,11 +6,12 @@ const LanguageContext = createContext();
 
 function LanguageContextProvider(props){
 
-    const [language, setLanguage] = useState("en");
-    const { i18n } = useTranslation();
+    const ln = localStorage.getItem("i18nextLng");
+    const [language, setLanguage] = useState(ln);
+    const {i18n} = useTranslation();
 
     useEffect(() => {
-        i18n.changeLanguage(language)
+        i18n.changeLanguage(language);
     }, [language])
 
 

@@ -4,6 +4,8 @@ import { initReactI18next } from 'react-i18next';
 import LanguageDetector from "i18next-browser-languagedetector";
 import "./Locales/en.json";
 
+
+
 i18n
   .use(Backend)
   .use(LanguageDetector)
@@ -15,7 +17,7 @@ i18n
     fallbackLng: 'en',
     // disable in production
     debug: true,
-    lng: 'en',
+    lng: localStorage.getItem("i18nextLng"),
     resources: {
       en: {
         translations: require("./Locales/en.json")

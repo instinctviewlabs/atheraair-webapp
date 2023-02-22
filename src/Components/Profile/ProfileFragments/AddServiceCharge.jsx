@@ -1,13 +1,15 @@
+import React, { useState } from 'react'
 import { MoreVert } from '@mui/icons-material';
 import { Box, IconButton, ListItemButton, ListItemText, Stack, Typography } from '@mui/material'
 import MUIDataTable from 'mui-datatables'
-import React from 'react'
 import useMenu from '../../../Lib/CustomHooks/useMenu';
 import { AnchorText, BlackButtonOutlined, ReuseMenu } from '../../../Lib/MuiThemes/MuiComponents'
+import AddServiceChargeModal from '../Modals/AddServiceChargeModal';
 
 function AddServiceCharge() {
 
     const {menu, openMenu, closeMenu} = useMenu();
+    const [ServiceChargeModal, setServiceChargeModal] = useState(false);
     const columns = [
         {
           name: "countryName",
@@ -106,7 +108,7 @@ function AddServiceCharge() {
             alignItems: "center",
           }}>
           <Typography color="text.main" variant='h4'>Configure service charge</Typography>
-          <BlackButtonOutlined>Add</BlackButtonOutlined>
+          <BlackButtonOutlined onClick={() => setServiceChargeModal(true)}>Add</BlackButtonOutlined>
         </Box>
         <Box sx={{
             display: "flex", 
@@ -116,6 +118,7 @@ function AddServiceCharge() {
             <MUIDataTable data={data} columns={columns} options={options} />
         </Box>
     </Stack>
+    <AddServiceChargeModal open={ServiceChargeModal} handleClose={setServiceChargeModal}></AddServiceChargeModal>
     </>
   )
 }

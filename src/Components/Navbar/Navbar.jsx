@@ -29,7 +29,6 @@ export default function Navbar({auth, profile}){
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const [isLoading] = LoaderConsumer();
-  const {language, setLanguage} = useLanguageConsumer()
   const {theme} = useSelector(data => data.persistedReducer);
   const [value, setValue] = useState(0);
 
@@ -114,17 +113,6 @@ export default function Navbar({auth, profile}){
                 <IconButton color='primary' onClick={() => dispatch(setTheme())}>
                     {theme ? <BiMoon/> : <BiSun/>}
                 </IconButton>
-                <InputField
-                    size='small'
-                    variant='standard'
-                    select
-                    value={language}
-                    onChange={(e) => setLanguage(e.target.value)}
-                >
-                    <MenuItem value="en">en</MenuItem>
-                    <MenuItem value="es">es</MenuItem>
-                    <MenuItem value="fr">fr</MenuItem>
-                </InputField>
                 {auth.auth && ( auth.role === "admin" || auth.role === "user" ) ? <UserNavbar auth={auth} profile={profile}/> :
 
                 <>
