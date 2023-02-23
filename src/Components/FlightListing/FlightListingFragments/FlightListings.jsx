@@ -23,8 +23,7 @@ function FlightListings({cardData, isLoading}){
     return(
         <Box sx={{
             minHeight: "100vh",
-            flex: 2,
-            py: 1
+            flex: 3,
         }}>
             <FlightSortingTabs></FlightSortingTabs>
             <Box sx={{

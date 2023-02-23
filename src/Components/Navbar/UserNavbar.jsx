@@ -11,17 +11,19 @@ import {
     Collapse,
     List,
     Box,
+    Autocomplete,
 } from '@mui/material';
 import { AccountCircle, ExpandLess, ExpandMore, KeyboardArrowRight, Language, Logout, Payment, PersonAdd, Public, Settings, StarBorder } from '@mui/icons-material';
 import { logoutUser } from '../../Lib/Redux/AuthSlice';
 import { useNavigate } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import useMenu from '../../Lib/CustomHooks/useMenu';
-import { ReuseMenu } from '../../Lib/MuiThemes/MuiComponents';
+import { InputField, ReuseMenu } from '../../Lib/MuiThemes/MuiComponents';
 import { accountReducer, clearUserDetails } from '../../Lib/Redux/AccountSlice';
 import useSwitch from '../../Lib/CustomHooks/useSwitch';
 import useLanguageConsumer from '../../Lib/CustomHooks/useLanguageConsumer';
 import { useTranslation } from 'react-i18next';
+import { countries } from '../../Lib/Countries/countries';
 
 function UserNavbar({auth, profile}) {
 
@@ -50,33 +52,22 @@ function UserNavbar({auth, profile}) {
         </Badge>
         <ReuseMenu menu={menu} closeMenu={closeMenu}>
 
-            <ListItemButton onClick={(e) => {
-                e.stopPropagation()
+            <ListItemButton onClick={() => {
+                navigate("/profile/account")
+                closeMenu()
             }}>
                 <ListItemIcon>
                     <Avatar sx={{ border: "3px solid rgb(184, 218, 255)", cursor: "pointer"}} src={profile.profilePicture }/>
                 </ListItemIcon>
                 <ListItemText primary={<Typography variant='h6'>{profile.name}</Typography>} />
             </ListItemButton>
-
             <Divider></Divider>
-
-            <ListItemButton onClick={() => {
-                navigate("/profile/account")
-                closeMenu()
-            }}>
-                <ListItemIcon>
-                    <AccountCircle></AccountCircle>
-                </ListItemIcon>
-                <ListItemText primary={<Typography variant='subtitle1'>My account</Typography>} />
-            </ListItemButton>
-            <Divider></Divider>
-            <ListItemButton>
+            {/* <ListItemButton>
                 <ListItemIcon>
                     <Public></Public>
                 </ListItemIcon>
                 <ListItemText primary={<Typography variant='subtitle1'>Country</Typography>} />
-            </ListItemButton>
+            </ListItemButton> */}
             <Divider></Divider>
 
             <ListItemButton onClick={(e) => {

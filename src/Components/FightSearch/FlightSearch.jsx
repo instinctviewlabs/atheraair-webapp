@@ -8,7 +8,7 @@ function FlightSearch() {
   return (
     <>
       <Box sx={{
-        height: 550,
+        height: 500,
         width: "auto",
         overflow: "hidden"
       }}>

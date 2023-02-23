@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Box } from '@mui/material';
 import FiltersSetting from './FlightListingFragments/FiltersSetting';
 import FlightListings from './FlightListingFragments/FlightListings';
@@ -6,6 +6,7 @@ import { useSelector } from 'react-redux';
 import axios from 'axios';
 import { LoaderConsumer } from '../../Lib/Contexts/LoaderContext';
 import { BASE_URL } from '../../Lib/Axios/AxiosConfig';
+import FromToCard from './FlightListingFragments/FromToCard';
 
 function FlightListingsLayout() {
 
@@ -14,7 +15,7 @@ function FlightListingsLayout() {
   const [isLoading, startLoading, restLoading] = LoaderConsumer();
   // const effectRef = useRef();
   // console.log(flightSearchKey);
-  console.log(flightResult);
+  // console.log(flightResult);
   useEffect(() => {
     const controller = axios.CancelToken.source();
       (async () => {
@@ -45,25 +46,35 @@ function FlightListingsLayout() {
   return (
     <>
     <Box sx={{
-        height: "auto",
-        width: "auto",
-        display: "flex",
-        flexDirection: "row",
-        backgroundColor: "common.background",
-        px: {
-          xs: 1,
-          sm: 10
-        },
-        py: 3
+      display: "flex",
+      flexDirection: "column",
+      gap: 3,
+      backgroundColor: "common.background",
+      px: {
+        xs: 1,
+        sm: 10
+      },
+      py: 3
     }}>
-        <FiltersSetting></FiltersSetting>
-        <FlightListings 
-          cardData={flightResult}
-          isLoading={isLoading} 
-          // showMoreFlights={showMoreFlights} 
-          // showMoreValue={showValue}
-        />
+      <FromToCard></FromToCard>
+      <Box sx={{
+          height: "auto",
+          width: "auto",
+          display: "flex",
+          flexDirection: "row",
+          gap: 5,
+          backgroundColor: "common.background",
+      }}>
+          <FiltersSetting></FiltersSetting>
+          <FlightListings 
+            cardData={flightResult}
+            isLoading={isLoading} 
+            // showMoreFlights={showMoreFlights} 
+            // showMoreValue={showValue}
+          />
+      </Box>
     </Box>
+    
     </>
   )
 }

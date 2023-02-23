@@ -73,7 +73,6 @@ function SearchFlightBox() {
                 startLoading();
                 const fetch = await axios(`${BASE_URL}/airports?keyword=${originKey.searchKey}`, {cancelToken: controller.token});
                 setOriginKey(prev => ({...prev, options: fetch.data}))
-                restLoading();
             }catch(err){
                 console.error(err)
             }finally{
@@ -86,7 +85,6 @@ function SearchFlightBox() {
 
     return () => {
         suggestRef.current = true;
-        restLoading();
         controller.cancel();
     }
   },[originKey.searchKey]);
@@ -99,7 +97,6 @@ function SearchFlightBox() {
                 startLoading();
                 const fetch = await axios(`${BASE_URL}/airports?keyword=${destinationKey.searchKey}`, {cancelToken: controller.token});
                 setDestinationKey(prev => ({...prev, options: fetch.data}))
-                restLoading();
             }catch(err){
                 console.error(err)
             }finally{
@@ -111,7 +108,6 @@ function SearchFlightBox() {
 
     return () => {
         suggestRef.current = true;
-        restLoading();
         controller.cancel();
     }
   },[destinationKey.searchKey]);
@@ -148,39 +144,36 @@ function SearchFlightBox() {
         backgroundColor: "common.background",
         px: {
             xs: 1,
-            sm: 10
+            sm: 15
         },
         py: 5
     }}>
-        <Box sx={{position: "relative", top: -200, zIndex: 2}}>
+        <Box sx={{position: "relative", top: -150, zIndex: 2}}>
         <WhiteCard>
-            <Typography variant='h5' color="text.main" textAlign="center">
-                {/* Where are you flying? */}
-                {t("whereAreYouFlying")}
-            </Typography>
+            <Stack direction="row" justifyContent="space-between" alignItems="center">
+                <Typography variant='h5' color="text.main">
+                    {/* Where are you flying? */}
+                    {t("whereAreYouFlying")}
+                </Typography>
+                <ToggleButtonGroup
+                    color='primary'
+                    size='small'
+                    value={searchData.trip}
+                    exclusive
+                    onChange={(event, value) => value !== null && setSearchData(prev => ({...prev, trip: value}))}
+                >
+                    <ToggleButton value="oneway">{t("oneway")}</ToggleButton>
+                    <ToggleButton value="roundtrip">{t("roundtrip")}</ToggleButton>
+                    {/* <ToggleButton value="multi">{t("multicity")}</ToggleButton> */}
+                </ToggleButtonGroup>
+            </Stack>
             <Box sx={{
                 display: "flex",
-                justifyContent: "space-evenly",
+                justifyContent: "space-between",
                 flexDirection: "column",
-                px: {xs: 0, md: 30},
                 mt: 4,
                 gap: 3,
             }}>
-                <Stack>
-                    <ToggleButtonGroup
-                        color='primary'
-                        fullWidth
-                        size='medium'
-                        value={searchData.trip}
-                        exclusive
-                        onChange={(event, value) => value !== null && setSearchData(prev => ({...prev, trip: value}))}
-                    >
-                        <ToggleButton value="oneway">{t("oneway")}</ToggleButton>
-                        <ToggleButton value="roundtrip">{t("roundtrip")}</ToggleButton>
-                        <ToggleButton value="multi">{t("multicity")}</ToggleButton>
-                    </ToggleButtonGroup>
-                </Stack>
-
                 <Stack direction="row" spacing={3}>
                     <Autocomplete
                         fullWidth
@@ -234,9 +227,7 @@ function SearchFlightBox() {
                             />
                         )}
                     />
-                </Stack>
 
-                <Stack direction="row" spacing={3}>
                     <LocalizationProvider dateAdapter={AdapterDayjs}>
                         <DesktopDatePicker
                             disablePast
@@ -256,9 +247,6 @@ function SearchFlightBox() {
 
                         />
                     </LocalizationProvider>}
-                </Stack>
-
-                <Stack direction="row" spacing={3}>
 
                     <InputField
                         ref={anchorRef}
@@ -328,8 +316,8 @@ function SearchFlightBox() {
                         <MenuItem value="firstclass">{t("first")}</MenuItem>
                     </InputField>
                 </Stack>
-                <Stack>
-                    <BlueButton size='large' disabled={seachLoading} onClick={triggerSearch}>
+                <Stack alignItems="center">
+                    <BlueButton size='large'  disabled={seachLoading} onClick={triggerSearch}>
                         <FiSend/>
                         {t("showFlights")}
                     </BlueButton>

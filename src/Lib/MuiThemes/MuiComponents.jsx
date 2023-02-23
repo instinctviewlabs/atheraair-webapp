@@ -1,5 +1,5 @@
 import React from 'react';
-import { Button, styled, Card, TextField, Box, Typography, Avatar, FormControlLabel, Menu,  } from '@mui/material';
+import { Button, styled, Card, TextField, Box, Typography, Avatar, FormControlLabel, Menu, ToggleButtonGroup, ToggleButton,  } from '@mui/material';
 import { appleColorIcon, normalLogo, facebookColorIcon, googleColorIcon, transparentLogo } from '../../Assests/assets';
 import { LoadingButton } from '@mui/lab';
 
@@ -252,3 +252,29 @@ export const ReuseMenu = (props) => {
         </Menu>
     )
 }
+
+export const StyledToggleButtonGroup = styled(ToggleButtonGroup)(({ theme }) => ({
+    '& .MuiToggleButtonGroup-grouped': {
+      margin: theme.spacing(1),
+      padding: 0,
+      border: 0,
+    //   '&.Mui-disabled': {
+    //     border: 0,
+    //   },
+      '&:not(:first-of-type)': {
+        borderRadius: theme.shape.borderRadius,
+      },
+      '&:first-of-type': {
+        borderRadius: theme.shape.borderRadius,
+      },
+    },
+  }));
+
+export const StyledToggleButton = styled(ToggleButton)(({theme}) => ({
+    display: "flex",
+    flexDirection: "column",
+    outlineColor: theme.palette.text.main, 
+    outlineWidth: '1px', 
+    outlineStyle: 'solid', 
+    margin: '2px'
+})) 
