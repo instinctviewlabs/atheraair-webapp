@@ -14,7 +14,6 @@ function UserDetails() {
   const {menu, openMenu, closeMenu} = useMenu();
   const [userDetailsData, setUserDetailsData] = useState([]);
   const [isLoading, startLoading, restLoading] = LoaderConsumer();
-  const userDetailsRef = useRef(false);
   const [isDataFetchError, setDataFetchError] = useState(false);
   const { showSnackBar } = useSnackBar();
 
@@ -147,7 +146,6 @@ function UserDetails() {
 
   useEffect(() => {
     const controller = axios.CancelToken.source();
-    if(userDetailsRef.current){
       (async () => {
         try{
           startLoading();
@@ -168,10 +166,8 @@ function UserDetails() {
           restLoading();
         }
       })();
-    }
 
     return () => {
-      userDetailsRef.current = true;
       controller.cancel();
     }
   },[])
