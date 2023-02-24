@@ -110,42 +110,41 @@ export default function Navbar({auth, profile}){
             </Box>
             <TitleLogo/>
             <Box display="flex" flexDirection="row" alignItems="center" gap="10px">
-            <Autocomplete
-                sx={{width: 200}}
-                fullWidth
-                options={countries}
-                autoHighlight
-                getOptionLabel={(option) => option.label}
-                isOptionEqualToValue={(option, value) => true}
-                renderOption={(props, option) => (
-                    <Box component="li" sx={{ '& > img': { mr: 2, flexShrink: 0 } }} {...props}>
-                    <img
-                        loading="lazy"
-                        width="20"
-                        src={`https://flagcdn.com/w20/${option.code.toLowerCase()}.png`}
-                        srcSet={`https://flagcdn.com/w40/${option.code.toLowerCase()}.png 2x`}
-                        alt=""
-                    />
-                    {option.label} 
-                    {/* ({option.code}) +{option.phone} */}
-                    </Box>
-                )}
-                renderInput={(params) => (
-                    <InputField
-                    {...params}
-                    size="small"
-                    variant="outlined"
-                    label="Choose a country"
-                    inputProps={{
-                        ...params.inputProps,
-                        autoComplete: 'off', // disable autocomplete and autofill
-                    }}
+                <Autocomplete
+                    sx={{width: 200}}
+                    fullWidth
+                    options={countries}
+                    autoHighlight
+                    getOptionLabel={(option) => option.label}
+                    isOptionEqualToValue={(option, value) => true}
+                    renderOption={(props, option) => (
+                        <Box component="li" sx={{ '& > img': { mr: 2, flexShrink: 0 } }} {...props}>
+                        <img
+                            loading="lazy"
+                            width="20"
+                            src={`https://flagcdn.com/w20/${option.code.toLowerCase()}.png`}
+                            srcSet={`https://flagcdn.com/w40/${option.code.toLowerCase()}.png 2x`}
+                            alt=""
+                        />
+                        {option.label} 
+                        {/* ({option.code}) +{option.phone} */}
+                        </Box>
+                    )}
+                    renderInput={(params) => (
+                        <InputField
+                        {...params}
+                        size="small"
+                        variant="standard"
+                        inputProps={{
+                            ...params.inputProps,
+                            autoComplete: 'off', // disable autocomplete and autofill
+                        }}
                     />
                 )}
                 />
-                <IconButton color='primary' onClick={() => dispatch(setTheme())}>
+                {/* <IconButton color='primary' onClick={() => dispatch(setTheme())}>
                     {theme ? <BiMoon/> : <BiSun/>}
-                </IconButton>
+                </IconButton> */}
                 {auth.auth && ( auth.role === "admin" || auth.role === "user" ) ? <UserNavbar auth={auth} profile={profile}/> :
 
                 <>

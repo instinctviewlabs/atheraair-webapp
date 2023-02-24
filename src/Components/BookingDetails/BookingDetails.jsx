@@ -1,16 +1,17 @@
 import React, { useState } from 'react';
-import { Box, Divider, FormControl, Radio, RadioGroup, Stack, Typography } from '@mui/material';
+import { Box, Divider, FormControl, Link, Radio, RadioGroup, Stack, Typography } from '@mui/material';
 import FlightDetailsCard from '../ReusableComponents/FlightDetailsCard';
 import { AnchorText, BlueButton, StyledRadioControl, WhiteCard } from '../../Lib/MuiThemes/MuiComponents';
-import { emiratesFlight } from '../../Assests/assets';
-import ChoosePaymentMethod from './BookingDetailsFragments/ChoosePaymentMethod';
+import { emiratesAirlineLogo, emiratesFlight } from '../../Assests/assets';
+import BookingOptions from './BookingDetailsFragments/BookingOptions';
+import TravellerDetailsCard from './BookingDetailsFragments/TravellerDetailsCard';
+import SendBookingDetailsTo from './BookingDetailsFragments/SendBookingDetailsTo';
+import { HiArrowNarrowRight } from 'react-icons/hi';
+import { Timeline, TimelineConnector, TimelineContent, TimelineDot, TimelineItem, TimelineOppositeContent, TimelineSeparator } from '@mui/lab';
+// import ChoosePaymentMethod from './BookingDetailsFragments/ChoosePaymentMethod';
 
 function BookingDetails() {
-  const [paymentMethod, setPaymentMethod] = useState("Book myself");
-
-  function handlePaymentMethod(event){
-    setPaymentMethod(event.target.value);
-  }
+  
 
   return (
     <Box sx={{
@@ -18,39 +19,122 @@ function BookingDetails() {
         width: "auto",
         display: "flex",
         flexDirection: {xs: "column", md: "row"},
-        gap: 2,
         backgroundColor: "common.background",
+        gap: 3,
         px: {
             xs: 1,
             md: 10
         },
-        py: 1
+        py: 5   
     }}>
         <Box 
             display="flex"
             flexDirection="column"
             gap={2}
-            flex={2} 
-            px={{
-                xs: 0,
-                md: 3
-            }}
+            flex={3} 
         >
-            <FlightDetailsCard></FlightDetailsCard>
-            <ChoosePaymentMethod></ChoosePaymentMethod>
+            <WhiteCard>
+                <Stack width="100%" spacing={3}>
+                    <Stack direction="row" alignItems="center" spacing={{xs: 2, sm: 5}}>
+                        <Box>
+                            <Typography color="text.main" variant='h5'>London</Typography>
+                        </Box>
+                        {/* <Divider orientation='horizontal' sx={{width: {xs: 50, sm: 150}, color: "text.main"}}></Divider> */}
+                        <HiArrowNarrowRight/>
+                        <Box>
+                            <Typography color="text.main" variant='h5'>Chennai</Typography>
+                        </Box>
+                    </Stack>
+                    {/* <Stack direction="row" justifyContent="space-between">
+                        <Typography variant='h6' color="text.main">Return Wed, Dec 8</Typography>
+                        <Typography variant='body1' color="text.main">2h 28m</Typography>
+                    </Stack> */}
+                    <Stack direction="row" justifyContent="space-between" alignItems="center">
+                        <Stack direction="row" spacing={2} alignItems="center">
+                            <Box sx={{
+                                backgroundColor: "veryLightBlue.main",
+                                borderRadius: 2,
+                                p: "5px"
+                            }}>
+                                <Typography variant='subtitle1'>Wednesday, Feb 22</Typography>
+                            </Box>
+                            <Box>
+                                <Typography variant='subtitle2'>Non-stop</Typography>
+                            </Box>
+                            <Box>
+                                <Typography variant='subtitle2'>3h 30m</Typography>
+                            </Box>
+                        </Stack>
+                        <Link><Typography variant='body1'>View fare rules</Typography></Link>
+                    </Stack>
+                    <Stack direction="row" justifyContent="space-between" alignItems="center">
+                        <Stack direction={{xs: "column", sm: "row"}} spacing={3} alignItems="center">
+                            <Box sx={{height: "70px", width: "100px"}}>
+                                <img src={emiratesAirlineLogo} alt="img" height="100%" width="100%" style={{objectFit: "cover"}} />
+                            </Box>
+                            <Typography variant='h5' color="text.main">Emirates</Typography>
+                            <Typography variant='subtitle2'>A380 Airbus</Typography>
+                        </Stack>
+                        <Typography variant='body1'>Business</Typography>
+                    </Stack>
+                    <Stack direction="row" justifyContent="space-between">
+                        <Timeline position="right" sx={{padding: 0, m: 0}}>
+                            <TimelineItem>
+                                <TimelineOppositeContent sx={{flex: 0}}>4:00 </TimelineOppositeContent>
+                                <TimelineSeparator>
+                                    <TimelineDot color='primary' />
+                                    <TimelineConnector sx={{height: 70}} />
+                                </TimelineSeparator>
+                                <TimelineContent>
+                                    <Typography variant='h6'>Delhi - DEL</Typography>  
+                                    <Typography variant='subtitle1'>Indira Gandhi International Airport</Typography>  
+                                </TimelineContent>
+                            </TimelineItem>
+                            <TimelineItem>
+                                <TimelineOppositeContent sx={{flex: 0}}>12:00</TimelineOppositeContent>
+                                <TimelineSeparator>
+                                    <TimelineDot color="primary" />
+                                </TimelineSeparator>
+                                <TimelineContent>
+                                    <Typography variant='h6'> Tiruchirapalli - TRZ</Typography>  
+                                    <Typography variant='subtitle1'>Tiruchirapalli International Airport</Typography>  
+                                </TimelineContent>
+                            </TimelineItem>
+                        </Timeline>
+                        <Stack direction="row" spacing={5}>
+                            <Stack alignItems="center">
+                                <Typography variant='subtitle2'>Baggage</Typography>
+                                <Typography variant='body1'>Adult</Typography>
+                            </Stack>
+                            <Stack alignItems="center">
+                                <Typography variant='subtitle2'>Check-in</Typography>
+                                <Typography variant='body1'>30 Kgs</Typography>
+                            </Stack>
+                            <Stack alignItems="center">
+                                <Typography variant='subtitle2'>Cabin</Typography>
+                                <Typography variant='body1'>7 Kgs</Typography>
+                            </Stack>
+                        </Stack>
+                    </Stack>
+                </Stack>
+            </WhiteCard>
+            {/* <ChoosePaymentMethod></ChoosePaymentMethod> */}
+            <BookingOptions/>
+            <Stack direction="row" spacing={2} justifyContent="space-between">
+                <TravellerDetailsCard/>
+                <SendBookingDetailsTo/>
+            </Stack>
+            
         </Box>
         <Box
             flex={2} 
             display="flex"
             flexDirection="column"
             gap={3}
-            px={{
-                xs: 0,
-                md: 3
-            }}
         >
             <WhiteCard>
                 <Stack spacing={3}>
+                    <Typography variant='h4'>Fare summary</Typography>
                     <Box sx={{
                         display: "flex", 
                         alignItems: "center", 
@@ -104,39 +188,8 @@ function BookingDetails() {
                         <AnchorText variant='h6'>$400</AnchorText>
                     </Stack>
                 </Stack>
+                <BlueButton sx={{my: 1}} fullWidth>Continue</BlueButton>
             </WhiteCard>
-            <WhiteCard>
-                <FormControl fullWidth>
-                    <RadioGroup
-                        sx={{gap: 2}}
-                        value={paymentMethod}
-                        onChange={handlePaymentMethod}
-                    >
-                        <StyledRadioControl
-                            value="Book myself" 
-                            control={<Radio />} 
-                            label={
-                                <>
-                                <Typography variant='h6' color="text.main">Book Myself</Typography>
-                                <Typography variant='subtitle1' color="text.main">Pay the total fair by yourself</Typography>
-                                </>
-                            } 
-                        />
-                        <Divider></Divider>
-                        <StyledRadioControl 
-                            value="Book through admin" 
-                            control={<Radio />} 
-                            label={
-                                <>
-                                <Typography variant='h6' color="text.main">Book through admin</Typography>
-                                <Typography variant='subtitle1' color="text.main">Pay $207.43 now, and the rest ($207.43) will be automatically charged to the same payment method on Nov 14, 2022. No extra fees</Typography>
-                                </>
-                            }
-                        />
-                    </RadioGroup>
-                </FormControl>
-            </WhiteCard>
-            <BlueButton sx={{my: 1}} fullWidth>Pay</BlueButton>
         </Box>
     </Box>
   )
