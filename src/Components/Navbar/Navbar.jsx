@@ -110,7 +110,7 @@ export default function Navbar({auth, profile}){
             </Box>
             <TitleLogo/>
             <Box display="flex" flexDirection="row" alignItems="center" gap="10px">
-                <Autocomplete
+                {/* <Autocomplete
                     sx={{width: 200}}
                     fullWidth
                     options={countries}
@@ -124,11 +124,10 @@ export default function Navbar({auth, profile}){
                             width="20"
                             src={`https://flagcdn.com/w20/${option.code.toLowerCase()}.png`}
                             srcSet={`https://flagcdn.com/w40/${option.code.toLowerCase()}.png 2x`}
-                            alt=""
+                            alt="img"
                         />
-                        {option.label} 
-                        {/* ({option.code}) +{option.phone} */}
-                        </Box>
+                        {option.label} ({option.code}) +{option.phone} */}
+                        {/* </Box>
                     )}
                     renderInput={(params) => (
                         <InputField
@@ -141,7 +140,7 @@ export default function Navbar({auth, profile}){
                         }}
                     />
                 )}
-                />
+                /> */}
                 {/* <IconButton color='primary' onClick={() => dispatch(setTheme())}>
                     {theme ? <BiMoon/> : <BiSun/>}
                 </IconButton> */}

@@ -31,31 +31,34 @@ const style = {
   flexDirection: "column"
 };
 
-export default function AddPassengerModal({open, setOpen}) {
+export default function AddPassengerModal(props) {
 
   const { auth } = useSelector(data => data.persistedReducer);
   const dispatch = useDispatch();
   const [isLoading, startLoading, restLoading] = LoaderConsumer();
   const { showSnackBar } = useSnackBar();
   const userId = auth.userId;
-  const [isDataValidated, setDataValidated] = useState({name: false, email: false, dob: false});
+  const [isDataValidated, setDataValidated] = useState({name: false, email: false, gender: false, dob: false});
   const [passengerDetails, setPassengerDetails] = useState({
-    name: "",
-    email: "",
-    dob: "",
-    gender: "Unknown",
-    nationality: "",
-    passportNumber: "",
-    expiryDate: "",
-    issuingCountry: ""
-  })
+    name: props.name,
+    email: props.email,
+    dob: props.dob,
+    gender: props.gender,
+    nationality: props.nationality,
+    passportNumber: props.passportNumber,
+    expiryDate: props.expiryDate,
+    issuingCountry: props.issuingCountry
+  });
 
+  console.log(passengerDetails);
+  
   /****************************Handling changes**************************** */
 
   function handleChanges(event){
     const {name, value} = event.target;
 
-    setPassengerDetails(prevState => ({...prevState, [name]: value}))
+    setPassengerDetails(prevState => ({...prevState, [name]: value}));
+    setDataValidated(prevState => ({...prevState, [name]: false}));
   }
 
   /****************************Form validation functions*******************************/
@@ -71,6 +74,11 @@ export default function AddPassengerModal({open, setOpen}) {
 
     if(passengerDetails.email.length === 0 || !/^(("[\w-\s]+")|([\w-]+(?:\.[\w-]+)*)|("[\w-\s]+")([\w-]+(?:\.[\w-]+)*))(@((?:[\w-]+\.)*\w[\w-]{0,66})\.([a-z]{2,6}(?:\.[a-z]{2})?)$)|(@\[?((25[0-5]\.|2[0-4][0-9]\.|1[0-9]{2}\.|[0-9]{1,2}\.))((25[0-5]|2[0-4][0-9]|1[0-9]{2}|[0-9]{1,2})\.){2}(25[0-5]|2[0-4][0-9]|1[0-9]{2}|[0-9]{1,2})\]?$)/i.test(passengerDetails.email)){
         setDataValidated(prev => ({...prev, email: true}))
+        isValidated = false;
+    }
+
+    if(passengerDetails.gender === ""){
+        setDataValidated(prev => ({...prev, gender: true}))
         isValidated = false;
     }
     
@@ -125,7 +133,7 @@ export default function AddPassengerModal({open, setOpen}) {
         if(response.status === 200){
             const getuser = await axios.post(`${BASE_URL}/getUser`,{userId});
             dispatch(setUserDetails(getuser.data));
-            setOpen(false);
+            props.setOpen(false);
         }
     }catch(error){
         console.error(error)
@@ -138,8 +146,8 @@ export default function AddPassengerModal({open, setOpen}) {
   return (
     <Box>
       <Modal
-        open={open}
-        onClose={() => setOpen(false)}
+        open={props.open}
+        onClose={() => props.setOpen(false)}
         aria-labelledby="modal-modal-title"
         aria-describedby="modal-modal-description"
       >
@@ -154,7 +162,7 @@ export default function AddPassengerModal({open, setOpen}) {
             <Box sx={style}>
                 <Stack direction="row" alignItems="center" justifyContent="space-between">
                     <Typography variant='h4'>Add traveller</Typography>
-                    <IconButton onClick={() => setOpen(false)}>
+                    <IconButton onClick={() => props.setOpen(false)}>
                         <Close></Close>
                     </IconButton>
                 </Stack>
@@ -194,8 +202,11 @@ export default function AddPassengerModal({open, setOpen}) {
                         label="Gender"
                         value={passengerDetails.gender}
                         onChange={handleChanges}
+                        error={isDataValidated.gender}
+                        helperText={isDataValidated.gender && "Please enter gender"}
                     >
-                        <MenuItem value="Unknown">Unknown</MenuItem>
+                        
+                        <MenuItem value="">Select Gender</MenuItem>
                         <MenuItem value="Male">Male</MenuItem>
                         <MenuItem value="Female">Female</MenuItem>
                     </InputField>
@@ -279,4 +290,15 @@ export default function AddPassengerModal({open, setOpen}) {
       </Modal>
     </Box>
   );
+}
+
+AddPassengerModal.defaultProps = {
+    name: "",
+    email: "",
+    dob: "",
+    gender: "",
+    nationality: "",
+    passportNumber: "",
+    expiryDate: "",
+    issuingCountry: ""
 }

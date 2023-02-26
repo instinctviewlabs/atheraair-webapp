@@ -38,7 +38,11 @@ function Profile() {
       }finally{
         restLoading();
       }
-    })()
+    })();
+
+    return () => {
+      controller.cancel();
+    }
   }, []);
 
   return (

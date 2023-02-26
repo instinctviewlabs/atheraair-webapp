@@ -19,6 +19,7 @@ import TicketDetails from '../Components/TicketDetails/TicketDetails';
 import TripDetails from '../Components/AdminComponents/TripDetails/TripDetails';
 import UserDetails from '../Components/AdminComponents/UserDetails/UserDetails';
 import AddServiceCharge from '../Components/Profile/ProfileFragments/AddServiceCharge';
+import SeatSelection from '../Components/BookingDetails/SeatSelection/SeatSelection';
 const Login = lazy(() => import("../Components/LoginPages/Login"));
 const Signup = lazy(() => import("../Components/LoginPages/Signup"));
 const ForgotPassword = lazy(() => import("../Components/LoginPages/ForgotPassword"));
@@ -42,6 +43,7 @@ function AppRoutes() {
         <Route path="/flightslist" element={<FlightListingsLayout/>}/>
         <Route path="/flightdetails" element={<FlightDetailPage/>} />
         <Route path="/bookingdetails" element={<BookingDetails/>} />
+        <Route path="/seatmap" element={<SeatSelection/>} />
         <Route path='/ticket' element={<TicketDetails/>} />
         <Route element={<UserRoutes/>}>
           <Route path="profile" element={<Profile/>}>
