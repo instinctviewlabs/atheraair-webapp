@@ -1,6 +1,5 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import Box from '@mui/material/Box';
-import Button from '@mui/material/Button';
 import Typography from '@mui/material/Typography';
 import Modal from '@mui/material/Modal';
 import { BlueButton, InputField, WhiteCard } from '../../../Lib/MuiThemes/MuiComponents';
@@ -31,24 +30,29 @@ const style = {
   flexDirection: "column"
 };
 
-export default function AddPassengerModal(props) {
-
+export default function EditPassengerModal(props) {
+    
+  const constantTravellerDetails = props.travellerDetails;
   const { auth } = useSelector(data => data.persistedReducer);
   const dispatch = useDispatch();
   const [isLoading, startLoading, restLoading] = LoaderConsumer();
   const { showSnackBar } = useSnackBar();
   const userId = auth.userId;
   const [isDataValidated, setDataValidated] = useState({name: false, email: false, gender: false, dob: false});
-  const [passengerDetails, setPassengerDetails] = useState({
-    name: "",
-    email: "",
-    dob: "",
-    gender: "",
-    nationality: "",
-    passportNumber: "",
-    expiryDate: "",
-    issuingCountry: ""
-  });
+  const [passengerDetails, setPassengerDetails] = useState({});
+
+  useEffect(() => {
+    setPassengerDetails({
+        name: props.travellerDetails.name,
+        email: props.travellerDetails.email,
+        dob: props.travellerDetails.dob,
+        gender: props.travellerDetails.gender,
+        nationality: props.travellerDetails.nationality,
+        passportNumber: props.travellerDetails.passportNumber,
+        expiryDate: props.travellerDetails.expiryDate,
+        issuingCountry: props.travellerDetails.issuingCountry
+    })
+  },[props.travellerDetails]);
 
 //   console.log(passengerDetails);
   
@@ -86,40 +90,13 @@ export default function AddPassengerModal(props) {
         setDataValidated(prev => ({...prev, dob: true}))
         isValidated = false;
     }
-
-    // if(profileData.number.length !== 10){
-    //     setDataValidated(prev => ({...prev, number: true}))
-    //     isValidated = false;
-    // }
-
-
-    // if(profileData.nationality.length === 0){
-    //     setDataValidated(prev => ({...prev, nationality: true}))
-    //     isValidated = false;
-    // }
-
-    // if(profileData.passportNumber.length === 0){
-    //     setDataValidated(prev => ({...prev, passportNumber: true}))
-    //     isValidated = false;
-    // }
-
-    // if(profileData.expiryDate.length === 0){
-    //     setDataValidated(prev => ({...prev, expiryDate: true}))
-    //     isValidated = false;
-    // }
-
-    // if(profileData.issuingCountry.length === 0){
-    //     setDataValidated(prev => ({...prev, issuingCountry: true}))
-    //     isValidated = false;
-    // }
-
     
     return isValidated;
   }
 
   /**************************API call : Add master passenger *******************************/
 
-  async function addTraveller(){
+  async function EditTraveller(){
     if(!handleDataValidation()){
         return showSnackBar("error", "Please fill the mandatory fields")
     }
@@ -127,13 +104,28 @@ export default function AddPassengerModal(props) {
         startLoading();
         const response = await axios({
             method: "post",
-            url: `${BASE_URL}/addTraveller`,
-            data: {userId, ...passengerDetails}
+            url: `${BASE_URL}/removeTraveller`,
+            data: {userId, ...constantTravellerDetails}
         })
+        
         if(response.status === 200){
-            const getuser = await axios.post(`${BASE_URL}/getUser`,{userId});
-            dispatch(setUserDetails(getuser.data));
-            props.setOpen(false);
+            const addTraveller = await axios({
+                method: "post",
+                url: `${BASE_URL}/addTraveller`,
+                data: {userId, ...passengerDetails}
+            });
+            if(addTraveller.status === 200){
+                const getuser = await axios({
+                    method: "post",
+                    url: `${BASE_URL}/getUser`,
+                    data: { userId }
+                })
+                if(getuser.status === 200){
+                    dispatch(setUserDetails(getuser.data));
+                    props.setOpen(false);
+                }
+            }
+            
         }
     }catch(error){
         console.error(error)
@@ -147,7 +139,9 @@ export default function AddPassengerModal(props) {
     <Box>
       <Modal
         open={props.open}
-        onClose={() => props.setOpen(false)}
+        onClose={() => {
+            props.setOpen(false)
+        }}
         aria-labelledby="modal-modal-title"
         aria-describedby="modal-modal-description"
       >
@@ -161,7 +155,7 @@ export default function AddPassengerModal(props) {
             }}> */}
             <Box sx={style}>
                 <Stack direction="row" alignItems="center" justifyContent="space-between">
-                    <Typography variant='h4'>Add traveller</Typography>
+                    <Typography variant='h4'>Edit traveller details</Typography>
                     <IconButton onClick={() => props.setOpen(false)}>
                         <Close></Close>
                     </IconButton>
@@ -282,8 +276,8 @@ export default function AddPassengerModal(props) {
                     />
                 </Stack>
                 <Stack>
-                    <BlueButton loading={isLoading} onClick={addTraveller} size='large'>
-                        Add passenger
+                    <BlueButton loading={isLoading} onClick={EditTraveller} size='large'>
+                        Save
                     </BlueButton>
                 </Stack>
             </Box>
@@ -291,14 +285,3 @@ export default function AddPassengerModal(props) {
     </Box>
   );
 }
-
-// AddPassengerModal.defaultProps = {
-//     name: "",
-//     email: "",
-//     dob: "",
-//     gender: "",
-//     nationality: "",
-//     passportNumber: "",
-//     expiryDate: "",
-//     issuingCountry: ""
-// }
