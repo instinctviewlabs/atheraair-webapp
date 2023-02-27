@@ -66,7 +66,7 @@ function Seat(props){
         // </div>
         <Checkbox
             sx={style}
-            value={"hello"}
+            value={props.number}
             onChange={(e) => console.log(e.target.value)}
             disabled={props.availability === "BLOCKED"} 
             icon={<Typography>{props.number}</Typography>} 

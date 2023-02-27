@@ -24,7 +24,7 @@ import useCounter from '../../Lib/CustomHooks/useCounter';
 import { useTranslation } from 'react-i18next';
 
 
-function SearchFlightBox() {
+function SearchFlightBox(props) {
 
   /************************** States and Variables ******************************/  
   
@@ -43,7 +43,9 @@ function SearchFlightBox() {
 //   const [seachLoading, startSearchLoading, restSearchLoading] = useLoader();
   const [searchData, setSearchData] = useState({
     origin: "",
+    originName: "",
     desination: "",
+    destinationName: "",
     trip: "oneway",
     departureDate: moment().format("YYYY-MM-DD"),
     returnDate: moment().format("YYYY-MM-DD"),
@@ -116,12 +118,13 @@ function SearchFlightBox() {
 
   async function triggerSearch(){
     if(searchData.origin === "" || searchData.desination === ""){
-        console.error("please fill the required field");
+        // console.error("please fill the required field");
         return showSnackBar("error", "Unable to search flight without from and to")
     }
 
-    dispatch(getFlightsData({...searchData, adultCount, childrenCount,infantCount}));
+    dispatch(getFlightsData({...searchData, adultCount, childrenCount, infantCount}));
     navigate("/flightslist");
+    window.location.reload();
     // try{
     //     startSearchLoading();
     //     const controller = axios.CancelToken.source();
@@ -144,11 +147,12 @@ function SearchFlightBox() {
         backgroundColor: "common.background",
         px: {
             xs: 1,
-            sm: 15
+            sm: props.px
         },
-        py: 5
+        // py: 5
+        py: 1
     }}>
-        <Box sx={{position: "relative", top: -150, zIndex: 2}}>
+        <Box sx={{position: "relative", top: props.top, zIndex: 2}}>
         <WhiteCard>
             <Stack direction="row" justifyContent="space-between" alignItems="center">
                 <Typography variant='h5' color="text.main">
@@ -178,7 +182,7 @@ function SearchFlightBox() {
                     <Autocomplete
                         fullWidth
                         loading={isLoading}
-                        onChange={(event, newVal) => setSearchData(prev => ({...prev, origin: newVal ? newVal.iataCode : ""}))}
+                        onChange={(event, newVal) => setSearchData(prev => ({...prev, origin: newVal.iataCode ? newVal.iataCode : "", originName: newVal.name ? newVal.name: ""}))}
                         size="medium"
                         options={originKey.options}
                         getOptionLabel={(option) => `${capitalize(option.name)} - ${option.iataCode}` || ""}
@@ -204,7 +208,7 @@ function SearchFlightBox() {
                     <Autocomplete
                         fullWidth
                         loading={isLoading}
-                        onChange={(event, newVal) => setSearchData(prev => ({...prev, desination: newVal ? newVal.iataCode : ""}))}
+                        onChange={(event, newVal) => setSearchData(prev => ({...prev, desination: newVal.iataCode ? newVal.iataCode : "", destinationName: newVal.name ? newVal.name : ""}))}
                         size="medium"
                         options={destinationKey.options}
                         getOptionLabel={(option) => `${capitalize(option.name)} - ${option.iataCode}` || ""}
@@ -315,8 +319,6 @@ function SearchFlightBox() {
                         <MenuItem value="business">{t("business")}</MenuItem>
                         <MenuItem value="firstclass">{t("first")}</MenuItem>
                     </InputField>
-                </Stack>
-                <Stack alignItems="center">
                     <BlueButton size='large'  disabled={seachLoading} onClick={triggerSearch}>
                         <FiSend/>
                         {t("showFlights")}

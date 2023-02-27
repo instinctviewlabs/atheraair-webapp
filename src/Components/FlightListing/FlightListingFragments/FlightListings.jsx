@@ -4,6 +4,7 @@ import FlightSortingTabs from "./FlightSortingTabs";
 import { AnchorText, BlackButtonOutlined } from "../../../Lib/MuiThemes/MuiComponents";
 import FlightListCard from "./FlightListCard";
 import { MdOutlineKeyboardArrowDown } from "react-icons/md";
+import FromToCard from "./FromToCard";
 
 function FlightListings({cardData, isLoading}){
 
@@ -25,7 +26,8 @@ function FlightListings({cardData, isLoading}){
             minHeight: "100vh",
             flex: 3,
         }}>
-            <FlightSortingTabs></FlightSortingTabs>
+            {/* <FlightSortingTabs></FlightSortingTabs> */}
+            <FromToCard></FromToCard>
             <Box sx={{
                 display: "flex",
                 alignItems: "center",

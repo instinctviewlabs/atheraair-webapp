@@ -21,7 +21,7 @@ function FlightSearch() {
           src={homeBanner} 
           alt="banner" />
       </Box>
-      <SearchFlightBox></SearchFlightBox>
+      <SearchFlightBox px={15} top={-100}></SearchFlightBox>
     </>
   )
 }

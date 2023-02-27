@@ -7,6 +7,7 @@ import axios from 'axios';
 import { LoaderConsumer } from '../../Lib/Contexts/LoaderContext';
 import { BASE_URL } from '../../Lib/Axios/AxiosConfig';
 import FromToCard from './FlightListingFragments/FromToCard';
+import SearchFlightBox from '../ReusableComponents/SearchFlightBox';
 
 function FlightListingsLayout() {
 
@@ -56,7 +57,7 @@ function FlightListingsLayout() {
       },
       py: 3
     }}>
-      <FromToCard></FromToCard>
+      <SearchFlightBox px={0} top={0}></SearchFlightBox>
       <Box sx={{
           height: "auto",
           width: "auto",
