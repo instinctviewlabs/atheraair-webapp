@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { 
     Typography, 
     Badge,
@@ -24,6 +24,7 @@ import useSwitch from '../../Lib/CustomHooks/useSwitch';
 import useLanguageConsumer from '../../Lib/CustomHooks/useLanguageConsumer';
 import { useTranslation } from 'react-i18next';
 import { countries } from '../../Lib/Countries/countries';
+import SelectCountryDialog from './SelectCountryDialog';
 
 function UserNavbar({auth, profile}) {
 
@@ -31,8 +32,10 @@ function UserNavbar({auth, profile}) {
     const dispatch = useDispatch();
     const {menu, openMenu, closeMenu} = useMenu();
     const [toggle, setToggle] = useSwitch();
-    const {language, setLanguage} = useLanguageConsumer()
-    const {i18n} = useTranslation()
+    const {language, setLanguage} = useLanguageConsumer();
+    const [openCountryDialog, setOpenCountryDialog] = useState(false);
+    const { country } = useLanguageConsumer();
+    
 
     function logout(){
         dispatch(logoutUser());
@@ -42,7 +45,7 @@ function UserNavbar({auth, profile}) {
 
     return (
     <>
-        <Typography variant='h6' color="text.main">{language}</Typography>
+        <Typography variant='h6' color="text.main">{country} - {language.toUpperCase()}</Typography>
         <Badge
             overlap="circular"
             anchorOrigin={{ vertical: 'top', horizontal: 'right' }}
@@ -69,7 +72,16 @@ function UserNavbar({auth, profile}) {
                 <ListItemText primary={<Typography variant='subtitle1'>Country</Typography>} />
             </ListItemButton> */}
             <Divider></Divider>
-
+            <ListItemButton onClick={(e) => {
+                e.stopPropagation();
+                setOpenCountryDialog(true);
+            }}>
+                <ListItemIcon>
+                    <Public />
+                </ListItemIcon>
+                <ListItemText primary={<Typography variant='subtitle1'>Change Country</Typography>} />
+            </ListItemButton>
+            <Divider></Divider>
             <ListItemButton onClick={(e) => {
                 e.stopPropagation();
                 setToggle();
@@ -84,19 +96,16 @@ function UserNavbar({auth, profile}) {
                 <List component="div" disablePadding>
                     <ListItemButton sx={{ pl: 4 }} onClick={() => {
                         setLanguage("en")
-                        // localStorage.setItem("i18nextLng", "en")
                     }}>
                         <ListItemText primary="English - en" />
                     </ListItemButton>
                     <ListItemButton sx={{ pl: 4 }} onClick={() => {
                         setLanguage("fr")
-                        // localStorage.setItem("i18nextLng", "fr")}
                     }}>
                         <ListItemText primary="French - fr" />
                     </ListItemButton>
                     <ListItemButton sx={{ pl: 4 }} onClick={() => {
                         setLanguage("es")
-                        localStorage.setItem("i18nextLng", "es")
                     }}>
                         <ListItemText primary="Spanish - es" />
                     </ListItemButton>
@@ -122,6 +131,7 @@ function UserNavbar({auth, profile}) {
                 <ListItemText primary={<Typography variant='subtitle1'>Logout</Typography>} />
             </ListItemButton>
         </ReuseMenu>
+        <SelectCountryDialog open={openCountryDialog} setOpen={setOpenCountryDialog}></SelectCountryDialog>
     </>
     )
 }

@@ -46,11 +46,11 @@ function FlightListings({cardData, isLoading}){
             }}>
                 {isLoading && 
                     <>
-                    <Skeleton variant="rounded" width="auto" height={200} />
-                    <Skeleton variant="rounded" width="auto" height={200} />
-                    <Skeleton variant="rounded" width="auto" height={200} />
-                    <Skeleton variant="rounded" width="auto" height={200} />
-                    <Skeleton variant="rounded" width="auto" height={200} />
+                    <Skeleton variant="rounded" width="auto" height={120} />
+                    <Skeleton variant="rounded" width="auto" height={120} />
+                    <Skeleton variant="rounded" width="auto" height={120} />
+                    <Skeleton variant="rounded" width="auto" height={120} />
+                    <Skeleton variant="rounded" width="auto" height={120} />
                     </>
                 }
 

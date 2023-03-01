@@ -7,16 +7,23 @@ const LanguageContext = createContext();
 function LanguageContextProvider(props){
 
     const ln = localStorage.getItem("i18nextLng");
+    const cn = localStorage.getItem("country");
     const [language, setLanguage] = useState(ln);
+    const [country, setCountry] = useState(!!cn ? cn : "");
     const {i18n} = useTranslation();
 
     useEffect(() => {
         i18n.changeLanguage(language);
     }, [language])
 
+    useEffect(() => {
+        console.log("Setting country")
+        localStorage.setItem("country", country);
+    },[country])
+
 
     return(
-        <LanguageContext.Provider value={{language, setLanguage}}>
+        <LanguageContext.Provider value={{language, setLanguage, country, setCountry}}>
             {props.children}
         </LanguageContext.Provider>
     )

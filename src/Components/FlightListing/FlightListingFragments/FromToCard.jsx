@@ -25,12 +25,13 @@ function FromToCard() {
             </Stack>
           </Stack>
           <Divider sx={{height: 80}} orientation='vertical'></Divider>
-          <Stack direction="row" spacing={20} alignItems="center">
+          <Stack spacing={10} direction="row" alignItems="center">
             <Stack spacing={1}>
               <Typography color="text.main" variant='body1'>Depart</Typography>
               <Typography color="text.main" variant='body1'>{flightSearchKey.departureDate}</Typography>
             </Stack>
-            {flightSearchKey.trip === "roundtrip" && <Stack spacing={1}>
+            {flightSearchKey.trip === "twoway" && 
+            <Stack spacing={1}>
               <Typography color="text.main" variant='body1'>Return</Typography>
               <Typography color="text.main" variant='body1'>{flightSearchKey.returnDate}</Typography>
             </Stack>}
@@ -40,6 +41,13 @@ function FromToCard() {
             <Stack spacing={1} alignItems="center">
               <Typography color="text.main" variant='body1'>Passengers</Typography>
               <Typography color="text.main" variant='body1'>{passengerCount}</Typography>
+            </Stack>
+          </Stack>
+          <Divider sx={{height: 80}} orientation='vertical'></Divider>
+          <Stack direction="row" spacing={20} alignItems="center">
+            <Stack spacing={1} alignItems="center">
+              <Typography color="text.main" variant='body1'>Class</Typography>
+              <Typography color="text.main" variant='body1'>{flightSearchKey.class}</Typography>
             </Stack>
           </Stack>
         </Stack>

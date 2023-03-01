@@ -7,7 +7,7 @@ import axios from 'axios';
 import useLoader from '../../Lib/CustomHooks/useLoader';
 
 // ui imports
-import { Autocomplete, Box, Card, Checkbox, CircularProgress, IconButton, InputAdornment, Menu, MenuItem, Popper, Stack, ToggleButton, ToggleButtonGroup, Typography } from '@mui/material';
+import { Autocomplete, Box, Card, Checkbox, CircularProgress, ClickAwayListener, Grow, IconButton, InputAdornment, Menu, MenuItem, MenuList, Paper, Popper, Stack, ToggleButton, ToggleButtonGroup, Typography } from '@mui/material';
 import { BlueButton, InputField, WhiteCard } from '../../Lib/MuiThemes/MuiComponents';
 import {FiSend} from "react-icons/fi";
 import { DesktopDatePicker } from '@mui/x-date-pickers';
@@ -49,21 +49,45 @@ function SearchFlightBox(props) {
     trip: "oneway",
     departureDate: moment().format("YYYY-MM-DD"),
     returnDate: moment().format("YYYY-MM-DD"),
-    class: "economy"
+    class: "ECONOMY"
   });
 //   console.log(searchData);
 
 
   // popper
-  const anchorRef = useRef();
-  const [anchorEl, setAnchorEl] = React.useState(null);
+  const [open, setOpen] = React.useState(false);
+  const anchorRef = React.useRef(null);
 
-  const handleClick = (event) => {
-    setAnchorEl(anchorEl ? null : event.currentTarget);
+  const handleToggle = () => {
+    setOpen((prevOpen) => !prevOpen);
   };
 
-  const open = Boolean(anchorEl);
-//   console.log(anchorRef);
+  const handleClose = (event) => {
+    if (anchorRef.current && anchorRef.current.contains(event.target)) {
+      return;
+    }
+
+    setOpen(false);
+  };
+
+  function handleListKeyDown(event) {
+    if (event.key === 'Tab') {
+      event.preventDefault();
+      setOpen(false);
+    } else if (event.key === 'Escape') {
+      setOpen(false);
+    }
+  }
+
+  // return focus to the button when we transitioned from !open -> open
+  const prevOpen = React.useRef(open);
+  React.useEffect(() => {
+    if (prevOpen.current === true && open === false) {
+      anchorRef.current.focus();
+    }
+
+    prevOpen.current = open;
+  }, [open]);
 
   /**************API call : Flight suggestion for origin and destination****************/
 
@@ -167,7 +191,7 @@ function SearchFlightBox(props) {
                     onChange={(event, value) => value !== null && setSearchData(prev => ({...prev, trip: value}))}
                 >
                     <ToggleButton value="oneway">{t("oneway")}</ToggleButton>
-                    <ToggleButton value="roundtrip">{t("roundtrip")}</ToggleButton>
+                    <ToggleButton value="twoway">{t("roundtrip")}</ToggleButton>
                     {/* <ToggleButton value="multi">{t("multicity")}</ToggleButton> */}
                 </ToggleButtonGroup>
             </Stack>
@@ -241,7 +265,7 @@ function SearchFlightBox(props) {
                             onChange={(newValue) => newValue !== null && setSearchData(prev => ({...prev, departureDate: moment(newValue["$d"]).format("YYYY-MM-DD")}))}
                         />
                     </LocalizationProvider>
-                    {searchData.trip === "roundtrip" && <LocalizationProvider dateAdapter={AdapterDayjs}>
+                    {searchData.trip === "twoway" && <LocalizationProvider dateAdapter={AdapterDayjs}>
                         <DesktopDatePicker
                             disablePast
                             label={t("returnDate")}
@@ -257,53 +281,76 @@ function SearchFlightBox(props) {
                         fullWidth
                         size='medium'
                         label={t("passengers")}
-                        onClick={handleClick}
+                        onClick={handleToggle}
                         value={`${t("adult")} - ${adultCount}, ${t("children")} - ${childrenCount}, ${t("infants")} - ${infantCount}`}
                         // onChange={(e) => {
                         //     return e.target.value > 0 && e.target.value <= 9 ? setSearchData(prev => ({...prev, infants: e.target.value})) :  setSearchData(prev => ({...prev, infants: "0"}))
                         // }}
-                            
                     ></InputField>
-                    <Popper sx={{zIndex: 2}} open={open} anchorEl={anchorEl}>
-                        <Card sx={{px: 4}}>
-                            <Stack direction="row" py={1} gap={2} justifyContent="space-between" alignItems="center">
-                                <Typography>{t("adult")}</Typography>
-                                <Stack direction="row" spacing={1} alignItems="center">
-                                    <IconButton onClick={decreaseAdultCount}>
-                                    <RemoveCircleOutline/>
-                                    </IconButton>
-                                    <Typography>{adultCount}</Typography>
-                                    <IconButton onClick={increaseAdultCount}>
-                                        <AddCircleOutline></AddCircleOutline>
-                                    </IconButton>
-                                </Stack>
-                            </Stack>
-                            <Stack direction="row" py={1} gap={2} justifyContent="space-between" alignItems="center">
-                                <Typography>{t("children")}</Typography>
-                                <Stack direction="row" spacing={1} alignItems="center">
-                                    <IconButton onClick={decreaseChildrenCount}>
-                                    <RemoveCircleOutline/>
-                                    </IconButton>
-                                    <Typography>{childrenCount}</Typography>
-                                    <IconButton onClick={increaseChildrenCount}>
-                                        <AddCircleOutline></AddCircleOutline>
-                                    </IconButton>
-                                </Stack>
-                            </Stack>
-                            <Stack direction="row" py={1} gap={2} justifyContent="space-between" alignItems="center">
-                                <Typography>{t("infants")}</Typography>
-                                <Stack direction="row" spacing={1} alignItems='center'>
-                                    <IconButton onClick={decreaseInfantCount}>
-                                    <RemoveCircleOutline/>
-                                    </IconButton>
-                                    <Typography>{infantCount}</Typography>
-                                    <IconButton onClick={increaseInfantCount}>
-                                        <AddCircleOutline></AddCircleOutline>
-                                    </IconButton>
-                                </Stack>
-                            </Stack>
-                        </Card> 
-                    </Popper>
+                    <Popper
+                        open={open}
+                        anchorEl={anchorRef.current}
+                        role={undefined}
+                        placement="bottom-start"
+                        transition
+                        disablePortal
+                        >
+                        {({ TransitionProps, placement }) => (
+                            <Grow
+                            {...TransitionProps}
+                            style={{
+                                transformOrigin:
+                                placement === 'bottom-start' ? 'left top' : 'left bottom',
+                            }}
+                            >
+                            <Paper sx={{p: 2}}>
+                                <ClickAwayListener onClickAway={handleClose}>
+                                    <MenuList
+                                        autoFocusItem={open}
+                                        onKeyDown={handleListKeyDown}
+                                    >
+                                        <Stack direction="row" py={1} gap={2} justifyContent="space-between" alignItems="center">
+                                            <Typography>{t("adult")}</Typography>
+                                            <Stack direction="row" spacing={1} alignItems="center">
+                                                <IconButton onClick={decreaseAdultCount}>
+                                                <RemoveCircleOutline/>
+                                                </IconButton>
+                                                <Typography>{adultCount}</Typography>
+                                                <IconButton onClick={increaseAdultCount}>
+                                                    <AddCircleOutline></AddCircleOutline>
+                                                </IconButton>
+                                            </Stack>
+                                        </Stack>
+                                        <Stack direction="row" py={1} gap={2} justifyContent="space-between" alignItems="center">
+                                            <Typography>{t("children")}</Typography>
+                                            <Stack direction="row" spacing={1} alignItems="center">
+                                                <IconButton onClick={decreaseChildrenCount}>
+                                                <RemoveCircleOutline/>
+                                                </IconButton>
+                                                <Typography>{childrenCount}</Typography>
+                                                <IconButton onClick={increaseChildrenCount}>
+                                                    <AddCircleOutline></AddCircleOutline>
+                                                </IconButton>
+                                            </Stack>
+                                        </Stack>
+                                        <Stack direction="row" py={1} gap={2} justifyContent="space-between" alignItems="center">
+                                            <Typography>{t("infants")}</Typography>
+                                            <Stack direction="row" spacing={1} alignItems='center'>
+                                                <IconButton onClick={decreaseInfantCount}>
+                                                <RemoveCircleOutline/>
+                                                </IconButton>
+                                                <Typography>{infantCount}</Typography>
+                                                <IconButton onClick={increaseInfantCount}>
+                                                    <AddCircleOutline></AddCircleOutline>
+                                                </IconButton>
+                                            </Stack>
+                                        </Stack>
+                                    </MenuList>
+                                </ClickAwayListener>
+                            </Paper>
+                            </Grow>
+                        )}
+                        </Popper>
 
                     <InputField
                         fullWidth
@@ -315,9 +362,9 @@ function SearchFlightBox(props) {
                         InputProps={{ inputProps: { sx: { color: 'text.main' }}}}
 
                     >
-                        <MenuItem value="economy">{t("economy")}</MenuItem>
-                        <MenuItem value="business">{t("business")}</MenuItem>
-                        <MenuItem value="firstclass">{t("first")}</MenuItem>
+                        <MenuItem value="ECONOMY">{t("economy")}</MenuItem>
+                        <MenuItem value="BUSINESS">{t("business")}</MenuItem>
+                        <MenuItem value="FIRSTCLASS">{t("first")}</MenuItem>
                     </InputField>
                     <BlueButton size='large'  disabled={seachLoading} onClick={triggerSearch}>
                         <FiSend/>

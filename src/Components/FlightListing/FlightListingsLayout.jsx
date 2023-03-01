@@ -22,7 +22,7 @@ function FlightListingsLayout() {
       (async () => {
         try{
           startLoading();
-          const response = await axios(`${BASE_URL}/oneway?origin=${flightSearchKey.origin}&destination=${flightSearchKey.desination}&departureDate=${flightSearchKey.departureDate}&returnDate=${flightSearchKey.returnDate}&adults=${flightSearchKey.adultCount}&children=${flightSearchKey.childrenCount}&infants=${flightSearchKey.infantCount}`,{cancelToken: controller.token});
+          const response = await axios(`${BASE_URL}/${flightSearchKey.trip}?origin=${flightSearchKey.origin}&destination=${flightSearchKey.desination}&departureDate=${flightSearchKey.departureDate}${flightSearchKey.trip === "twoway" ? `&returnDate=${flightSearchKey.returnDate}` : ""}&adults=${flightSearchKey.adultCount}&children=${flightSearchKey.childrenCount}&infants=${flightSearchKey.infantCount}&travelClass=${flightSearchKey.class}`,{cancelToken: controller.token});
           console.log(response);
     
           if(response.status === 200){

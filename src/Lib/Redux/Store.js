@@ -6,7 +6,6 @@ import storage from "redux-persist/lib/storage";
 import { authReducer } from "./AuthSlice";
 import { flightSearchResultReducer } from "./FlightSearchResultSlice";
 import { accountReducer } from "./AccountSlice";
-import { LanguageAndCountryReducer } from "./LanguageCountrySlice";
 
 const persistConfig = {
     key: "root",
@@ -19,7 +18,6 @@ const rootReducer = combineReducers({
     auth: authReducer,
     account: accountReducer,
     flightSearchKey: flightSearchResultReducer,
-    country: LanguageAndCountryReducer
 })
 
 const persistedReducer = persistReducer(persistConfig, rootReducer);

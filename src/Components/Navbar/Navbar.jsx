@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { 
     Box,
     AppBar, 
@@ -22,8 +22,8 @@ import UserNavbar from './UserNavbar';
 import { AdminPanelSettingsOutlined } from '@mui/icons-material';
 import { LoaderConsumer } from '../../Lib/Contexts/LoaderContext';
 import { useTranslation } from 'react-i18next';
-import useLanguageConsumer from '../../Lib/CustomHooks/useLanguageConsumer';
 import { countries } from '../../Lib/Countries/countries';
+import useLanguageConsumer from '../../Lib/CustomHooks/useLanguageConsumer';
 
 
 export default function Navbar({auth, profile}){
@@ -32,9 +32,9 @@ export default function Navbar({auth, profile}){
   const dispatch = useDispatch();
   const [isLoading] = LoaderConsumer();
   const {theme} = useSelector(data => data.persistedReducer);
-  const [country, setCountry] = useState("India")
   const [value, setValue] = useState(0);
   const { t, i18n } = useTranslation();
+  const {country} = useLanguageConsumer();
 
   const adminOption = (
     <Box 
@@ -110,37 +110,6 @@ export default function Navbar({auth, profile}){
             </Box>
             <TitleLogo/>
             <Box display="flex" flexDirection="row" alignItems="center" gap="10px">
-                {/* <Autocomplete
-                    sx={{width: 200}}
-                    fullWidth
-                    options={countries}
-                    autoHighlight
-                    getOptionLabel={(option) => option.label}
-                    isOptionEqualToValue={(option, value) => true}
-                    renderOption={(props, option) => (
-                        <Box component="li" sx={{ '& > img': { mr: 2, flexShrink: 0 } }} {...props}>
-                        <img
-                            loading="lazy"
-                            width="20"
-                            src={`https://flagcdn.com/w20/${option.code.toLowerCase()}.png`}
-                            srcSet={`https://flagcdn.com/w40/${option.code.toLowerCase()}.png 2x`}
-                            alt="img"
-                        />
-                        {option.label} ({option.code}) +{option.phone} */}
-                        {/* </Box>
-                    )}
-                    renderInput={(params) => (
-                        <InputField
-                        {...params}
-                        size="small"
-                        variant="standard"
-                        inputProps={{
-                            ...params.inputProps,
-                            autoComplete: 'off', // disable autocomplete and autofill
-                        }}
-                    />
-                )}
-                /> */}
                 {/* <IconButton color='primary' onClick={() => dispatch(setTheme())}>
                     {theme ? <BiMoon/> : <BiSun/>}
                 </IconButton> */}
