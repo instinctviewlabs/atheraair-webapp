@@ -22,7 +22,7 @@ function FiltersSetting({carriers, minMaxPrice}) {
   const [filterDuration, setFilterDuration] = useState("");
 //   const [filterTrip, setFilterTrip] = useState("");
   const [filterAirlines, setFilterAirlines] = useState("");
-  const [filterDepartureDate, setFilterDepartureDate] = useState("");
+  const [filterDepartureTime, setFilterDepartureTime] = useState("");
   const priceRange = [
     {
       value: minMaxPrice.minPrice,
@@ -85,19 +85,16 @@ function FiltersSetting({carriers, minMaxPrice}) {
   }
 
   useEffect(() => {
-    // setSearchParams({
-    //     stops: filterStops,
-    //     price: filterPrice,
-    //     duration: filterDuration,
-    //     airlines: filterAirlines
-    // })
-    searchParams.set("stops", filterStops);
-    searchParams.set("price", filterPrice);
-    searchParams.set("duration", filterDuration);
-    searchParams.set("airlines", filterAirlines);
-    setSearchParams(searchParams);
+    if(filterStops || filterPrice || filterDuration || filterAirlines || filterDepartureTime){
+        searchParams.set("stops", filterStops);
+        searchParams.set("price", filterPrice);
+        searchParams.set("duration", filterDuration);
+        searchParams.set("departureTime", filterDepartureTime);
+        searchParams.set("airlines", filterAirlines);
+        setSearchParams(searchParams);
+    }
 
-  }, [filterStops, filterPrice, filterDuration, filterAirlines])
+  }, [filterStops, filterPrice, filterDuration, filterAirlines, filterDepartureTime])
 
   return (
     <Box sx={{
@@ -221,29 +218,29 @@ function FiltersSetting({carriers, minMaxPrice}) {
             <StyledToggleButtonGroup
                 fullWidth
                 color="primary"
-                value={filterDepartureDate}
+                value={filterDepartureTime}
                 exclusive
-                onChange={(event, newValue) => setFilterDepartureDate(newValue)}
+                onChange={(event, newValue) => setFilterDepartureTime(newValue)}
                 >
-                <StyledToggleButton value="before6">
+                <StyledToggleButton value={"0,21600"}>        {/*6 am converted into seconds 6 x 60 x 60 */}
                     <Box>
                         <BsFillSunriseFill/>
                     </Box>  
                     <Typography variant='subtitle1'>Before 6 AM</Typography>
                 </StyledToggleButton>
-                <StyledToggleButton value="6-12">
+                <StyledToggleButton value="21600,43200">
                     <Box>
                         <BsFillSunFill/>
                     </Box>
                     <Typography variant='subtitle1'>6 AM to 12 PM</Typography>
                 </StyledToggleButton>
-                <StyledToggleButton value="12-6">
+                <StyledToggleButton value="43200,64800">
                     <Box>
                         <BsFillCloudSunFill/>
                     </Box>
                     <Typography variant='subtitle1'>12 PM to 6 PM</Typography> 
                 </StyledToggleButton>
-                <StyledToggleButton value="after6">
+                <StyledToggleButton value="64800,86400">
                     <Box>
                         <BsCloudMoonFill/>
                     </Box>

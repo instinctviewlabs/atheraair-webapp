@@ -24,13 +24,17 @@ function FlightListings({cardData}){
           stops: !!searchParams.get("stops") && searchParams.get("stops").split(","),
           price: !!searchParams.get("price") && searchParams.get("price"),
           duration: !!searchParams.get("duration") && searchParams.get("duration"),
-          airlines: !!searchParams.get("airlines") && searchParams.get("airlines").split(",")
+          airlines: !!searchParams.get("airlines") && searchParams.get("airlines").split(","),
+          departureTime: !!searchParams.get("departureTime") && searchParams.get("departureTime").split(",")
         }
         console.log(filterObj);
 
         if(filterObj.stops || filterObj.price || filterObj.duration || filterObj.airlines){
 
             return lists.filter(data => {
+
+                const departureTimeSeconds = Number(data.originTime.slice(0, 2)) * 60 * 60;
+                console.log(departureTimeSeconds < Number(filterObj.departureTime[1]));
 
                 if(Array.isArray(filterObj.stops) && filterObj.stops.includes(data.stops.toString())){
                     return true;
@@ -46,6 +50,10 @@ function FlightListings({cardData}){
                 if(Array.isArray(filterObj.airlines) && filterObj.airlines.includes(data.airlinesName)){
                     return true;
                 }
+
+                // if(Array.isArray(filterObj.departureTime) && (departureTimeSeconds > Number(filterObj.departureTime[0] && departureTimeSeconds <= Number(filterObj.departureTime[1])))){
+                //     return true;
+                // }
             })
         }
     
@@ -54,7 +62,7 @@ function FlightListings({cardData}){
 
     useEffect(() => {
         startLoading();
-        setCardList(filteredList(cardData).slice(0, showValue));
+        setCardList(filteredList(cardData));
         // .slice(0, showValue)
         restLoading();
         console.log(cardList);
