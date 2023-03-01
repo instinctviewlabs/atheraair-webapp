@@ -35,7 +35,6 @@ function FlightListingsLayout() {
             setFlightResult(response.data.data);
             setCarriers(response.data.carriers);
             setMinMaxPrice({minPrice: response.data.minPrice, maxPrice: response.data.maxPrice})
-            restLoading();
           }
     
         }catch(error){
@@ -50,9 +49,9 @@ function FlightListingsLayout() {
     return () => {
       controller.cancel();
     }
-  },[]);
+  },[flightSearchKey]);
 
-  console.log(flightResult);
+  // console.log(flightResult);
   // function filteredList(lists){
 
   //   const filterObj = {

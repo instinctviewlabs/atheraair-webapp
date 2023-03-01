@@ -186,7 +186,7 @@ function FiltersSetting({carriers, minMaxPrice}) {
                 size="small"
                 onChange={(e, newVal) => setFilterDuration(newVal)}
                 value={Number(filterDuration)}
-                getAriaValueText={(val) => `$${val}`}
+                // getAriaValueText={(val) => `$${val}`}
                 aria-label="small"
                 step={1}
                 valueLabelDisplay="on"
