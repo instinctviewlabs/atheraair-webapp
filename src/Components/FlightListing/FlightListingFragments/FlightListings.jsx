@@ -5,21 +5,65 @@ import { AnchorText, BlackButtonOutlined } from "../../../Lib/MuiThemes/MuiCompo
 import FlightListCard from "./FlightListCard";
 import { MdOutlineKeyboardArrowDown } from "react-icons/md";
 import FromToCard from "./FromToCard";
+import { useSearchParams } from "react-router-dom";
+import { LoaderConsumer } from "../../../Lib/Contexts/LoaderContext";
 
-function FlightListings({cardData, isLoading}){
-
+function FlightListings({cardData}){
+    
     const [showValue, setShowValue] = useState(10);
     const [cardList, setCardList] = useState([]);
+    const [searchParams, setSearchParams] = useSearchParams();
+    const [isLoading, startLoading, restLoading] = LoaderConsumer();
 
     function showMoreFlights(){
         setShowValue(prev => prev + 10);
     }
-        
-    useEffect(() => {
-        setCardList(cardData.slice(0, showValue));
 
-        return () => {}
-    },[cardData, showValue])
+    function filteredList(lists){
+        const filterObj = {
+          stops: !!searchParams.get("stops") && searchParams.get("stops").split(","),
+          price: !!searchParams.get("price") && searchParams.get("price"),
+          duration: !!searchParams.get("duration") && searchParams.get("duration"),
+          airlines: !!searchParams.get("airlines") && searchParams.get("airlines").split(",")
+        }
+        console.log(filterObj);
+
+        if(filterObj.stops || filterObj.price || filterObj.duration || filterObj.airlines){
+
+            return lists.filter(data => {
+
+                if(Array.isArray(filterObj.stops) && filterObj.stops.includes(data.stops.toString())){
+                    return true;
+                }
+                if(parseFloat(data.totalPrice) <= filterObj.price){
+                    return true;
+                }
+                
+                if(Number(data.duration.split("h")[0]) <= Number(filterObj.duration)){
+                    return true;
+                }
+
+                if(Array.isArray(filterObj.airlines) && filterObj.airlines.includes(data.airlinesName)){
+                    return true;
+                }
+            })
+        }
+    
+        return lists;
+      }
+
+    useEffect(() => {
+        startLoading();
+        setCardList(filteredList(cardData).slice(0, showValue));
+        // .slice(0, showValue)
+        restLoading();
+        console.log(cardList);
+    }, [searchParams, cardData, showValue]) 
+        
+    // useEffect(() => {
+    //     setCardList(cardData.slice(0, showValue));
+    //     return () => {}
+    // },[cardData, showValue]);
         
     return(
         <Box sx={{

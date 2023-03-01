@@ -17,7 +17,6 @@ function LanguageContextProvider(props){
     }, [language])
 
     useEffect(() => {
-        console.log("Setting country")
         localStorage.setItem("country", country);
     },[country])
 

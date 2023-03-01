@@ -41,6 +41,7 @@ function AppRoutes() {
       <Route path="/" element={<HomeLayout/>}>
         <Route index element={<FlightSearch/>}/>
         <Route path="/flightslist" element={<FlightListingsLayout/>}/>
+        {/* <Route path="/flightslist/" element={<FlightListingsLayout/>}/> */}
         <Route path="/flightdetails" element={<FlightDetailPage/>} />
         <Route path="/bookingdetails" element={<BookingDetails/>} />
         <Route path="/seatmap" element={<SeatSelection/>} />

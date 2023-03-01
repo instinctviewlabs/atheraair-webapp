@@ -1,4 +1,5 @@
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
+import { useSearchParams } from 'react-router-dom';
 import { Box, Checkbox, FormControlLabel, FormGroup, Slider, styled, ToggleButton, ToggleButtonGroup, Typography } from '@mui/material';
 import { BsCloudMoonFill, BsFillCloudSunFill, BsFillSunFill, BsFillSunriseFill } from "react-icons/bs"
 
@@ -10,20 +11,26 @@ import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import { StyledToggleButton, StyledToggleButtonGroup, WhiteCard } from '../../../Lib/MuiThemes/MuiComponents';
 
 
-function FiltersSetting() {
+function FiltersSetting({carriers, minMaxPrice}) {
+    console.log(carriers);
   
-  const [price, setPrice] = useState(50);
   const [duration, setDuration] = useState(4);
-  const [expanded, setExpanded] = useState(["panel1", "panel2", "panel3", "panel4"]);
-  const [departureDateFilter, setDepartureDateFilter] = useState('before6');
+  const [expanded, setExpanded] = useState(["panel1", "panel2", "panel3", "panel4", "panel5"]);
+  const [searchParams, setSearchParams] = useSearchParams();
+  const [filterStops, setFilterStops] = useState("");
+  const [filterPrice, setFilterPrice] = useState("");
+  const [filterDuration, setFilterDuration] = useState("");
+//   const [filterTrip, setFilterTrip] = useState("");
+  const [filterAirlines, setFilterAirlines] = useState("");
+  const [filterDepartureDate, setFilterDepartureDate] = useState("");
   const priceRange = [
     {
-      value: 50,
-      label: '$50',
+      value: minMaxPrice.minPrice,
+      label: `$${minMaxPrice.minPrice}`,
     },
     {
-      value: 1200,
-      label: '$1200',
+      value: minMaxPrice.maxPrice,
+      label: `$${minMaxPrice.maxPrice}`,
     },
   ];
 
@@ -47,6 +54,50 @@ function FiltersSetting() {
     }
   };
 
+  function handleStops(event){
+    const {checked, value} = event.target;
+    if(checked){
+        setFilterStops(prevState => [...prevState, value]);
+    }else{
+        setFilterStops(prev => prev.filter(stop => stop !== value));
+    }
+
+  }
+
+//   function handleTrip(event){
+//     const {checked, value} = event.target;
+//     if(checked){
+//         setFilterTrip(prevState => [...prevState, value]);
+//     }else{
+//         setFilterTrip(prev => prev.filter(stop => stop !== value));
+//     }
+
+//   }
+
+  function handleAirlines(event){
+    const {checked, value} = event.target;
+    if(checked){
+        setFilterAirlines(prevState => [...prevState, value]);
+    }else{
+        setFilterAirlines(prev => prev.filter(stop => stop !== value));
+    }
+
+  }
+
+  useEffect(() => {
+    // setSearchParams({
+    //     stops: filterStops,
+    //     price: filterPrice,
+    //     duration: filterDuration,
+    //     airlines: filterAirlines
+    // })
+    searchParams.set("stops", filterStops);
+    searchParams.set("price", filterPrice);
+    searchParams.set("duration", filterDuration);
+    searchParams.set("airlines", filterAirlines);
+    setSearchParams(searchParams);
+
+  }, [filterStops, filterPrice, filterDuration, filterAirlines])
 
   return (
     <Box sx={{
@@ -62,8 +113,8 @@ function FiltersSetting() {
         <Accordion 
             elevation={0} 
             sx={{bgcolor: "card.background"}}
-            expanded={expanded.includes("panel3")}
-            onChange={() => handleChange("panel3")}
+            expanded={expanded.includes("panel1")}
+            onChange={() => handleChange("panel1")}
             >
             <AccordionSummary
             expandIcon={<ExpandMoreIcon sx={{color: "text.main"}}/>}
@@ -72,17 +123,32 @@ function FiltersSetting() {
             </AccordionSummary>
             <AccordionDetails>
             <FormGroup>
-                <FormControlLabel control={<Checkbox defaultChecked />} label={<Typography variant='body1' color="text.main">Non-stop</Typography>} />
-                <FormControlLabel control={<Checkbox />} label={<Typography variant='body1' color="text.main">1 stop</Typography>}/>
-                <FormControlLabel control={<Checkbox />} label={<Typography variant='body1' color="text.main">2 stop</Typography>}/>
+                <FormControlLabel 
+                    control={<Checkbox />} 
+                    label={<Typography variant='body1' color="text.main">Non-stop</Typography>}
+                    value={0}
+                    onChange={handleStops} 
+                />
+                <FormControlLabel 
+                    control={<Checkbox />} 
+                    label={<Typography variant='body1' color="text.main">1 stop</Typography>}
+                    value={1}
+                    onChange={handleStops} 
+                />
+                <FormControlLabel 
+                    control={<Checkbox />} 
+                    label={<Typography variant='body1' color="text.main">2 stop</Typography>}
+                    value={2}
+                    onChange={handleStops} 
+                />
             </FormGroup>
             </AccordionDetails>
         </Accordion>
         <Accordion 
             elevation={0} 
             sx={{bgcolor: "card.background", borderTop: "1px solid #bdbdbd"}}
-            expanded={expanded.includes("panel1")}
-            onChange={() => handleChange("panel1")}
+            expanded={expanded.includes("panel2")}
+            onChange={() => handleChange("panel2")}
             >
             <AccordionSummary
                 expandIcon={<ExpandMoreIcon sx={{color: "text.main"}}/>}
@@ -92,32 +158,23 @@ function FiltersSetting() {
             <AccordionDetails sx={{py: 3}}>
             <Slider
                 size="small"
-                onChange={(e, newVal) => setPrice(newVal)}
-                // getAriaValueText={(val) => `$${val}`}
+                onChange={(e, newVal) => setFilterPrice(newVal)}
+                value={Number(filterPrice)}
+                getAriaValueText={(val) => `$${val}`}
                 aria-label="small"
-                step={50}
+                step={10}
                 valueLabelDisplay="on"
                 marks={priceRange}
-                min={50}
-                max={1200}
+                min={minMaxPrice.minPrice}
+                max={minMaxPrice.maxPrice}
             />
-            {/* <Slider
-                value={price}
-                
-                
-                valueLabelDisplay="auto"
-                step={100}
-                marks
-                min={100}
-                max={1000}
-                /> */}
             </AccordionDetails>
         </Accordion>
         <Accordion 
             elevation={0} 
             sx={{bgcolor: "card.background", borderTop: "1px solid #bdbdbd"}}
-            expanded={expanded.includes("panel2")}
-            onChange={() => handleChange("panel2")}
+            expanded={expanded.includes("panel3")}
+            onChange={() => handleChange("panel3")}
         >
             <AccordionSummary
             expandIcon={<ExpandMoreIcon sx={{color: "text.main"}}/>}
@@ -127,7 +184,8 @@ function FiltersSetting() {
             <AccordionDetails sx={{py: 3}}>
             <Slider
                 size="small"
-                onChange={(e, newVal) => setDuration(newVal)}
+                onChange={(e, newVal) => setFilterDuration(newVal)}
+                value={Number(filterDuration)}
                 getAriaValueText={(val) => `$${val}`}
                 aria-label="small"
                 step={1}
@@ -151,8 +209,8 @@ function FiltersSetting() {
         <Accordion 
             elevation={0} 
             sx={{bgcolor: "card.background", borderTop: "1px solid #bdbdbd"}}
-            expanded={expanded.includes("panel2")}
-            onChange={() => handleChange("panel2")}
+            expanded={expanded.includes("panel4")}
+            onChange={() => handleChange("panel4")}
         >
             <AccordionSummary
                 expandIcon={<ExpandMoreIcon />}
@@ -163,9 +221,9 @@ function FiltersSetting() {
             <StyledToggleButtonGroup
                 fullWidth
                 color="primary"
-                value={departureDateFilter}
+                value={filterDepartureDate}
                 exclusive
-                onChange={(event, newValue) => setDepartureDateFilter(newValue)}
+                onChange={(event, newValue) => setFilterDepartureDate(newValue)}
                 >
                 <StyledToggleButton value="before6">
                     <Box>
@@ -194,7 +252,7 @@ function FiltersSetting() {
             </StyledToggleButtonGroup>
             </AccordionDetails>
             </Accordion>
-        <Accordion 
+        {/* <Accordion 
             elevation={0} 
             sx={{bgcolor: "card.background", borderTop: "1px solid #bdbdbd"}}
             expanded={expanded.includes("panel4")}
@@ -207,17 +265,30 @@ function FiltersSetting() {
             </AccordionSummary>
             <AccordionDetails>
             <FormGroup>
-                <FormControlLabel control={<Checkbox defaultChecked />} label={<Typography variant='body1' color="text.main">One way</Typography>}/>
-                <FormControlLabel control={<Checkbox />} label={<Typography variant='body1' color="text.main">Round trip</Typography>} />
-                <FormControlLabel control={<Checkbox />} label={<Typography variant='body1' color="text.main">My dates are flexible</Typography>}/>
+                <FormControlLabel
+                    value="oneway" 
+                    onChange={handleTrip}
+                    control={<Checkbox />} 
+                    label={<Typography variant='body1' color="text.main">One way</Typography>}
+                />
+                <FormControlLabel 
+                    value="twoway"
+                    onChange={handleTrip}
+                    control={<Checkbox />} 
+                    label={<Typography variant='body1' color="text.main">Round trip</Typography>} 
+                />
+                <FormControlLabel 
+                    control={<Checkbox />} 
+                    label={<Typography variant='body1' color="text.main">My dates are flexible</Typography>}
+                />
             </FormGroup>
             </AccordionDetails>
-        </Accordion>
+        </Accordion> */}
         <Accordion 
             elevation={0} 
             sx={{bgcolor: "card.background", borderTop: "1px solid #bdbdbd"}}
-            expanded={expanded.includes("panel3")}
-            onChange={() => handleChange("panel3")}
+            expanded={expanded.includes("panel5")}
+            onChange={() => handleChange("panel5")}
             >
             <AccordionSummary
             expandIcon={<ExpandMoreIcon sx={{color: "text.main"}}/>}
@@ -226,10 +297,35 @@ function FiltersSetting() {
             </AccordionSummary>
             <AccordionDetails>
             <FormGroup>
-                <FormControlLabel control={<Checkbox defaultChecked />} label={<Typography variant='body1' color="text.main">Emirates</Typography>} />
-                <FormControlLabel control={<Checkbox />} label={<Typography variant='body1' color="text.main">Fly Dubai</Typography>}/>
-                <FormControlLabel control={<Checkbox />} label={<Typography variant='body1' color="text.main">Qatar</Typography>}/>
-                <FormControlLabel control={<Checkbox />} label={<Typography variant='body1' color="text.main">Etihad</Typography>}/>
+                {Object.values(carriers).map((carrier, index) => (
+
+                    <FormControlLabel
+                        key={index}
+                        value={carrier}
+                        onChange={handleAirlines} 
+                        control={<Checkbox />} 
+                        label={<Typography variant='body1' color="text.main">{carrier}</Typography>} 
+                    />
+
+                ))}
+                {/* <FormControlLabel 
+                    value="fly dubai"
+                    onChange={handleAirlines} 
+                    control={<Checkbox />} 
+                    label={<Typography variant='body1' color="text.main">Fly Dubai</Typography>}
+                />
+                <FormControlLabel 
+                    value="qatar"
+                    onChange={handleAirlines} 
+                    control={<Checkbox />} 
+                    label={<Typography variant='body1' color="text.main">Qatar</Typography>}
+                />
+                <FormControlLabel 
+                    value="ethihad"
+                    onChange={handleAirlines} 
+                    control={<Checkbox />} 
+                    label={<Typography variant='body1' color="text.main">Etihad</Typography>}
+                /> */}
             </FormGroup>
             </AccordionDetails>
         </Accordion>
