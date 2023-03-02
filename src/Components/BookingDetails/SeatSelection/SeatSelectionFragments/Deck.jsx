@@ -29,7 +29,7 @@ function Deck(props) {
   const displaySeats = (seatList) => {
     return (
         <Box sx={{position: "relative"}}>
-            {seatList.map((seat, i) =>
+            {!!seatList && seatList.map((seat, i) =>
                 <Seat key={i} number={seat.number} x={seat.coordinates.x} y={seat.coordinates.y} availability={seat.travelerPricing[0].seatAvailabilityStatus}/>
             )}
         </Box>
@@ -38,13 +38,13 @@ function Deck(props) {
 
   //display exit
   const displayExits = (exitRows) => {
-    return <Box>{exitRows.map((row, i) => <Exit key={i} row={row} />)}</Box>
+    return <Box>{!!exitRows && exitRows.map((row, i) => <Exit key={i} row={row} exitwidth={width}/>)}</Box>
   }
 
   //display facilities
   const displayFacilities = (facilityList) => {
     return( 
-        <Box sx={{position: "relative"}}>{facilityList.map((facility, i) =>
+        <Box sx={{position: "relative"}}>{!!facilityList && facilityList.map((facility, i) =>
             <Facility key={i} code={facility.code} x={facility.coordinates.x} y={facility.coordinates.y} />)}
         </Box>
     )

@@ -4,7 +4,7 @@ import React from 'react';
 function Exit(props) {
     const styleLeft = {
         position: "absolute",
-        left: "1px",
+        left: "0px",
         top: `${props.row*4}em`,
         backgroundColor: "error.main",
         color: "white",
@@ -18,7 +18,8 @@ function Exit(props) {
 
     const styleRight = {
         position: "absolute",
-        left: "437px",
+        // left: `${props.exitwidth*5 + 1.5}em`,
+        right: "0px",
         top: `${props.row*4}em`,
         backgroundColor: "error.main",
         color: "white",

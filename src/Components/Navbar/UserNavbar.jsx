@@ -45,7 +45,7 @@ function UserNavbar({auth, profile}) {
 
     return (
     <>
-        <Typography variant='h6' color="text.main">{country} - {language.toUpperCase()}</Typography>
+        <Typography variant='h6' color="text.main">{country && `${country} -` } {language.toUpperCase()}</Typography>
         <Badge
             overlap="circular"
             anchorOrigin={{ vertical: 'top', horizontal: 'right' }}

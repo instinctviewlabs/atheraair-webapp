@@ -21,16 +21,16 @@ function FlightListings({cardData}){
 
     function filteredList(lists){
         const filterObj = {
-          stops: !!searchParams.get("stops") && searchParams.get("stops").split(","),
-          price: !!searchParams.get("price") && searchParams.get("price"),
-          duration: !!searchParams.get("duration") && searchParams.get("duration"),
-          airlines: !!searchParams.get("airlines") && searchParams.get("airlines").split(","),
-          departureTime: !!searchParams.get("departureTime") && searchParams.get("departureTime").split(",")
+            stops: !!searchParams.get("stops") && searchParams.get("stops").split(","),
+            price: !!searchParams.get("price") && searchParams.get("price"),
+            duration: !!searchParams.get("duration") && searchParams.get("duration"),
+            airlines: !!searchParams.get("airlines") && searchParams.get("airlines").split(","),
+            departureTime: !!searchParams.get("departureTime") && searchParams.get("departureTime").split(",")
         }
-        console.log(filterObj);
-
+        // console.log(filterObj);
+        
         if(filterObj.stops || filterObj.price || filterObj.duration || filterObj.airlines){
-
+            startLoading();
             return lists.filter(data => {
 
                 const departureTimeSeconds = Number(data.originTime.slice(0, 2)) * 60 * 60;
@@ -61,11 +61,10 @@ function FlightListings({cardData}){
       }
 
     useEffect(() => {
-        startLoading();
         setCardList(filteredList(cardData));
-        // .slice(0, showValue)
         restLoading();
-        console.log(cardList);
+        // .slice(0, showValue)
+        // console.log(cardList);
     }, [searchParams, cardData, showValue]) 
         
     // useEffect(() => {

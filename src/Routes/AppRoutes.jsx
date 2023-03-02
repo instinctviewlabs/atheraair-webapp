@@ -20,6 +20,7 @@ import TripDetails from '../Components/AdminComponents/TripDetails/TripDetails';
 import UserDetails from '../Components/AdminComponents/UserDetails/UserDetails';
 import AddServiceCharge from '../Components/Profile/ProfileFragments/AddServiceCharge';
 import SeatSelection from '../Components/BookingDetails/SeatSelection/SeatSelection';
+import RequestedBookingDetails from '../Components/AdminComponents/RequestedBookingDetails/RequestedBookingDetails';
 const Login = lazy(() => import("../Components/LoginPages/Login"));
 const Signup = lazy(() => import("../Components/LoginPages/Signup"));
 const ForgotPassword = lazy(() => import("../Components/LoginPages/ForgotPassword"));
@@ -61,6 +62,7 @@ function AppRoutes() {
             <Route index element={<Dashboard/>}></Route>
             <Route path={"trip-details"} element={<TripDetails/>}></Route>
             <Route path={"user-details"} element={<UserDetails/>}></Route>
+            <Route path={"requested-booking"} element={<RequestedBookingDetails/>}></Route>
           </Route>
           <Route path="profile" element={<Profile/>}>
             <Route index element={<AccountTab/>}></Route>

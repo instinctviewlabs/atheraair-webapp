@@ -1,13 +1,56 @@
 import { Box, Divider, Stack, Typography } from '@mui/material';
-import React from 'react';
+import axios from 'axios';
+import React, { useEffect, useState } from 'react';
 import { emiratesFlight } from '../../../Assests/assets';
+import { BASE_URL } from '../../../Lib/Axios/AxiosConfig';
+import { LoaderConsumer } from '../../../Lib/Contexts/LoaderContext';
 import { AnchorText, BlueButton, WhiteCard } from '../../../Lib/MuiThemes/MuiComponents';
 import FareSummary from '../BookingDetailsFragments/FareSummary';
-import seatMap from "../seatMap.json";
+// import seatMap from "../seatMap.json";
 import Deck from './SeatSelectionFragments/Deck';
 
 
 function SeatSelection() {
+
+  const obj = sessionStorage.getItem("seatObj"); 
+  const [seatObj, setSeatObj] = useState(obj);
+  const [seatMap, setSeatMap] = useState({});
+  const [isLoading, startLoading, restLoading] = LoaderConsumer();
+//   console.log(seatMap);
+
+  useEffect(() => {
+    if(!!seatObj){
+        const controller = axios.CancelToken.source();
+        (async () => {
+            try{
+            startLoading();
+            const response = await axios({
+                method: "post",
+                url: `${BASE_URL}/seatBooking`,
+                data: seatObj,
+                headers: {
+                    "Content-Type": "text/plain"
+                },
+                cancelToken: controller.token
+            });
+            if(response.status === 200){
+                setSeatMap(response.data);
+
+            }
+        
+            }catch(error){
+                console.error(error)
+            }finally{
+                restLoading();
+            }
+        })()
+
+        return () => {
+            controller.cancel();
+        }
+    }
+  },[]);
+
   return (
         <Box sx={{
             height: "auto",
@@ -94,7 +137,7 @@ function SeatSelection() {
                             </WhiteCard>
                         </Box>
 
-                        {seatMap.data[0].decks.map((deck, i) => (
+                        {seatMap.decks && seatMap.decks.map((deck, i) => (
                             <Deck deck={deck} key={i} />
                             ))}
                     </Box>

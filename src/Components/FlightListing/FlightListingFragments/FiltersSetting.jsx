@@ -12,7 +12,6 @@ import { StyledToggleButton, StyledToggleButtonGroup, WhiteCard } from '../../..
 
 
 function FiltersSetting({carriers, minMaxPrice}) {
-    console.log(carriers);
   
   const [duration, setDuration] = useState(4);
   const [expanded, setExpanded] = useState(["panel1", "panel2", "panel3", "panel4", "panel5"]);

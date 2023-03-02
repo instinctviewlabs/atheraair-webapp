@@ -9,7 +9,7 @@ function Facility(props) {
         top: `${props.x*3.5}em`,
         height: "50px",
         width: "50px",
-        borderRadius: 3,
+        borderRadius: 2,
         boxShadow: "0px 2px 10px rgba(155, 157, 172, 0.3)",
         color: "black",
         backgroundColor: "secondary.main",

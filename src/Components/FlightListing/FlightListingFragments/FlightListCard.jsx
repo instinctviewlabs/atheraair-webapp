@@ -4,10 +4,18 @@ import { AnchorText, BlueBox, BlueButton, WhiteCard } from "../../../Lib/MuiThem
 import { emiratesFlight } from "../../../Assests/assets";
 import { FormattedNumber } from 'react-intl';
 import FlightStopsModal from '../FlightListingModals/FlightStopsModal';
+import { useNavigate } from 'react-router-dom';
 
 function FlightListCard({cardData}) {
 
   const [openFlightStopsModal, setOpenFlightStopsModal] = useState(false);
+  const navigate = useNavigate();
+
+  async function triggerSeatSelection(){
+
+    sessionStorage.setItem("seatObj", JSON.stringify({data: cardData.seatObj}));
+    navigate("/seatmap");
+  }
 
   return (
     <>
@@ -21,7 +29,7 @@ function FlightListCard({cardData}) {
            <Stack direction="row" spacing={2} alignItems="center" width={250}>
                 <BlueBox sx={{
                     height: "70px", 
-                    width: "90px", 
+                    maxWidth: "90px", 
                     borderRadius: 2, 
                     overflow: "hidden"
                 }}>
@@ -29,7 +37,7 @@ function FlightListCard({cardData}) {
                 </BlueBox>
                 <Stack spacing={1}>
                     <Typography variant='h4' color="text.main">{cardData.airlinesName}</Typography>
-                    <Typography variant='body2'>UAE110</Typography>
+                    <Typography variant='body2'>{cardData.flightNumber}</Typography>
                 </Stack>
            </Stack>
            <Stack alignItems="center" spacing={1}>
@@ -50,12 +58,16 @@ function FlightListCard({cardData}) {
                 <AnchorText variant="h4"><FormattedNumber value={cardData.totalPrice} style="currency" currency="EUR"/><AnchorText variant='subtitle1' component="span"></AnchorText></AnchorText>
            </Stack>
            <Stack alignItems="center" spacing={1}>
-                <BlueButton fullWidth>Book now</BlueButton>
+                <BlueButton fullWidth onClick={triggerSeatSelection}>Book now</BlueButton>
                 <Link onClick={() => setOpenFlightStopsModal(true)} sx={{cursor: "pointer"}}><Typography variant='body1'>View flight details</Typography></Link>
            </Stack>
         </Stack>
     </WhiteCard>
-    <FlightStopsModal open={openFlightStopsModal} handleClose={setOpenFlightStopsModal}/>
+    <FlightStopsModal
+        open={openFlightStopsModal} 
+        handleClose={setOpenFlightStopsModal}
+        cardData={cardData}
+    />
     </>
   )
 }

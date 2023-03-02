@@ -28,7 +28,7 @@ function AdminLayout() {
                 centered
                 >
                 <Tab sx={{width: "25%", color: "text.main"}} label={<Typography variant='body1'>Dashboard</Typography>} value="1" />
-                <Tab sx={{width: "25%", color: "text.main"}} label={<Typography variant='body1'>Requested Bookings</Typography>} value="2" />
+                <Tab onClick={() => navigate("/admin/requested-booking")} sx={{width: "25%", color: "text.main"}} label={<Typography variant='body1'>Requested Bookings</Typography>} value="2" />
                 <Tab onClick={() => navigate("/admin/trip-details")} sx={{width: "25%", color: "text.main"}} label={<Typography variant='body1'>Trip details</Typography>} value="3" />
                 <Tab onClick={() => navigate("/admin/user-details")} sx={{width: "25%", color: "text.main"}} label={<Typography variant='body1'>User details</Typography>} value="4" />
             </Tabs>
