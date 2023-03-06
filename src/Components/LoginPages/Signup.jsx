@@ -18,6 +18,8 @@ import { loginUser } from '../../Lib/Redux/AuthSlice';
 import { useDispatch } from 'react-redux';
 import { LoaderConsumer } from '../../Lib/Contexts/LoaderContext';
 import useSnackBar from '../../Lib/CustomHooks/useSnackBar';
+import { Axios } from '../../Lib/Axios/AxiosConfig'; 
+import { setUserDetails } from '../../Lib/Redux/AccountSlice';
 
 
 
@@ -102,13 +104,19 @@ function Signup() {
                 const controller = axios.CancelToken.source();
                 await createUserWithEmailAndPassword(auth, signupData.email, signupData.password);
 
-                const response = await axios.post(`${BASE_URL}/createUser`, {
-                    userId: auth.currentUser.uid,
-                    name: `${signupData.firstname} ${signupData.lastname}`, 
-                    email: signupData.email, 
-                    pass: signupData.password,
-                    number: signupData.phoneno
-                },{cancelToken: controller.token});
+                const response = await Axios({
+                    url: "createUser",
+                    method: "post",
+                    data: {
+                        userId: auth.currentUser.uid,
+                        name: `${signupData.firstname} ${signupData.lastname}`, 
+                        email: signupData.email, 
+                        pass: signupData.password,
+                        number: signupData.phoneno
+                    },
+                    cancelToken: controller.token
+
+                })
 
                 if(response.status === 200 && response.data === "Success"){
                     restLoading();
@@ -130,15 +138,49 @@ function Signup() {
 
     const SignupWithGoogle = async() => {
         try{
+            startLoading();
+            const controller = axios.CancelToken.source();
             const provider = new GoogleAuthProvider();
             const response = await signInWithPopup(auth, provider);
-            // console.log(response.user.uid);
-            // const getuser = await axios.post(`${BASE_URL}/getUser`, {userId: auth.currentUser.uid})
-            // console.log(getuser);
-            navigate("/", {replace: true})
+    
+            const gSignin = await Axios({
+                url: `gSignIn`,
+                method: "post",
+                data : {
+                    name: response.user.displayName,
+                    email: response.user.email,
+                    userId: response.user.uid,
+                    number: response.user.phoneNumber,
+                    profilePicture: response.user.photoURL
+                },
+                cancelToken: controller.token,
+            });
+            if(gSignin.status === 200){
+                const getuser = await Axios({
+                    url: `getUser`,
+                    method: "post",
+                    cancelToken: controller.token,
+                    data: {
+                        userId: auth.currentUser.uid
+                    }
+                });
+                dispatch(loginUser({
+                    auth: true, 
+                    userId: response.user.uid,
+                    role: getuser.data.type,
+                }))
+    
+                if(getuser.status === 200){
+                    dispatch(setUserDetails(getuser.data))
+                    navigate("/", {replace: true})
+                }
+    
+            }
         }catch(err){
             console.log(err)
             showSnackBar("error", "Error occured please try again later") 
+        }finally{
+            restLoading();
         }
       }
 

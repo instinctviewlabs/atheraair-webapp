@@ -4,6 +4,7 @@ import React, { useEffect, useState } from 'react';
 import { emiratesFlight } from '../../../Assests/assets';
 import { BASE_URL } from '../../../Lib/Axios/AxiosConfig';
 import { LoaderConsumer } from '../../../Lib/Contexts/LoaderContext';
+import useSnackBar from '../../../Lib/CustomHooks/useSnackBar';
 import { AnchorText, BlueButton, WhiteCard } from '../../../Lib/MuiThemes/MuiComponents';
 import FareSummary from '../BookingDetailsFragments/FareSummary';
 // import seatMap from "../seatMap.json";
@@ -16,6 +17,7 @@ function SeatSelection() {
   const [seatObj, setSeatObj] = useState(obj);
   const [seatMap, setSeatMap] = useState({});
   const [isLoading, startLoading, restLoading] = LoaderConsumer();
+  const { showSnackBar } = useSnackBar();
 //   console.log(seatMap);
 
   useEffect(() => {
@@ -39,7 +41,9 @@ function SeatSelection() {
             }
         
             }catch(error){
-                console.error(error)
+                if(!axios.isCancel){
+                    showSnackBar("warning", "Unable to get seatmap for this flight")
+                }
             }finally{
                 restLoading();
             }
@@ -73,10 +77,33 @@ function SeatSelection() {
             >
                 <WhiteCard>
                     <Typography variant='h4'>Seat selection</Typography>
-                    <Box sx={{display: "flex", justifyContent: "space-between", backgroundColor: "common.background", p: 3}}>
+                    <Box sx={{
+                        display: "flex", 
+                        justifyContent: "space-between",
+                        alignItems: "center",    
+                        flexDirection: "column",
+                        gap: 5,
+                        backgroundColor: "common.background", 
+                        p: 3, 
+                        maxHeight:"100vh",
+                        overflowY: "scroll",
+                        '&::-webkit-scrollbar': {
+                            width: '5px',
+                          },
+                          '&::-webkit-scrollbar-track': {
+                            boxShadow: 'inset 0 0 6px rgba(0,0,0,0.00)',
+                            webkitBoxShadow: 'inset 0 0 6px rgba(0,0,0,0.00)',
+                          },
+                          '&::-webkit-scrollbar-thumb': {
+                            backgroundColor: 'card.background',
+                            outline: '3px solid #FAFAFA'
+                        }
+                    }}>
+                        {seatMap.decks ? 
+                        <>
                         <Box>
                             <WhiteCard>
-                                <Stack spacing={2}>
+                                <Stack spacing={2} direction="row" justifyContent="space-between">
                                     <Stack direction="row" alignItems="center" spacing={2}>
                                         <Box sx={{
                                             height: "40px",
@@ -126,7 +153,7 @@ function SeatSelection() {
                                             borderRadius: 3,
                                             boxShadow: "0px 2px 10px rgba(155, 157, 172, 0.3)",
                                             color: "black",
-                                            backgroundColor: "secondary.main",
+                                            backgroundColor: "error.light",
                                             display: "flex",
                                             alignItems: "center",
                                             justifyContent: "center"
@@ -137,20 +164,23 @@ function SeatSelection() {
                             </WhiteCard>
                         </Box>
 
-                        {seatMap.decks && seatMap.decks.map((deck, i) => (
-                            <Deck deck={deck} key={i} />
+                        <Box>
+                            {seatMap.decks && seatMap.decks.map((deck, i) => (
+                                <Deck deck={deck} key={i} />
                             ))}
+                        </Box>
+                        </> : <Typography variant='h4' color="text.main">Seat selection not available for this flight</Typography>}
                     </Box>
                 </WhiteCard>
             </Box>
-            <Box
+            {/* <Box
                 flex={2} 
                 display="flex"
                 flexDirection="column"
                 gap={3}
             >
                 <FareSummary></FareSummary>
-            </Box>
+            </Box> */}
         </Box>
       )
 }

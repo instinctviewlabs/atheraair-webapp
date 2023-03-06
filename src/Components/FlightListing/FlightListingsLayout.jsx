@@ -5,7 +5,7 @@ import FlightListings from './FlightListingFragments/FlightListings';
 import { useSelector } from 'react-redux';
 import axios from 'axios';
 import { LoaderConsumer } from '../../Lib/Contexts/LoaderContext';
-import { BASE_URL } from '../../Lib/Axios/AxiosConfig';
+import { Axios } from '../../Lib/Axios/AxiosConfig';
 import FromToCard from './FlightListingFragments/FromToCard';
 import SearchFlightBox from '../ReusableComponents/SearchFlightBox';
 import { useSearchParams } from 'react-router-dom';
@@ -26,25 +26,28 @@ function FlightListingsLayout() {
 
   useEffect(() => {
     const controller = axios.CancelToken.source();
-      (async () => {
-        try{
+    (async () => {
+      try{
           startLoading();
-          const response = await axios(`${BASE_URL}/${flightSearchKey.trip}?origin=${flightSearchKey.origin}&destination=${flightSearchKey.desination}&departureDate=${flightSearchKey.departureDate}${flightSearchKey.trip === "twoway" ? `&returnDate=${flightSearchKey.returnDate}` : ""}&adults=${flightSearchKey.adultCount}&children=${flightSearchKey.childrenCount}&infants=${flightSearchKey.infantCount}&travelClass=${flightSearchKey.class}`,{cancelToken: controller.token});
-    
+          const response = await Axios({
+            url: `${flightSearchKey.trip}?origin=${flightSearchKey.origin}&destination=${flightSearchKey.desination}&departureDate=${flightSearchKey.departureDate}${flightSearchKey.trip === "twoway" ? `&returnDate=${flightSearchKey.returnDate}` : ""}&adults=${flightSearchKey.adultCount}&children=${flightSearchKey.childrenCount}&infants=${flightSearchKey.infantCount}&travelClass=${flightSearchKey.class}`,
+            method: "get",
+            cancelToken: controller.token
+          });
+          console.log(response);
+
           if(response.status === 200){
             setFlightResult(response.data.data);
             setCarriers(response.data.carriers);
             setMinMaxPrice({minPrice: response.data.minPrice, maxPrice: response.data.maxPrice})
           }
     
-        }catch(error){
-    
-          console.error(error)
-    
-        }finally{
-          restLoading();
-        }
-      })()
+      }catch(error){
+        console.error(error)
+      }finally{
+        restLoading();
+      }
+    })()
 
     return () => {
       controller.cancel();

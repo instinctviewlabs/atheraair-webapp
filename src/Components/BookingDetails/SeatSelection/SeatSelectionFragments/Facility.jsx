@@ -11,8 +11,8 @@ function Facility(props) {
         width: "50px",
         borderRadius: 2,
         boxShadow: "0px 2px 10px rgba(155, 157, 172, 0.3)",
-        color: "black",
-        backgroundColor: "secondary.main",
+        color: "white",
+        backgroundColor: "error.light",
         display: "flex",
         alignItems: "center",
         justifyContent: "center"

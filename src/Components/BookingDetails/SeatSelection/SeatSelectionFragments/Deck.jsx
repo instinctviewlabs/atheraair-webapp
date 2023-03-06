@@ -1,4 +1,4 @@
-import { Box } from '@mui/material';
+import { Box, Typography } from '@mui/material';
 import React from 'react'
 import Exit from './Exit';
 import Facility from './Facility';
@@ -61,12 +61,42 @@ function Deck(props) {
   }
 
   return (
+    
     <Box sx={style}>
+        {/* <Typography 
+          position="absolute" 
+          top={1} 
+          left="35%"
+          backgroundColor="error.light"
+          color="white"
+          padding={1}
+          borderRadius={2}
+          width= "auto"
+          height= "auto"
+          textAlign= "center"
+        >
+          FRONT OF THE AIRCRAFT
+        </Typography> */}
         {/* {displayWings(wingStart, wingEnd)} */}
         {displaySeats(seatList)}
         {displayFacilities(facilities)}
         {displayExits(exitRows)}
+        {/* <Typography 
+          position="absolute" 
+          bottom={1} 
+          left="35%"
+          backgroundColor="error.light"
+          color="white"
+          padding={1}
+          borderRadius={2}
+          width= "auto"
+          height= "auto"
+          textAlign= "center"
+        >
+          BACK OF THE AIRCRAFT
+        </Typography> */}
     </Box>
+
   )
 }
 

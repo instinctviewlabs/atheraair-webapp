@@ -34,7 +34,7 @@ function FlightListings({cardData}){
             return lists.filter(data => {
 
                 const departureTimeSeconds = Number(data.originTime.slice(0, 2)) * 60 * 60;
-                console.log(departureTimeSeconds < Number(filterObj.departureTime[1]));
+                // console.log(departureTimeSeconds < Number(filterObj.departureTime[1]));
 
                 if(Array.isArray(filterObj.stops) && filterObj.stops.includes(data.stops.toString())){
                     return true;

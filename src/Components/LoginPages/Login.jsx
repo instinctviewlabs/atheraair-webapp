@@ -15,6 +15,7 @@ import useSnackBar from '../../Lib/CustomHooks/useSnackBar';
 import axios from 'axios';
 import { BASE_URL } from '../../Lib/Axios/AxiosConfig';
 import { setUserDetails } from '../../Lib/Redux/AccountSlice';
+import { Axios } from '../../Lib/Axios/AxiosConfig'; 
 
 
 
@@ -67,9 +68,20 @@ function Login() {
         try{
 
             startLoading();
+            const controller = axios.CancelToken.source();
             const loginWithEmailAndPassword = await signInWithEmailAndPassword(auth, loginData.email, loginData.password);
             // console.log(loginWithEmailAndPassword);
-            const getuser = await axios.post(`${BASE_URL}/getUser`, {userId: auth.currentUser.uid})
+            // const getuser = await axios.post(`${BASE_URL}/getUser`, {userId: auth.currentUser.uid})
+            // console.log(getuser);
+            const getuser = await Axios({
+                url: `getUser`,
+                method: "post",
+                cancelToken: controller.token,
+                data: {
+                    userId: auth.currentUser.uid
+                }
+            });
+
             console.log(getuser);
             dispatch(loginUser({
                 auth: true, 
@@ -103,34 +115,31 @@ function Login() {
   const loginWithGoogle = async() => {
     try{
         startLoading();
+        const controller = axios.CancelToken.source();
         const provider = new GoogleAuthProvider();
         const response = await signInWithPopup(auth, provider);
-        console.log(response);
-        const myHeaders = new Headers();
-        myHeaders.append("Content-Type", "application/x-www-form-urlencoded");
 
-        const urlencoded = new URLSearchParams();
-        urlencoded.append("name", response.user.displayName);
-        urlencoded.append("email", response.user.email);
-        urlencoded.append("userId", response.user.uid);
-        urlencoded.append("number", response.user.phoneNumber);
-        urlencoded.append("profilePicture", response.user.photoURL);
-
-        const gSignin = await axios({
+        const gSignin = await Axios({
+            url: `gSignIn`,
             method: "post",
-            url: `${BASE_URL}/gSignIn`,
-            data : urlencoded,
-            headers: myHeaders
+            data : {
+                name: response.user.displayName,
+                email: response.user.email,
+                userId: response.user.uid,
+                number: response.user.phoneNumber,
+                profilePicture: response.user.photoURL
+            },
+            cancelToken: controller.token,
         });
-        console.log(gSignin);
         if(gSignin.status === 200){
-            const getuser = await axios({
+            const getuser = await Axios({
+                url: `getUser`,
                 method: "post",
-                url: `${BASE_URL}/getUser`,
+                cancelToken: controller.token,
                 data: {
-                    userId: response.user.uid
+                    userId: auth.currentUser.uid
                 }
-            })
+            });
             dispatch(loginUser({
                 auth: true, 
                 userId: response.user.uid,

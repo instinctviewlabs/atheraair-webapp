@@ -22,6 +22,8 @@ import useSnackBar from '../../Lib/CustomHooks/useSnackBar';
 import { AddCircleOutline, Close, RemoveCircleOutline } from '@mui/icons-material';
 import useCounter from '../../Lib/CustomHooks/useCounter';
 import { useTranslation } from 'react-i18next';
+import { auth } from '../../Lib/Firebase/firebase.config';
+import { Axios } from '../../Lib/Axios/AxiosConfig';
 
 
 function SearchFlightBox(props) {
@@ -97,8 +99,17 @@ function SearchFlightBox(props) {
         (async () => {
             try{
                 startLoading();
-                const fetch = await axios(`${BASE_URL}/airports?keyword=${originKey.searchKey}`, {cancelToken: controller.token});
-                setOriginKey(prev => ({...prev, options: fetch.data}))
+                // const verifyId = await auth.currentUser.getIdToken();
+                const fetch = await Axios({
+                    url: `airports?keyword=${originKey.searchKey}`,
+                    method: "get",
+                    cancelToken: controller.token
+                });
+
+                if(fetch.status === 200){
+                    setOriginKey(prev => ({...prev, options: fetch.data}))
+                }
+                // console.log(fetch);
             }catch(err){
                 console.error(err)
             }finally{
@@ -121,8 +132,15 @@ function SearchFlightBox(props) {
         (async () => {
             try{
                 startLoading();
-                const fetch = await axios(`${BASE_URL}/airports?keyword=${destinationKey.searchKey}`, {cancelToken: controller.token});
-                setDestinationKey(prev => ({...prev, options: fetch.data}))
+                // const verifyId = await auth.currentUser.getIdToken();
+                const fetch = await Axios({
+                    url: `/airports?keyword=${destinationKey.searchKey}`,
+                    method: "get",
+                    cancelToken: controller.token
+                });
+                if(fetch.status === 200){
+                    setDestinationKey(prev => ({...prev, options: fetch.data}))
+                }
             }catch(err){
                 console.error(err)
             }finally{
