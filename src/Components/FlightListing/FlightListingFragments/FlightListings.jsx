@@ -29,12 +29,11 @@ function FlightListings({cardData}){
         }
         // console.log(filterObj);
         
-        if(filterObj.stops || filterObj.price || filterObj.duration || filterObj.airlines){
-            startLoading();
+        if(filterObj.stops || filterObj.price || filterObj.duration || filterObj.airlines || filterObj.departureTime){
+            // startLoading();
             return lists.filter(data => {
 
-                const departureTimeSeconds = Number(data.originTime.slice(0, 2)) * 60 * 60;
-                // console.log(departureTimeSeconds < Number(filterObj.departureTime[1]));
+                const flightDepatureHour = Number(data.originTime.slice(0, 2));
 
                 if(Array.isArray(filterObj.stops) && filterObj.stops.includes(data.stops.toString())){
                     return true;
@@ -51,9 +50,9 @@ function FlightListings({cardData}){
                     return true;
                 }
 
-                // if(Array.isArray(filterObj.departureTime) && (departureTimeSeconds > Number(filterObj.departureTime[0] && departureTimeSeconds <= Number(filterObj.departureTime[1])))){
-                //     return true;
-                // }
+                if(Array.isArray(filterObj.departureTime) && (flightDepatureHour > Number(filterObj.departureTime[0]) && flightDepatureHour <= Number(filterObj.departureTime[1]))){
+                    return true;
+                }
             })
         }
     

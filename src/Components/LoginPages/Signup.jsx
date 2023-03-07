@@ -114,6 +114,7 @@ function Signup() {
                         pass: signupData.password,
                         number: signupData.phoneno
                     },
+                    auth: true,
                     cancelToken: controller.token
 
                 })
@@ -154,6 +155,7 @@ function Signup() {
                     profilePicture: response.user.photoURL
                 },
                 cancelToken: controller.token,
+                auth: true
             });
             if(gSignin.status === 200){
                 const getuser = await Axios({
@@ -162,7 +164,8 @@ function Signup() {
                     cancelToken: controller.token,
                     data: {
                         userId: auth.currentUser.uid
-                    }
+                    },
+                    auth: true
                 });
                 dispatch(loginUser({
                     auth: true, 

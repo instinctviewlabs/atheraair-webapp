@@ -221,25 +221,25 @@ function FiltersSetting({carriers, minMaxPrice}) {
                 exclusive
                 onChange={(event, newValue) => setFilterDepartureTime(newValue)}
                 >
-                <StyledToggleButton value={"0,21600"}>        {/*6 am converted into seconds 6 x 60 x 60 */}
+                <StyledToggleButton value={"0,6"}>        {/*6 am converted into seconds 6 x 60 x 60 */}
                     <Box>
                         <BsFillSunriseFill/>
                     </Box>  
                     <Typography variant='subtitle1'>Before 6 AM</Typography>
                 </StyledToggleButton>
-                <StyledToggleButton value="21600,43200">
+                <StyledToggleButton value="6,12">
                     <Box>
                         <BsFillSunFill/>
                     </Box>
                     <Typography variant='subtitle1'>6 AM to 12 PM</Typography>
                 </StyledToggleButton>
-                <StyledToggleButton value="43200,64800">
+                <StyledToggleButton value="12,18">
                     <Box>
                         <BsFillCloudSunFill/>
                     </Box>
                     <Typography variant='subtitle1'>12 PM to 6 PM</Typography> 
                 </StyledToggleButton>
-                <StyledToggleButton value="64800,86400">
+                <StyledToggleButton value="18,23">
                     <Box>
                         <BsCloudMoonFill/>
                     </Box>
@@ -304,24 +304,6 @@ function FiltersSetting({carriers, minMaxPrice}) {
                     />
 
                 ))}
-                {/* <FormControlLabel 
-                    value="fly dubai"
-                    onChange={handleAirlines} 
-                    control={<Checkbox />} 
-                    label={<Typography variant='body1' color="text.main">Fly Dubai</Typography>}
-                />
-                <FormControlLabel 
-                    value="qatar"
-                    onChange={handleAirlines} 
-                    control={<Checkbox />} 
-                    label={<Typography variant='body1' color="text.main">Qatar</Typography>}
-                />
-                <FormControlLabel 
-                    value="ethihad"
-                    onChange={handleAirlines} 
-                    control={<Checkbox />} 
-                    label={<Typography variant='body1' color="text.main">Etihad</Typography>}
-                /> */}
             </FormGroup>
             </AccordionDetails>
         </Accordion>

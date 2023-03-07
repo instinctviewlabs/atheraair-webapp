@@ -11,7 +11,7 @@ import moment from 'moment';
 import { useDispatch, useSelector } from 'react-redux';
 import { LoaderConsumer } from '../../../Lib/Contexts/LoaderContext';
 import axios from 'axios';
-import { BASE_URL } from '../../../Lib/Axios/AxiosConfig';
+import { Axios, BASE_URL } from '../../../Lib/Axios/AxiosConfig';
 import { setUserDetails } from '../../../Lib/Redux/AccountSlice';
 import { Close } from '@mui/icons-material';
 import useSnackBar from '../../../Lib/CustomHooks/useSnackBar';
@@ -125,13 +125,21 @@ export default function AddPassengerModal(props) {
     }
     try{
         startLoading();
-        const response = await axios({
+        const controller = axios.CancelToken.source();
+        const response = await Axios({
+            url: `addTraveller`,
             method: "post",
-            url: `${BASE_URL}/addTraveller`,
-            data: {userId, ...passengerDetails}
+            data: {userId, passengerDetails},
+            cancelToken: controller.token
         })
+        console.log(response);
         if(response.status === 200){
-            const getuser = await axios.post(`${BASE_URL}/getUser`,{userId});
+            const getuser = await Axios({
+                url: `getUser`,
+                method: "post",
+                data: { userId },
+                cancelToken: controller.token
+            });
             dispatch(setUserDetails(getuser.data));
             props.setOpen(false);
         }

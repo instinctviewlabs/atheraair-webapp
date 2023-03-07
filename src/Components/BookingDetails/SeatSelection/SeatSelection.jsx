@@ -2,7 +2,7 @@ import { Box, Divider, Stack, Typography } from '@mui/material';
 import axios from 'axios';
 import React, { useEffect, useState } from 'react';
 import { emiratesFlight } from '../../../Assests/assets';
-import { BASE_URL } from '../../../Lib/Axios/AxiosConfig';
+import { Axios, BASE_URL } from '../../../Lib/Axios/AxiosConfig';
 import { LoaderConsumer } from '../../../Lib/Contexts/LoaderContext';
 import useSnackBar from '../../../Lib/CustomHooks/useSnackBar';
 import { AnchorText, BlueButton, WhiteCard } from '../../../Lib/MuiThemes/MuiComponents';
@@ -23,14 +23,16 @@ function SeatSelection() {
   useEffect(() => {
     if(!!seatObj){
         const controller = axios.CancelToken.source();
+        const verifyId = localStorage.getItem("verifyId");
         (async () => {
             try{
             startLoading();
-            const response = await axios({
+            const response = await Axios({
                 method: "post",
-                url: `${BASE_URL}/seatBooking`,
+                url: `seatBooking`,
                 data: seatObj,
                 headers: {
+                    idToken: verifyId,
                     "Content-Type": "text/plain"
                 },
                 cancelToken: controller.token

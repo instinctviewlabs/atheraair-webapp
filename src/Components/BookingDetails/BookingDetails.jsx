@@ -10,7 +10,7 @@ import { HiArrowNarrowRight } from 'react-icons/hi';
 import { Timeline, TimelineConnector, TimelineContent, TimelineDot, TimelineItem, TimelineOppositeContent, TimelineSeparator } from '@mui/lab';
 import FareSummary from './BookingDetailsFragments/FareSummary';
 import axios from 'axios';
-import { BASE_URL } from '../../Lib/Axios/AxiosConfig';
+import { Axios, BASE_URL } from '../../Lib/Axios/AxiosConfig';
 import { LoaderConsumer } from '../../Lib/Contexts/LoaderContext';
 import BookingDetailsCard from './BookingDetailsFragments/BookingDetailsCard';
 // import ChoosePaymentMethod from './BookingDetailsFragments/ChoosePaymentMethod';
@@ -30,9 +30,9 @@ function BookingDetails() {
             (async () => {
                 try{
                 startLoading();
-                const response = await axios({
+                const response = await Axios({
                     method: "post",
-                    url: `${BASE_URL}/flightPrice`,
+                    url: `flightPrice`,
                     data: seatObj,
                     cancelToken: controller.token
                 });

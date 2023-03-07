@@ -70,16 +70,17 @@ function Login() {
             startLoading();
             const controller = axios.CancelToken.source();
             const loginWithEmailAndPassword = await signInWithEmailAndPassword(auth, loginData.email, loginData.password);
-            // console.log(loginWithEmailAndPassword);
-            // const getuser = await axios.post(`${BASE_URL}/getUser`, {userId: auth.currentUser.uid})
-            // console.log(getuser);
+            const verifyId = await auth.currentUser.getIdToken();
+            localStorage.setItem("verifyId", verifyId);
+            
             const getuser = await Axios({
                 url: `getUser`,
                 method: "post",
-                cancelToken: controller.token,
                 data: {
                     userId: auth.currentUser.uid
-                }
+                },
+                auth: true,
+                cancelToken: controller.token,
             });
 
             console.log(getuser);
@@ -118,6 +119,8 @@ function Login() {
         const controller = axios.CancelToken.source();
         const provider = new GoogleAuthProvider();
         const response = await signInWithPopup(auth, provider);
+        const verifyId = await auth.currentUser.getIdToken();
+        localStorage.setItem("verifyId", verifyId);
 
         const gSignin = await Axios({
             url: `gSignIn`,
@@ -127,8 +130,9 @@ function Login() {
                 email: response.user.email,
                 userId: response.user.uid,
                 number: response.user.phoneNumber,
-                profilePicture: response.user.photoURL
+                profilePicture: response.user.photoURL,
             },
+            auth: true,
             cancelToken: controller.token,
         });
         if(gSignin.status === 200){
@@ -138,7 +142,8 @@ function Login() {
                 cancelToken: controller.token,
                 data: {
                     userId: auth.currentUser.uid
-                }
+                },
+                auth: true
             });
             dispatch(loginUser({
                 auth: true, 

@@ -51,7 +51,7 @@ function MasterPassengerList() {
           ))}
         </Box>
     </Stack>
-    <AddPassengerModal open={addPassenderModal} setOpen={setAddPassengerModal}></AddPassengerModal>
+    <AddPassengerModal addTravellerOn="masterList" open={addPassenderModal} setOpen={setAddPassengerModal}></AddPassengerModal>
     <EditPassengerModal 
       open={editPassengerModal} 
       setOpen={setEditPassengerModal} 

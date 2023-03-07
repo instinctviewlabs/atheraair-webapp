@@ -166,7 +166,6 @@ function SearchFlightBox(props) {
 
     dispatch(getFlightsData({...searchData, adultCount, childrenCount, infantCount}));
     navigate("/flightslist");
-    window.location.reload();
     // try{
     //     startSearchLoading();
     //     const controller = axios.CancelToken.source();

@@ -3,7 +3,7 @@ import axios from 'axios';
 import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { Outlet } from 'react-router-dom';
-import { BASE_URL } from '../../Lib/Axios/AxiosConfig';
+import { Axios, BASE_URL } from '../../Lib/Axios/AxiosConfig';
 import { LoaderConsumer } from '../../Lib/Contexts/LoaderContext';
 import { setUserDetails } from '../../Lib/Redux/AccountSlice';
 import AdminProfileLists from '../AdminComponents/AdminProfile/AdminProfileList';
@@ -22,13 +22,14 @@ function Profile() {
     (async () => {
       try{
         startLoading();
-        const response = await axios({
+        const response = await Axios({
+          url: `getUser`,
           method: "post",
-          url: `${BASE_URL}/getUser`,
           data: {
             userId: auth.userId
           },
-          cancelToken: controller.token
+          auth: true,
+          cancelToken: controller.token,
         });
         if(response.status === 200){
           dispatch(setUserDetails(response.data))
