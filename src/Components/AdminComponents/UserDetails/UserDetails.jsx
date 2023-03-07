@@ -6,7 +6,7 @@ import { AccountCircle, CurrencyExchange, Logout, MoneyOff, MoreVert, Payment, P
 import useMenu from '../../../Lib/CustomHooks/useMenu';
 import { LoaderConsumer } from '../../../Lib/Contexts/LoaderContext';
 import axios from 'axios';
-import { BASE_URL } from '../../../Lib/Axios/AxiosConfig';
+import { Axios, BASE_URL } from '../../../Lib/Axios/AxiosConfig';
 import useSnackBar from '../../../Lib/CustomHooks/useSnackBar';
 
 function UserDetails() {
@@ -149,11 +149,11 @@ function UserDetails() {
       (async () => {
         try{
           startLoading();
-          const response = await axios({
+          const response = await Axios({
             method: "get",
-            url: `${BASE_URL}/fetchAllUsers`,
-            data: {},
-            cancelToken: controller.token
+            url: `fetchAllUsers`,
+            cancelToken: controller.token,
+            auth: true
           });
           if(response.status === 200){
             setUserDetailsData(response.data.data);

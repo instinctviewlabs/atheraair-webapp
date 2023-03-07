@@ -8,7 +8,7 @@ import AddServiceChargeModal from '../Modals/AddServiceChargeModal';
 import { LoaderConsumer } from '../../../Lib/Contexts/LoaderContext';
 import useSnackBar from '../../../Lib/CustomHooks/useSnackBar';
 import axios from 'axios';
-import { BASE_URL } from '../../../Lib/Axios/AxiosConfig';
+import { Axios, BASE_URL } from '../../../Lib/Axios/AxiosConfig';
 import useSwitch from '../../../Lib/CustomHooks/useSwitch';
 
 function AddServiceCharge() {
@@ -111,10 +111,10 @@ function AddServiceCharge() {
       (async () => {
         try{
           startLoading();
-          const response = await axios({
+          const response = await Axios({
             method: "get",
-            url: `${BASE_URL}/getServiceCharge`,
-            data: {},
+            url: `getServiceCharge`,
+            auth: true,
             cancelToken: controller.token
           });
           if(response.status === 200){

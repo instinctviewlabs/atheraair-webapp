@@ -60,6 +60,7 @@ function AppRoutes() {
         <Route element={<AdminRoutes/>}>
           <Route path="admin" element={<AdminLayout/>}>
             <Route index element={<Dashboard/>}></Route>
+            <Route path={"dashboard"} element={<Dashboard/>}></Route>
             <Route path={"trip-details"} element={<TripDetails/>}></Route>
             <Route path={"user-details"} element={<UserDetails/>}></Route>
             <Route path={"requested-booking"} element={<RequestedBookingDetails/>}></Route>

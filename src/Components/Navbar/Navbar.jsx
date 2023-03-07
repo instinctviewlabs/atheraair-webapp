@@ -15,7 +15,7 @@ import {
 import {TbPlaneInflight} from "react-icons/tb"
 import { BlackButtonOutlined, InputField, TitleLogo } from '../../Lib/MuiThemes/MuiComponents';
 import { BiSun, BiMoon } from "react-icons/bi";
-import { useNavigate } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import { setTheme } from '../../Lib/Redux/ThemeSlice';
 import UserNavbar from './UserNavbar';
@@ -32,9 +32,11 @@ export default function Navbar({auth, profile}){
   const dispatch = useDispatch();
   const [isLoading] = LoaderConsumer();
   const {theme} = useSelector(data => data.persistedReducer);
-  const [value, setValue] = useState(0);
+  const location = useLocation();
+  const tabRoutes = ["/", "/admin"];
   const { t, i18n } = useTranslation();
   const {country} = useLanguageConsumer();
+  
 
   const adminOption = (
     <Box 
@@ -72,10 +74,10 @@ export default function Navbar({auth, profile}){
                 alignItems="center" 
                 gap="5px"
             >
-                <Tabs TabIndicatorProps={{sx: {height: 3}}} value={value} onChange={(e, newVal) => setValue(newVal)} centered>
+                <Tabs TabIndicatorProps={{sx: {height: 3}}} value={tabRoutes.includes(`/${location.pathname.split("/")[1]}`) && `/${location.pathname.split("/")[1]}`} centered>
                     <Tab 
                         onClick={() => navigate("/")}
-                        value={0}
+                        value="/"
                         label={
                         <Box 
                             color="text.main"
@@ -101,8 +103,8 @@ export default function Navbar({auth, profile}){
                     {/* {auth.auth && auth.role === "admin" && <AdminNavbar />} */}
                     {auth.auth && auth.role === "admin" && 
                     <Tab 
-                        onClick={() => navigate(`/${auth.role}`)}
-                        value={1}
+                        onClick={() => navigate(`/admin`)}
+                        value="/admin"
                         label={adminOption}
                         py={2} 
                     />}
