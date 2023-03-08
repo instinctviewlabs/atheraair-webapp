@@ -11,10 +11,10 @@ function FlightListCard({cardData}) {
   const [openFlightStopsModal, setOpenFlightStopsModal] = useState(false);
   const navigate = useNavigate();
 
-  async function triggerSeatSelection(){
+  async function triggerBookingDetails(){
 
     sessionStorage.setItem("seatObj", JSON.stringify({data: cardData.seatObj}));
-    navigate("/seatmap");
+    navigate("/bookingdetails");
   }
 
   return (
@@ -58,7 +58,7 @@ function FlightListCard({cardData}) {
                 <AnchorText variant="h4"><FormattedNumber value={cardData.totalPrice} style="currency" currency="EUR"/><AnchorText variant='subtitle1' component="span"></AnchorText></AnchorText>
            </Stack>
            <Stack alignItems="center" spacing={1}>
-                <BlueButton fullWidth onClick={triggerSeatSelection}>Book now</BlueButton>
+                <BlueButton fullWidth onClick={triggerBookingDetails}>Book now</BlueButton>
                 <Link onClick={() => setOpenFlightStopsModal(true)} sx={{cursor: "pointer"}}><Typography variant='body1'>View flight details</Typography></Link>
            </Stack>
         </Stack>

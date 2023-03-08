@@ -80,11 +80,11 @@ function BookingDetails() {
                 flex={3} 
             >
                 <BookingDetailsCard bookingDetails={bookingDetails}/>
-                <BookingOptions/>
-                <Stack direction="row" spacing={2} justifyContent="space-between">
+                <Stack direction="row" spacing={1} justifyContent="space-between">
                     <TravellerDetailsCard/>
                     <SendBookingDetailsTo/>
                 </Stack>
+                <BookingOptions/>
             </Box>
             <Box
                 flex={2} 

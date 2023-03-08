@@ -35,7 +35,7 @@ function FareSummary({fareSummaryDetails}) {
                     flexDirection: "column"
                 }}>
                     <Typography variant='body2'>(need class name here)</Typography>
-                    <Typography variant='h5' color="text.main">(need airlines name) - {fareSummaryDetails.display[0][0].flightNumber}</Typography>
+                    <Typography variant='h5' color="text.main">(need airlines name)</Typography>
                 </Box>
             </Box>
             <Divider orientation='horizontal'></Divider> 

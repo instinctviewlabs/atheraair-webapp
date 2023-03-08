@@ -18,7 +18,8 @@ function FlightSearch() {
             width: "100%",
             objectFit: "cover"
           }} 
-          src={homeBanner} 
+          src={homeBanner}
+          loading="lazy" 
           alt="banner" />
       </Box>
       <SearchFlightBox px={15} top={-100}></SearchFlightBox>
