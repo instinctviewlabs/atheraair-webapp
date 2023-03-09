@@ -39,7 +39,9 @@ function UserNavbar({auth, profile}) {
 
     function logout(){
         dispatch(logoutUser());
-        dispatch(clearUserDetails())
+        dispatch(clearUserDetails());
+        localStorage.clear();
+        sessionStorage.clear();
         return navigate("/", {replace: true})
     }
 

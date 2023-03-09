@@ -78,12 +78,18 @@ function BookingDetails() {
             >
                 {isLoading && <Skeleton variant="rounded" width="auto" height={500} />}
 
-                {!isLoading && <BookingDetailsCard bookingDetails={bookingDetails}/>}
-                <Stack direction="row" spacing={1} justifyContent="space-between">
+                {!isLoading && bookingDetails && <BookingDetailsCard bookingDetails={bookingDetails}/>}
+                
+                {!isLoading && <Stack direction="row" spacing={1} justifyContent="space-between">
                     <TravellerDetailsCard/>
                     <SendBookingDetailsTo/>
-                </Stack>
-                <BookingOptions/>
+                </Stack>}
+                {isLoading && <Stack direction="row" spacing={1} justifyContent="space-between">
+                    <Skeleton variant="rounded" width="100%" height={200} />
+                    <Skeleton variant="rounded" width="100%" height={200} />
+                </Stack>}
+                {isLoading && <Skeleton variant="rounded" width="100%" height={200} />}
+                {!isLoading && <BookingOptions/>}
             </Box>
             <Box
                 flex={2} 
@@ -91,7 +97,8 @@ function BookingDetails() {
                 flexDirection="column"
                 gap={3}
             >
-                <FareSummary fareSummaryDetails={bookingDetails}/>
+                {isLoading && <Skeleton variant="rounded" width="100%" height={800} />}
+                {!isLoading && bookingDetails && <FareSummary fareSummaryDetails={bookingDetails}/>}
             </Box>
         </Box>
     )

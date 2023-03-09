@@ -4,7 +4,7 @@ import React, { useEffect, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { AiFillEdit } from 'react-icons/ai'
 import { useDispatch, useSelector } from 'react-redux'
-import { BASE_URL } from '../../../Lib/Axios/AxiosConfig'
+import { Axios, BASE_URL } from '../../../Lib/Axios/AxiosConfig'
 import { LoaderConsumer } from '../../../Lib/Contexts/LoaderContext'
 import useSnackBar from '../../../Lib/CustomHooks/useSnackBar'
 import useSwitch from '../../../Lib/CustomHooks/useSwitch'
@@ -88,25 +88,25 @@ function AccountTab() {
         isValidated = false;
     }
 
-    if(profileData.nationality.length === 0){
-        setDataValidated(prev => ({...prev, nationality: true}))
-        isValidated = false;
-    }
+    // if(profileData.nationality.length === 0){
+    //     setDataValidated(prev => ({...prev, nationality: true}))
+    //     isValidated = false;
+    // }
 
-    if(profileData.passportNumber.length === 0){
-        setDataValidated(prev => ({...prev, passportNumber: true}))
-        isValidated = false;
-    }
+    // if(profileData.passportNumber.length === 0){
+    //     setDataValidated(prev => ({...prev, passportNumber: true}))
+    //     isValidated = false;
+    // }
 
-    if(profileData.expiryDate.length === 0){
-        setDataValidated(prev => ({...prev, expiryDate: true}))
-        isValidated = false;
-    }
+    // if(profileData.expiryDate.length === 0){
+    //     setDataValidated(prev => ({...prev, expiryDate: true}))
+    //     isValidated = false;
+    // }
 
-    if(profileData.issuingCountry.length === 0){
-        setDataValidated(prev => ({...prev, issuingCountry: true}))
-        isValidated = false;
-    }
+    // if(profileData.issuingCountry.length === 0){
+    //     setDataValidated(prev => ({...prev, issuingCountry: true}))
+    //     isValidated = false;
+    // }
 
     
     return isValidated;
@@ -119,16 +119,27 @@ function AccountTab() {
     }
     try{
         startLoading();
-        console.log(profileData);
-        const response = await axios.post(`${BASE_URL}/editAccount`, {
-            userId,
-            ...profileData
+        const response = await Axios({
+            url: "editAccount",
+            method: "post",
+            data: {
+                userId,
+                ...profileData
+            },
+            auth: true
         })
         // console.log(response);
         if(response.status === 200){
-            const getuser = await axios.post(`${BASE_URL}/getUser`,{userId});
-            console.log(getuser);
-            dispatch(setUserDetails(getuser.data))
+            const getuser = await Axios({
+                url: "getUser",
+                method: "post",
+                data: {userId},
+                auth: true
+            });
+            
+            if(getuser.status === 200){
+                dispatch(setUserDetails(getuser.data))
+            }
         }
     }catch(error){
         console.log(error)

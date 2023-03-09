@@ -8,7 +8,7 @@ import { HiCheck, HiPencil } from "react-icons/hi";
 import { useSelector } from "react-redux";
 import { LoaderConsumer } from "../../../Lib/Contexts/LoaderContext";
 import axios from "axios";
-import { BASE_URL } from "../../../Lib/Axios/AxiosConfig";
+import { Axios, BASE_URL } from "../../../Lib/Axios/AxiosConfig";
 import useSnackBar from "../../../Lib/CustomHooks/useSnackBar";
 
 
@@ -23,24 +23,22 @@ function DisplayPicture() {
   // async function uploadProfilePic(){
   //   try{
   //     startLoading();
-  //     const data = new FormData();
-  //     data.append('image', fs.createReadStream(picUrl));
-  //     data.append('userId', '123xyz');
-  //     // fd.append("image", picUrl);
-  //     // fd.append("userId", userId)
+  //     const verifyId = localStorage.getItem("verifyId");
+  //     var formdata = new FormData();
+  //     formdata.append("image", picUrl);
+  //     formdata.append("userId", userId);
 
   //     const response = await axios({
   //       method: "post",
-  //       maxBodyLength: Infinity,
   //       url: `${BASE_URL}/updatePicture`,
-  //       headers: {...data.getHeaders()},
-  //       data: data,
+  //       body: formdata,
+  //       headers: {
+  //         idToken: verifyId
+  //       },
+  //       redirect: "follow",
   //     })
   //     console.log(response);
-  //     // if(response.status === 200){
-  //     //     const getuser = await axios.post(`${BASE_URL}/getUser`,{userId});
-  //     //     console.log(getuser);
-  //     // }
+      
   //   }catch(error){
   //     console.log(error)
   //   }finally{
@@ -53,17 +51,22 @@ function DisplayPicture() {
     var formdata = new FormData();
     formdata.append("image", picUrl);
     formdata.append("userId", userId);
+    const verifyId = localStorage.getItem("verifyId");
 
     var requestOptions = {
-      method: "POST",
+      url: `${BASE_URL}/updatePicture`,
+      method: "post",
       body: formdata,
+      headers: {
+        idToken: verifyId
+      },
       redirect: "follow",
     };
     startLoading();
-    fetch(`${BASE_URL}/updatePicture`, requestOptions)
+    await fetch(requestOptions)
       .then((response) => response.text())
       .then(() => {
-        window.location.reload();
+        // window.location.reload();
         showSnackBar("success", "Profile picture uploaded succesfully")
       })
       .catch((error) => {
@@ -73,6 +76,7 @@ function DisplayPicture() {
         restLoading();
       });
   }
+
   return (
     <>
       <Box textAlign="center">
