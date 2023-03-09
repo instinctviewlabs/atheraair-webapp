@@ -13,6 +13,7 @@ import axios from 'axios';
 import { Axios, BASE_URL } from '../../Lib/Axios/AxiosConfig';
 import { LoaderConsumer } from '../../Lib/Contexts/LoaderContext';
 import BookingDetailsCard from './BookingDetailsFragments/BookingDetailsCard';
+import useSnackBar from '../../Lib/CustomHooks/useSnackBar';
 // import ChoosePaymentMethod from './BookingDetailsFragments/ChoosePaymentMethod';
 
 function BookingDetails() {
@@ -42,9 +43,9 @@ function BookingDetails() {
                     }
             
                 }catch(error){
-                    console.log(error);
-                    showSnackBar("error", "unable to proceed booking, Please try again later");
                     restLoading();
+                    // console.log(error);
+                    // showSnackBar("error", "unable to proceed booking, Please try again later");
                 }
             })()
 
