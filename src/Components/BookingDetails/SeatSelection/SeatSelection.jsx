@@ -1,4 +1,4 @@
-import { Box, Divider, Stack, Typography } from '@mui/material';
+import { Box, Divider, Skeleton, Stack, Typography } from '@mui/material';
 import axios from 'axios';
 import React, { useEffect, useState } from 'react';
 import { emiratesFlight } from '../../../Assests/assets';
@@ -15,7 +15,7 @@ function SeatSelection() {
 
   const obj = sessionStorage.getItem("seatObj"); 
   const [seatObj, setSeatObj] = useState(obj);
-  const [seatMap, setSeatMap] = useState({});
+  const [seatMap, setSeatMap] = useState(null);
   const [isLoading, startLoading, restLoading] = LoaderConsumer();
   const { showSnackBar } = useSnackBar();
 //   console.log(seatMap);
@@ -39,15 +39,14 @@ function SeatSelection() {
             });
             if(response.status === 200){
                 setSeatMap(response.data);
-
+                restLoading();
             }
         
             }catch(error){
                 if(!axios.isCancel){
+                    restLoading();
                     showSnackBar("warning", "Unable to get seatmap for this flight")
                 }
-            }finally{
-                restLoading();
             }
         })()
 
@@ -101,9 +100,9 @@ function SeatSelection() {
                             outline: '3px solid #FAFAFA'
                         }
                     }}>
-                        {seatMap.decks ? 
                         <>
-                        <Box>
+                        {isLoading && <Skeleton variant="rounded" width={600} height={200} />}
+                        {!isLoading && seatMap && <Box>
                             <WhiteCard>
                                 <Stack spacing={2} direction="row" justifyContent="space-between">
                                     <Stack direction="row" alignItems="center" spacing={2}>
@@ -164,14 +163,17 @@ function SeatSelection() {
                                     </Stack>
                                 </Stack>
                             </WhiteCard>
-                        </Box>
+                        </Box>}
+                        
+                        {isLoading && <Skeleton variant="rounded" width={600} height={1500} />}
 
-                        <Box>
+                        {!isLoading && seatMap && <Box>
                             {seatMap.decks && seatMap.decks.map((deck, i) => (
                                 <Deck deck={deck} key={i} />
                             ))}
-                        </Box>
-                        </> : <Typography variant='h4' color="text.main">Seat selection not available for this flight</Typography>}
+                        </Box>}
+                        </> 
+                        {/* <Typography variant='h4' color="text.main">Seat selection not available for this flight</Typography> */}
                     </Box>
                 </WhiteCard>
             </Box>

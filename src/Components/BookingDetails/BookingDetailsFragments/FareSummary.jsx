@@ -74,7 +74,7 @@ function FareSummary({fareSummaryDetails}) {
                 </AnchorText>
             </Stack>
         </Stack>
-        <BlueButton onClick={() => navigate("/bookingdetails")} sx={{my: 1}} fullWidth>Continue</BlueButton>
+        <BlueButton onClick={() => navigate("/seatmap")} sx={{my: 1}} fullWidth>Continue</BlueButton>
     </WhiteCard>
   )
 }
