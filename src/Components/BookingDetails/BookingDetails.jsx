@@ -43,8 +43,6 @@ function BookingDetails() {
             
                 }catch(error){
                     console.log(error)
-                }finally{
-                    // restLoading();
                 }
             })()
 
@@ -52,7 +50,7 @@ function BookingDetails() {
                 controller.cancel();
             }
         }
-        },[obj, startLoading, restLoading]);
+        },[obj]);
 
   
 
@@ -79,18 +77,18 @@ function BookingDetails() {
             >
                 {isLoading && <Skeleton variant="rounded" width="auto" height={500} />}
 
-                {!isLoading && bookingDetails && <BookingDetailsCard bookingDetails={bookingDetails}/>}
+                {/* {!isLoading && bookingDetails && <BookingDetailsCard bookingDetails={bookingDetails}/>} */}
 
-                {!isLoading && <Stack direction="row" spacing={1} justifyContent="space-between">
+                {/* {!isLoading && <Stack direction="row" spacing={1} justifyContent="space-between">
                     <TravellerDetailsCard/>
                     <SendBookingDetailsTo/>
-                </Stack>}
+                </Stack>} */}
                 {isLoading && <Stack direction="row" spacing={1} justifyContent="space-between">
                     <Skeleton variant="rounded" width="100%" height={200} />
                     <Skeleton variant="rounded" width="100%" height={200} />
                 </Stack>}
                 {isLoading && <Skeleton variant="rounded" width="100%" height={200} />}
-                {!isLoading && <BookingOptions/>}
+                {/* {!isLoading && <BookingOptions/>} */}
             </Box>
             <Box
                 flex={2} 
@@ -99,7 +97,7 @@ function BookingDetails() {
                 gap={3}
             >
                 {isLoading && <Skeleton variant="rounded" width="100%" height={800} />}
-                {!isLoading && bookingDetails && <FareSummary fareSummaryDetails={bookingDetails}/>}
+                {/* {!isLoading && <FareSummary fareSummaryDetails={bookingDetails}/>} */}
             </Box>
         </Box>
     )
