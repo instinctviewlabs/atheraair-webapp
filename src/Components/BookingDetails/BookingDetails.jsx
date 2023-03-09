@@ -21,7 +21,7 @@ function BookingDetails() {
     const [isLoading, startLoading, restLoading] = LoaderConsumer();
     const [bookingDetails, setBookingDetails] = useState(null);
     // const { showSnackBar } = useSnackBar();
-    
+    console.log(isLoading);
 
     useEffect(() => {
         if(!!obj){
@@ -29,29 +29,30 @@ function BookingDetails() {
             const controller = axios.CancelToken.source();
             (async () => {
                 try{
-                startLoading();
-                const response = await Axios({
-                    method: "post",
-                    url: `flightPrice`,
-                    data: seatObj,
-                    cancelToken: controller.token
-                });
-                if(response.status === 200){
-                    setBookingDetails(response.data);
-                }
+                    startLoading();
+                    const response = await Axios({
+                        method: "post",
+                        url: `flightPrice`,
+                        data: seatObj,
+                        cancelToken: controller.token
+                    });
+                    if(response.status === 200){
+                        setBookingDetails(response.data);
+                        restLoading();
+                    }
             
                 }catch(error){
                     console.log(error)
                 }finally{
-                    restLoading();
+                    // restLoading();
                 }
             })()
 
-            // return () => {
-            //     controller.cancel();
-            // }
+            return () => {
+                controller.cancel();
+            }
         }
-        },[]);
+        },[obj, startLoading, restLoading]);
 
   
 
