@@ -47,11 +47,11 @@ function BookingDetails() {
                 }
             })()
 
-            return () => {
-                controller.cancel();
-            }
+            // return () => {
+            //     controller.cancel();
+            // }
         }
-        },[obj]);
+        },[]);
 
   
 
@@ -79,7 +79,7 @@ function BookingDetails() {
                 {isLoading && <Skeleton variant="rounded" width="auto" height={500} />}
 
                 {!isLoading && bookingDetails && <BookingDetailsCard bookingDetails={bookingDetails}/>}
-                
+
                 {!isLoading && <Stack direction="row" spacing={1} justifyContent="space-between">
                     <TravellerDetailsCard/>
                     <SendBookingDetailsTo/>

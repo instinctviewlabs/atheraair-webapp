@@ -17,34 +17,34 @@ function Profile() {
   const [isLoading, startLoading, restLoading] = LoaderConsumer();
 
 
-  useEffect(() => {
-    const controller = axios.CancelToken.source();
-    (async () => {
-      try{
-        startLoading();
-        const response = await Axios({
-          url: `getUser`,
-          method: "post",
-          data: {
-            userId: auth.userId
-          },
-          auth: true,
-          cancelToken: controller.token,
-        });
-        if(response.status === 200){
-          dispatch(setUserDetails(response.data))
-        }
-      }catch(error){
-        console.error(error)
-      }finally{
-        restLoading();
-      }
-    })();
+  // useEffect(() => {
+  //   const controller = axios.CancelToken.source();
+  //   (async () => {
+  //     try{
+  //       startLoading();
+  //       const response = await Axios({
+  //         url: `getUser`,
+  //         method: "post",
+  //         data: {
+  //           userId: auth.userId
+  //         },
+  //         auth: true,
+  //         cancelToken: controller.token,
+  //       });
+  //       if(response.status === 200){
+  //         dispatch(setUserDetails(response.data))
+  //       }
+  //     }catch(error){
+  //       console.error(error)
+  //     }finally{
+  //       restLoading();
+  //     }
+  //   })();
 
-    return () => {
-      controller.cancel();
-    }
-  }, []);
+  //   return () => {
+  //     controller.cancel();
+  //   }
+  // }, []);
 
   return (
     <>
