@@ -30,6 +30,7 @@ function MasterPassengerCard({traveller, triggerEditPassengerModal, setEditPasse
                 userId: auth.userId,
                 ...traveller
             },
+            auth: true,
             cancelToken: controller.token
         })
         // console.log(response);
@@ -38,6 +39,7 @@ function MasterPassengerCard({traveller, triggerEditPassengerModal, setEditPasse
                 url: `getUser`,
                 method: "post",
                 data: {userId},
+                auth: true,
                 cancelToken: controller.token
             });
             dispatch(setUserDetails(getuser.data))

@@ -25,6 +25,10 @@ function AdminLayout() {
                 backgroundColor: "card.background", 
                 boxShadow: "0px 4px 16px rgba(141, 211, 187, 0.15)",
                 borderRadius: "10px",
+                // position: "fixed",
+                // zIndex: 2,
+                // bottom: "81%",
+                // width: "89.5%"
                 }}
                 value={!!tabPath ? `/${location.pathname.split("/")[2]}` : "/dashboard"}
                 centered

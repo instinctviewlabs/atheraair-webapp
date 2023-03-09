@@ -184,6 +184,8 @@ function UserDetails() {
     elevation: 0,
     selectableRows: "none",
     fixedHeader: true,
+    rowsPerPage: 5,
+    rowsPerPageOptions: [5, 10, 15, 20],
     customSearch: (searchQuery, currentRow, columns) => {
       currentRow.forEach(col => {
         if (col && col.toString().indexOf(searchQuery) >= 0) {

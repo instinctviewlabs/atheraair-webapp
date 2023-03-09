@@ -25,7 +25,7 @@ function Dashboard() {
             <WhiteCard>
                 <Stack spacing={2} alignItems="center" justifyContent="center" height={100}>
                   <Typography variant='h6' color="text.main">View upcoming journey</Typography>
-                  <Typography variant='h4' color="text.main">24</Typography>
+                  <Typography variant='h4' color="#4A3AFF">24</Typography>
                 </Stack>
             </WhiteCard>
           </Stack>
@@ -33,7 +33,7 @@ function Dashboard() {
             <WhiteCard>
                 <Stack spacing={2} alignItems="center" justifyContent="center" height={100}>
                   <Typography variant='h6' color="text.main">No. of Registered users</Typography>
-                  <Typography variant='h4' color="text.main">327</Typography>
+                  <Typography variant='h4' color="#4A3AFF">327</Typography>
                 </Stack>
             </WhiteCard>
           </Stack>
@@ -41,7 +41,7 @@ function Dashboard() {
             <WhiteCard>
                 <Stack spacing={2} alignItems="center" justifyContent="center" height={100}>
                   <Typography variant='h6' color="text.main">No. of Search in month</Typography>
-                  <Typography variant='h4' color="text.main">88</Typography>
+                  <Typography variant='h4' color="#4A3AFF">88</Typography>
                 </Stack>
             </WhiteCard>
           </Stack>
@@ -49,8 +49,8 @@ function Dashboard() {
             <WhiteCard>
                 <Stack spacing={2} alignItems="center" justifyContent="center" height={100}>
                   <Typography variant='h6' color="text.main">Top searches in month</Typography>
-                  <Typography variant='h4' color="text.main">24 / 100</Typography>
-                  <Typography variant='subtitle1' color="text.main">Chennai International Airport</Typography>
+                  <Typography variant='h4' color="#4A3AFF">24 / 100</Typography>
+                  <Typography variant='subtitle1' color="#4A3AFF">Chennai International Airport</Typography>
                 </Stack>
             </WhiteCard>
           </Stack>
@@ -58,8 +58,8 @@ function Dashboard() {
             <WhiteCard>
                 <Stack spacing={2} alignItems="center" justifyContent="center" height={100}>
                   <Typography variant='h6' color="text.main">Top destinations in month</Typography>
-                  <Typography variant='h4' color="text.main">248</Typography>
-                  <Typography variant='subtitle1' color="text.main">Delhi</Typography>
+                  <Typography variant='h4' color="#4A3AFF">248</Typography>
+                  <Typography variant='subtitle1' color="#4A3AFF">Delhi</Typography>
                 </Stack>
             </WhiteCard>
           </Stack>

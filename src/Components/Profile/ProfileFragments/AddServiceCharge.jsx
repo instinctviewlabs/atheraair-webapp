@@ -96,6 +96,8 @@ function AddServiceCharge() {
     responsive: "standard",
     elevation: 0,
     selectableRows: "none",
+    rowsPerPage: 5,
+    rowsPerPageOptions: [5, 10, 15, 20],
     fixedHeader: true,
     customSearch: (searchQuery, currentRow, columns) => {
       currentRow.forEach(col => {
@@ -157,7 +159,7 @@ function AddServiceCharge() {
             <MUIDataTable data={serviceChargesList} columns={columns} options={options} />
         </Box>
     </Stack>
-    <AddServiceChargeModal open={ServiceChargeModal} handleClose={setServiceChargeModal}></AddServiceChargeModal>
+    <AddServiceChargeModal open={ServiceChargeModal} handleClose={setServiceChargeModal} setServiceChargesList={setServiceChargesList}></AddServiceChargeModal>
     </>
   )
 }

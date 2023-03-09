@@ -1,15 +1,16 @@
 import React, { useState } from 'react';
 import { Autocomplete, Box, Button, IconButton, InputAdornment, MenuItem, Modal, Stack, Typography } from '@mui/material';
-import { countries } from '../../../Lib/Countries/countries';
+// import { countries } from '../../../Lib/Countries/countries';
+import countries from "../../../Lib/utils/all-countries-db/all-countries-db.json";
 import { BlueButton, InputField } from '../../../Lib/MuiThemes/MuiComponents';
 import { Close } from '@mui/icons-material';
-import currencyList from "../../../Lib/utils/currencyList.json";
+// import currencyList from "../../../Lib/utils/currencyList.json";
 import { LoaderConsumer } from '../../../Lib/Contexts/LoaderContext';
 import axios from 'axios';
-import { BASE_URL } from '../../../Lib/Axios/AxiosConfig';
+import { Axios, BASE_URL } from '../../../Lib/Axios/AxiosConfig';
 import useSnackBar from '../../../Lib/CustomHooks/useSnackBar';
 
-function AddServiceChargeModal({open, handleClose}) {
+function AddServiceChargeModal({open, handleClose, setServiceChargesList}) {
 
   const style = {
     position: 'absolute',
@@ -27,7 +28,9 @@ function AddServiceChargeModal({open, handleClose}) {
   const {showSnackBar} = useSnackBar();
   const [countryName, setCountryName] = useState("");
   const [currencyFormat, setCurrencyFormat] = useState("");
+  const [currencySymbol, setCurrencySymbol] = useState(null);
   const [serviceCharge, setServiceCharge] = useState("");
+//   console.log(countryName);
 
   async function addServiceChage(){
     if(countryName === "" || currencyFormat === "" || serviceCharge === ""){
@@ -35,22 +38,37 @@ function AddServiceChargeModal({open, handleClose}) {
     }
     try{
         startLoading();
-        const urlencoded = new URLSearchParams();
-        urlencoded.append("countryName", countryName);
-        urlencoded.append("currencyFormat", currencyFormat);
-        urlencoded.append("serviceCharge", serviceCharge);
 
-        const response = await axios({
-            method: 'POST',
-            url: `${BASE_URL}/updateServiceCharge`,
-            data: urlencoded,
-            redirect: 'follow'
+        const response = await Axios({
+            method: 'post',
+            url: `updateServiceCharge`,
+            data: {
+                countryName,
+                currencyFormat,
+                serviceCharge
+            },
+            auth: true,
         });
         if(response.status === 200){
-            showSnackBar("success", "Service charge added successfully");
-            handleClose(false)
+
+            const getServiceCharge = await Axios({
+                method: "get",
+                url: `getServiceCharge`,
+                auth: true,
+            });
+            console.log(getServiceCharge);
+            if(getServiceCharge.status === 200){
+                setServiceChargesList(getServiceCharge.data);
+                showSnackBar("success", "Service charge added successfully");
+                handleClose(false);
+                setCurrencyFormat("");
+                setCurrencySymbol(null);
+                setServiceCharge("");
+            }
+            
         }
     }catch(err){
+        console.log(err)
         showSnackBar("error", "Unable to add service charge, Try again later.")
     }finally{
         restLoading();
@@ -65,27 +83,38 @@ function AddServiceChargeModal({open, handleClose}) {
             <Stack sx={style} spacing={3} direction="column">
                 <Stack direction="row" alignItems="center" justifyContent="space-between">
                     <Typography variant='h4'>Add service charge</Typography>
-                    <IconButton onClick={() => handleClose(false)}>
+                    <IconButton onClick={() => {
+                        handleClose(false);
+                        setCurrencyFormat("");
+                        setCurrencySymbol(null);
+                        setServiceCharge("");
+                    }}>
                         <Close/>
                     </IconButton>
                 </Stack>
                 <Autocomplete
                     fullWidth
                     options={countries}
-                    autoHighlight
-                    getOptionLabel={(option) => option.label}
+                    // autoHighlight
+                    getOptionLabel={(option) => option.name ? option.name : ""}
                     isOptionEqualToValue={(option, value) => true}
-                    onChange={(event, newVal) => setCountryName(newVal.label)}
+                    onChange={(event, newVal) => {
+                        if(newVal.name && newVal.currencies){
+                            setCountryName(newVal.name)
+                            setCurrencyFormat(`${newVal.currencies[0].name} - ${newVal.currencies[0].code}`)
+                            setCurrencySymbol(newVal.currencies[0].symbol)
+                        }
+                    }}
                     renderOption={(props, option) => (
                         <Box component="li" sx={{ '& > img': { mr: 2, flexShrink: 0 } }} {...props}>
                         <img
                             loading="lazy"
                             width="20"
-                            src={`https://flagcdn.com/w20/${option.code.toLowerCase()}.png`}
-                            srcSet={`https://flagcdn.com/w40/${option.code.toLowerCase()}.png 2x`}
+                            src={`https://flagcdn.com/w20/${option.alpha2Code.toLowerCase()}.png`}
+                            srcSet={`https://flagcdn.com/w40/${option.alpha2Code.toLowerCase()}.png 2x`}
                             alt="flag"
                         />
-                        {option.label} 
+                        {option.name} 
                         {/* ({option.code}) +{option.phone} */}
                         </Box>
                     )}
@@ -103,19 +132,18 @@ function AddServiceChargeModal({open, handleClose}) {
                     )}
                 />
                 <InputField
-                    select
                     fullWidth
                     size='medium'
                     type="text"
                     label="Currency format"
                     required
                     value={currencyFormat}
-                    onChange={(e) => setCurrencyFormat(e.target.value)}
+                    // onChange={(e) => setCurrencyFormat(e.target.value)}
                 >
-                    <MenuItem value="">Select Currency format</MenuItem>
+                    {/* <MenuItem value="">Select Currency format</MenuItem>
                     {currencyList.map((item, index) => (
                         <MenuItem key={index} value={item.code}>{item.name} - {item.symbol}</MenuItem>
-                    ))}
+                    ))} */}
                 </InputField>
 
                 <InputField
@@ -125,10 +153,18 @@ function AddServiceChargeModal({open, handleClose}) {
                     label="Service charge"
                     value={serviceCharge}
                     onChange={(e) => setServiceCharge(e.target.value)}
+                    InputProps={currencySymbol && {
+                        startAdornment: <InputAdornment position="start">{currencySymbol}</InputAdornment>,
+                    }}
                     required
                 />
                 <Stack direction="row" spacing={3} justifyContent="space-between">
-                    <Button fullWidth variant="outlined" color='primary' onClick={() => handleClose(false)}>Cancel</Button>
+                    <Button fullWidth variant="outlined" color='primary' onClick={() => {
+                        handleClose(false);
+                        setCurrencyFormat("");
+                        setCurrencySymbol(null);
+                        setServiceCharge("");
+                    }}>Cancel</Button>
                     <BlueButton 
                         fullWidth 
                         loading={isLoading} 
