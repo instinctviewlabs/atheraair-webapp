@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { Box, Divider, FormControl, Link, Radio, RadioGroup, Stack, Typography } from '@mui/material';
+import { Box, Divider, FormControl, Link, Radio, RadioGroup, Skeleton, Stack, Typography } from '@mui/material';
 import FlightDetailsCard from '../ReusableComponents/FlightDetailsCard';
 import { AnchorText, BlueButton, StyledRadioControl, WhiteCard } from '../../Lib/MuiThemes/MuiComponents';
 import { emiratesAirlineLogo, emiratesFlight } from '../../Assests/assets';
@@ -41,9 +41,6 @@ function BookingDetails() {
                 }
             
                 }catch(error){
-                    // if(!axios.isCancel){
-                    //     showSnackBar("warning", "Unable to get seatmap for this flight")
-                    // }
                     console.log(error)
                 }finally{
                     restLoading();
@@ -79,7 +76,9 @@ function BookingDetails() {
                 gap={2}
                 flex={3} 
             >
-                <BookingDetailsCard bookingDetails={bookingDetails}/>
+                {isLoading && <Skeleton variant="rounded" width="auto" height={500} />}
+
+                {!isLoading && <BookingDetailsCard bookingDetails={bookingDetails}/>}
                 <Stack direction="row" spacing={1} justifyContent="space-between">
                     <TravellerDetailsCard/>
                     <SendBookingDetailsTo/>
