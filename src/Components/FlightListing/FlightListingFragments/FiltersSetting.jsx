@@ -1,6 +1,6 @@
 import React, {useEffect, useState} from 'react';
 import { useSearchParams } from 'react-router-dom';
-import { Box, Checkbox, FormControlLabel, FormGroup, Slider, styled, ToggleButton, ToggleButtonGroup, Typography } from '@mui/material';
+import { Box, Checkbox, FormControlLabel, FormGroup, Slider, Stack, styled, ToggleButton, ToggleButtonGroup, Typography } from '@mui/material';
 import { BsCloudMoonFill, BsFillCloudSunFill, BsFillSunFill, BsFillSunriseFill } from "react-icons/bs"
 
 //Accordian
@@ -11,7 +11,7 @@ import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import { StyledToggleButton, StyledToggleButtonGroup, WhiteCard } from '../../../Lib/MuiThemes/MuiComponents';
 
 
-function FiltersSetting({carriers, minMaxPrice}) {
+function FiltersSetting({carriers, minMaxPrice, flightCountsBasedOnStops}) {
   
   const [expanded, setExpanded] = useState([]);
   const [searchParams, setSearchParams] = useSearchParams();
@@ -21,6 +21,7 @@ function FiltersSetting({carriers, minMaxPrice}) {
 //   const [filterTrip, setFilterTrip] = useState("");
   const [filterAirlines, setFilterAirlines] = useState("");
   const [filterDepartureTime, setFilterDepartureTime] = useState("");
+  
   const priceRange = [
     {
       value: minMaxPrice.minPrice,
@@ -120,19 +121,19 @@ function FiltersSetting({carriers, minMaxPrice}) {
             <FormGroup>
                 <FormControlLabel 
                     control={<Checkbox />} 
-                    label={<Typography variant='body1' color="text.main">Non-stop</Typography>}
+                    label={<Typography variant='body1' color="text.main">Non-stop {`(${flightCountsBasedOnStops.nonstopFlightCount})`}</Typography>}
                     value={0}
                     onChange={handleStops} 
                 />
                 <FormControlLabel 
                     control={<Checkbox />} 
-                    label={<Typography variant='body1' color="text.main">1 stop</Typography>}
+                    label={<Typography variant='body1' color="text.main">1 stop {`(${flightCountsBasedOnStops.onestopFlightCount})`}</Typography>}
                     value={1}
                     onChange={handleStops} 
                 />
                 <FormControlLabel 
                     control={<Checkbox />} 
-                    label={<Typography variant='body1' color="text.main">2 stop</Typography>}
+                    label={<Typography variant='body1' color="text.main">2 stop {`(${flightCountsBasedOnStops.twostopFlightCount})`}</Typography>}
                     value={2}
                     onChange={handleStops} 
                 />
@@ -291,19 +292,34 @@ function FiltersSetting({carriers, minMaxPrice}) {
             <Typography variant='body1' sx={{color: "text.main"}}>Airlines</Typography>
             </AccordionSummary>
             <AccordionDetails>
-            <FormGroup>
-                {Object.values(carriers).map((carrier, index) => (
+            <Stack maxHeight={300} sx={{
+                overflowY: "scroll",
+                '&::-webkit-scrollbar': {
+                    width: '3px',
+                  },
+                  '&::-webkit-scrollbar-track': {
+                    boxShadow: 'inset 0 0 6px rgba(0,0,0,0.00)',
+                    webkitBoxShadow: 'inset 0 0 6px rgba(0,0,0,0.00)',
+                  },
+                  '&::-webkit-scrollbar-thumb': {
+                    backgroundColor: 'primary.main',
+                    // outline: '3px solid #FAFAFA',
+                }
+            }}>
+                <FormGroup>
+                    {Object.values(carriers).map((carrier, index) => (
 
-                    <FormControlLabel
-                        key={index}
-                        value={carrier}
-                        onChange={handleAirlines} 
-                        control={<Checkbox />} 
-                        label={<Typography variant='body1' color="text.main">{carrier}</Typography>} 
-                    />
+                        <FormControlLabel
+                            key={index}
+                            value={carrier}
+                            onChange={handleAirlines} 
+                            control={<Checkbox />} 
+                            label={<Typography variant='body1' color="text.main">{carrier}</Typography>} 
+                        />
 
-                ))}
-            </FormGroup>
+                    ))}
+                </FormGroup>
+            </Stack>
             </AccordionDetails>
         </Accordion>
         </WhiteCard>

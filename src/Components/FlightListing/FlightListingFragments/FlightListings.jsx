@@ -60,7 +60,7 @@ function FlightListings({cardData}){
       }
 
     useEffect(() => {
-        setCardList(filteredList(cardData));
+        setCardList(filteredList(cardData).slice(0, showValue));
         restLoading();
         // .slice(0, showValue)
         // console.log(cardList);
@@ -109,9 +109,8 @@ function FlightListings({cardData}){
                 :
                 cardList.map((card, index) => (
                     <FlightListCard key={index} cardData={card}></FlightListCard>
-                ))
-            }
-            {(cardData.length > 0 && showValue < cardData.length) && <BlackButtonOutlined onClick={showMoreFlights}>Show more results</BlackButtonOutlined>} 
+                ))}
+                {(cardData.length > 0 && showValue < cardData.length) && <BlackButtonOutlined onClick={showMoreFlights}>Show more results</BlackButtonOutlined>} 
             </Box>
         </Box>
     )

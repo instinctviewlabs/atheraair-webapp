@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { Box } from '@mui/material';
+import { Box, useStepContext } from '@mui/material';
 import FiltersSetting from './FlightListingFragments/FiltersSetting';
 import FlightListings from './FlightListingFragments/FlightListings';
 import { useSelector } from 'react-redux';
@@ -8,7 +8,6 @@ import { LoaderConsumer } from '../../Lib/Contexts/LoaderContext';
 import { Axios } from '../../Lib/Axios/AxiosConfig';
 import FromToCard from './FlightListingFragments/FromToCard';
 import SearchFlightBox from '../ReusableComponents/SearchFlightBox';
-import { useSearchParams } from 'react-router-dom';
 
 function FlightListingsLayout() {
 
@@ -16,8 +15,9 @@ function FlightListingsLayout() {
   const [flightResult, setFlightResult] = useState([]);
   const [carriers, setCarriers] = useState([]);
   const [minMaxPrice, setMinMaxPrice] = useState({});
+  const [ flightCountsBasedOnStops, setFlightCountBasedOnStops ] = useState({});
   const [isLoading, startLoading, restLoading] = LoaderConsumer();
-  const [searchParams, setSearchParams] = useSearchParams();
+
   
   // const effectRef = useRef();
   // console.log(flightSearchKey);
@@ -37,6 +37,25 @@ function FlightListingsLayout() {
         console.log(response);
 
         if(response.status === 200){
+          const nonstopFlightCount = response.data.data.reduce((acc, curr) => {
+            if(curr.stops === 0){
+              acc++
+            }
+            return acc;
+          }, 0);
+          const onestopFlightCount = response.data.data.reduce((acc, curr) => {
+            if(curr.stops === 1){
+              acc++
+            }
+            return acc;
+          }, 0);
+          const twostopFlightCount = response.data.data.reduce((acc, curr) => {
+            if(curr.stops === 2){
+              acc++
+            }
+            return acc;
+          }, 0);
+          setFlightCountBasedOnStops({nonstopFlightCount, onestopFlightCount, twostopFlightCount})
           setFlightResult(response.data.data);
           setCarriers(response.data.carriers);
           setMinMaxPrice({minPrice: response.data.minPrice, maxPrice: response.data.maxPrice});
@@ -54,28 +73,6 @@ function FlightListingsLayout() {
       controller.cancel();
     }
   },[flightSearchKey]);
-
-  // console.log(flightResult);
-  // function filteredList(lists){
-
-  //   const filterObj = {
-  //     stops: !!searchParams.get("stops") && searchParams.get("stops").split(","),
-  //     price: !!searchParams.get("price") && searchParams.get("price"),
-  //     duration: !!searchParams.get("duration") && searchParams.get("duration"),
-  //     airlines: !!searchParams.get("airlines") && searchParams.get("airlines").split(",")
-  //   }
-    
-  //   if(filterObj.stops || filterObj.price || filterObj.duration || filterObj.airlines){
-  //     return lists.filter(data => filterObj.stops.includes(data.stops.toString()))
-  //   }
-
-  //   return lists;
-  // }
-
-  // useEffect(() => {
-  //   console.log(filteredList(flightResult));
-  //   setFlightResult(filteredList(flightResult));
-  // }, [searchParams]) 
   
   return (
     <>
@@ -101,7 +98,8 @@ function FlightListingsLayout() {
       }}>
           <FiltersSetting 
             carriers={carriers} 
-            minMaxPrice={minMaxPrice} 
+            minMaxPrice={minMaxPrice}
+            flightCountsBasedOnStops={flightCountsBasedOnStops}
           />
           <FlightListings 
             cardData={flightResult}
