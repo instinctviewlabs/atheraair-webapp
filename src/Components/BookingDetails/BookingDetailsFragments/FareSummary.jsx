@@ -1,17 +1,29 @@
 import { Box, Divider, Stack, Typography } from '@mui/material';
-import React from 'react';
+import React, { useState } from 'react';
 import { FormattedNumber } from 'react-intl';
+import { useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import { emiratesFlight } from '../../../Assests/assets';
 import { AnchorText, BlueButton, WhiteCard } from '../../../Lib/MuiThemes/MuiComponents';
+import LoginToContinuePopup from '../Modals/LoginToContinuePopup';
 
 function FareSummary({fareSummaryDetails}) {
  
   const navigate = useNavigate();
+  const { auth } = useSelector(data => data.persistedReducer);
   const {price} = fareSummaryDetails.bookingObj.flightOffers[0].travelerPricings[0];
+  const [openLoginPopup, setOpenLoginPopup] = useState(false);
   
+  function triggerSeatmap(){
+    if(auth && auth.auth){
+        navigate("/seatmap");
+    }else{
+        setOpenLoginPopup(true);
+    }
+  }
 
   return (
+    <>
     <WhiteCard>
         <Stack spacing={3}>
             <Typography variant='h4'>Fare summary</Typography>
@@ -74,8 +86,10 @@ function FareSummary({fareSummaryDetails}) {
                 </AnchorText>
             </Stack>
         </Stack>
-        <BlueButton onClick={() => navigate("/seatmap")} sx={{my: 1}} fullWidth>Continue</BlueButton>
+        <BlueButton onClick={triggerSeatmap} sx={{my: 1}} fullWidth>Continue</BlueButton>
     </WhiteCard>
+    <LoginToContinuePopup open={openLoginPopup} setOpen={setOpenLoginPopup}></LoginToContinuePopup>
+    </>
   )
 }
 

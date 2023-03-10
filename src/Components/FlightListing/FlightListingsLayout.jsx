@@ -28,24 +28,25 @@ function FlightListingsLayout() {
     const controller = axios.CancelToken.source();
     (async () => {
       try{
-          startLoading();
-          const response = await Axios({
-            url: `${flightSearchKey.trip}?origin=${flightSearchKey.origin}&destination=${flightSearchKey.desination}&departureDate=${flightSearchKey.departureDate}${flightSearchKey.trip === "twoway" ? `&returnDate=${flightSearchKey.returnDate}` : ""}&adults=${flightSearchKey.adultCount}&children=${flightSearchKey.childrenCount}&infants=${flightSearchKey.infantCount}&travelClass=${flightSearchKey.class}`,
-            method: "get",
-            cancelToken: controller.token
-          });
-          console.log(response);
+        startLoading();
+        const response = await Axios({
+          url: `${flightSearchKey.trip}?origin=${flightSearchKey.origin}&destination=${flightSearchKey.desination}&departureDate=${flightSearchKey.departureDate}${flightSearchKey.trip === "twoway" ? `&returnDate=${flightSearchKey.returnDate}` : ""}&adults=${flightSearchKey.adultCount}&children=${flightSearchKey.childrenCount}&infants=${flightSearchKey.infantCount}&travelClass=${flightSearchKey.class}`,
+          method: "get",
+          cancelToken: controller.token
+        });
+        console.log(response);
 
-          if(response.status === 200){
-            setFlightResult(response.data.data);
-            setCarriers(response.data.carriers);
-            setMinMaxPrice({minPrice: response.data.minPrice, maxPrice: response.data.maxPrice})
-          }
+        if(response.status === 200){
+          setFlightResult(response.data.data);
+          setCarriers(response.data.carriers);
+          setMinMaxPrice({minPrice: response.data.minPrice, maxPrice: response.data.maxPrice});
+          restLoading();
+        }
     
       }catch(error){
-        console.error(error)
-      }finally{
+        console.error(error);
         restLoading();
+
       }
     })()
 

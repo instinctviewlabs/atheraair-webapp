@@ -14,6 +14,7 @@ import { Axios, BASE_URL } from '../../Lib/Axios/AxiosConfig';
 import { LoaderConsumer } from '../../Lib/Contexts/LoaderContext';
 import BookingDetailsCard from './BookingDetailsFragments/BookingDetailsCard';
 import useSnackBar from '../../Lib/CustomHooks/useSnackBar';
+import { useSelector } from 'react-redux';
 // import ChoosePaymentMethod from './BookingDetailsFragments/ChoosePaymentMethod';
 
 function BookingDetails() {
@@ -21,8 +22,8 @@ function BookingDetails() {
     const obj = sessionStorage.getItem("seatObj"); 
     const [isLoading, startLoading, restLoading] = LoaderConsumer();
     const [bookingDetails, setBookingDetails] = useState(null);
+    const {masterList} = useSelector(data => data.persistedReducer.account);
     // const { showSnackBar } = useSnackBar();
-    console.log(isLoading);
 
     useEffect(() => {
         if(!!obj){
@@ -82,7 +83,7 @@ function BookingDetails() {
                 {!isLoading && bookingDetails && <BookingDetailsCard bookingDetails={bookingDetails}/>}
 
                 {!isLoading && <Stack direction="row" spacing={1} justifyContent="space-between">
-                    <TravellerDetailsCard/>
+                    <TravellerDetailsCard masterList={masterList}/>
                     <SendBookingDetailsTo/>
                 </Stack>}
                 {isLoading && <Stack direction="row" spacing={1} justifyContent="space-between">

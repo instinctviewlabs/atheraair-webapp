@@ -7,13 +7,13 @@ import { useSelector } from 'react-redux';
 import { AnchorText, WhiteCard } from '../../../Lib/MuiThemes/MuiComponents'
 import AddTravellerInBookingPage from '../Modals/AddTravellerInBookingPage';
 
-function TravellerDetailsCard() {
+function TravellerDetailsCard({masterList}) {
 
-  const {masterList} = useSelector(data => data.persistedReducer.account);
+  
   const [ openNewPassengerModal, setOpenNewPassengerModal ] = useState(false);
   const [travellersList, setTravellersList] = useState([]);
   const [passengers, setPassengers] = useState(new Set());
-//   console.log(passengers);
+//   console.log(masterList);
 
   function addPassenger(obj){
     const newSet = new Set(passengers);
@@ -28,7 +28,9 @@ function TravellerDetailsCard() {
   }
 
   useEffect(() => {
-    setTravellersList(masterList);
+    if(masterList){
+        setTravellersList(masterList);
+    }
   },[masterList])
 
 
@@ -55,32 +57,37 @@ function TravellerDetailsCard() {
                     <Avatar />
                     </Stack>
                 </Stack> */}
-                <Stack>
-                    <List>
-                        {travellersList.map((traveller, index) => (
-                            <Fragment key={index}>
-                                <ListItem secondaryAction={
-                                    <Checkbox
-                                        value={traveller}
-                                        checked={passengers.has(traveller)}
-                                        onChange={() => addPassenger(traveller)}
-                                    />
-                                }
-                                >
-                                <ListItemAvatar>
-                                <Avatar>
-                                </Avatar>
-                                </ListItemAvatar>
-                                <ListItemText 
-                                    primary={<Typography variant='h6' color="text.main">{traveller.name} <Typography variant='subtitle2' component="span">({traveller.gender}, {traveller.dob})</Typography></Typography>} 
-                                    secondary={<Typography variant='subtitle1'>Adult (12+ years)</Typography>}
-                                    />
-                                </ListItem>
-                                <Divider variant="inset" component="li" />
-                            </Fragment>
-                        ))}
-                    </List>
-                </Stack>
+                {travellersList.length !== 0 ? 
+                    <Stack>
+                        <List>
+                            {travellersList.map((traveller, index) => (
+                                <Fragment key={index}>
+                                    <ListItem secondaryAction={
+                                        <Checkbox
+                                            value={traveller}
+                                            checked={passengers.has(traveller)}
+                                            onChange={() => addPassenger(traveller)}
+                                        />
+                                    }
+                                    >
+                                    <ListItemAvatar>
+                                    <Avatar>
+                                    </Avatar>
+                                    </ListItemAvatar>
+                                    <ListItemText 
+                                        primary={<Typography variant='h6' color="text.main">{traveller.name} <Typography variant='subtitle2' component="span">({traveller.gender}, {traveller.dob})</Typography></Typography>} 
+                                        secondary={<Typography variant='subtitle1'>Adult (12+ years)</Typography>}
+                                        />
+                                    </ListItem>
+                                    <Divider variant="inset" component="li" />
+                                </Fragment>
+                            ))}
+                        </List>
+                    </Stack> : 
+                    <Stack width="100%" height={120} textAlign="center" justifyContent="center">
+                        <Typography variant='subtitle2'>Please add traveller details...</Typography>
+                    </Stack>
+                    }
                 {/* <Stack>
                     <FormGroup>
                     <FormControlLabel control={<Checkbox defaultChecked />} label={<Typography variant='body1' color="text.main">Mike Wheeler</Typography>} />
