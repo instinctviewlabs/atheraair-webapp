@@ -8,15 +8,18 @@ import FromToCard from "./FromToCard";
 import { useSearchParams } from "react-router-dom";
 import { LoaderConsumer } from "../../../Lib/Contexts/LoaderContext";
 
-function FlightListings({cardData}){
+function FlightListings({cardData, showValue, setShowValue}){
     
-    const [showValue, setShowValue] = useState(10);
     const [cardList, setCardList] = useState([]);
     const [searchParams, setSearchParams] = useSearchParams();
     const [isLoading, startLoading, restLoading] = LoaderConsumer();
 
     function showMoreFlights(){
         setShowValue(prev => prev + 10);
+    }
+
+    function showLessFlights(){
+        setShowValue(10)
     }
 
     function filteredList(lists){
@@ -57,19 +60,12 @@ function FlightListings({cardData}){
         }
     
         return lists;
-      }
+    }
 
     useEffect(() => {
-        setCardList(filteredList(cardData).slice(0, showValue));
-        restLoading();
-        // .slice(0, showValue)
-        // console.log(cardList);
+        setCardList(filteredList(cardData));
     }, [searchParams, cardData, showValue]) 
         
-    // useEffect(() => {
-    //     setCardList(cardData.slice(0, showValue));
-    //     return () => {}
-    // },[cardData, showValue]);
         
     return(
         <Box sx={{
@@ -85,7 +81,7 @@ function FlightListings({cardData}){
                 justifyContent: "space-between",
                 p: 1
             }}>
-                <Typography variant="body1" color="text.main">Showing {cardList.length} of {cardData.length} results</Typography>
+                <Typography variant="body1" color="text.main">Showing {cardList.slice(0, showValue).length} of {cardList.length} results</Typography>
                 <Typography variant="subtitle1" color="text.main">Sort by <AnchorText variant="subtitle1" component="span">Recommended <MdOutlineKeyboardArrowDown/></AnchorText></Typography>
             </Box>
             <Box sx={{
@@ -104,13 +100,14 @@ function FlightListings({cardData}){
                     </>
                 }
 
-                {!isLoading && cardData.length === 0 ?
-                    <Typography variant="h5" color="text.main" textAlign="center">No results found</Typography>
-                :
-                cardList.map((card, index) => (
+                {!isLoading && cardList.length === 0 &&
+                    <Typography variant="h5" color="text.main" textAlign="center">No results found</Typography>}
+                
+                {!isLoading && cardList.length > 0 && cardList.slice(0, showValue).map((card, index) => (
                     <FlightListCard key={index} cardData={card}></FlightListCard>
                 ))}
-                {(cardData.length > 0 && showValue < cardData.length) && <BlackButtonOutlined onClick={showMoreFlights}>Show more results</BlackButtonOutlined>} 
+                {(cardList.length > 0 && showValue < cardList.length) && <BlackButtonOutlined onClick={showMoreFlights}>Show more results</BlackButtonOutlined>} 
+                {showValue >= cardList.length && <BlackButtonOutlined onClick={showLessFlights}>Show less results</BlackButtonOutlined>} 
             </Box>
         </Box>
     )

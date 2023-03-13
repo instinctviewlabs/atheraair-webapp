@@ -223,10 +223,10 @@ function SearchFlightBox(props) {
                     <Autocomplete
                         fullWidth
                         loading={isLoading}
-                        onChange={(event, newVal) => setSearchData(prev => ({...prev, origin: newVal.iataCode ? newVal.iataCode : "", originName: newVal.name ? newVal.name: ""}))}
+                        onChange={(event, newVal) => newVal && setSearchData(prev => ({...prev, origin: newVal.iataCode, originName: newVal.name}))}
                         size="medium"
                         options={originKey.options}
-                        getOptionLabel={(option) => `${capitalize(option.name)} - ${option.iataCode}` || ""}
+                        getOptionLabel={(option) => `${capitalize(option.name)} - ${option.iataCode}`}
                         // isOptionEqualToValue={(option, value) =>  console.log(option.name, " ---- ", value.name, option.name === value.name)}
                         isOptionEqualToValue={(option, value) => true}
                         noOptionsText="No flights available"
@@ -249,7 +249,7 @@ function SearchFlightBox(props) {
                     <Autocomplete
                         fullWidth
                         loading={isLoading}
-                        onChange={(event, newVal) => setSearchData(prev => ({...prev, desination: newVal.iataCode ? newVal.iataCode : "", destinationName: newVal.name ? newVal.name : ""}))}
+                        onChange={(event, newVal) => newVal && setSearchData(prev => ({...prev, desination: newVal.iataCode, destinationName: newVal.name}))}
                         size="medium"
                         options={destinationKey.options}
                         getOptionLabel={(option) => `${capitalize(option.name)} - ${option.iataCode}` || ""}

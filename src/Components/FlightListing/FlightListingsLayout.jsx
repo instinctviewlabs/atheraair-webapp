@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { Box, useStepContext } from '@mui/material';
+import { Box, Fab, Tooltip, useStepContext } from '@mui/material';
 import FiltersSetting from './FlightListingFragments/FiltersSetting';
 import FlightListings from './FlightListingFragments/FlightListings';
 import { useSelector } from 'react-redux';
@@ -8,6 +8,7 @@ import { LoaderConsumer } from '../../Lib/Contexts/LoaderContext';
 import { Axios } from '../../Lib/Axios/AxiosConfig';
 import FromToCard from './FlightListingFragments/FromToCard';
 import SearchFlightBox from '../ReusableComponents/SearchFlightBox';
+import { Navigation } from '@mui/icons-material';
 
 function FlightListingsLayout() {
 
@@ -17,11 +18,24 @@ function FlightListingsLayout() {
   const [minMaxPrice, setMinMaxPrice] = useState({});
   const [ flightCountsBasedOnStops, setFlightCountBasedOnStops ] = useState({});
   const [isLoading, startLoading, restLoading] = LoaderConsumer();
+  const [showValue, setShowValue] = useState(10);
+  const [scrollValue, setScrollValue] = useState(0)
 
-  
   // const effectRef = useRef();
   // console.log(flightSearchKey);
   // console.log(flightResult);
+
+  // function toggleNavigator(){
+  //   const scrollValue = document.documentElement.scrollTop;
+  //   console.log(scrollValue);
+  // }
+
+  function scrollToTop(){
+    window.scrollTo({
+      top: 0,
+      behavior: "smooth"
+    })
+  }
 
 
   useEffect(() => {
@@ -59,6 +73,7 @@ function FlightListingsLayout() {
           setFlightResult(response.data.data);
           setCarriers(response.data.carriers);
           setMinMaxPrice({minPrice: response.data.minPrice, maxPrice: response.data.maxPrice});
+          setShowValue(10);
           restLoading();
         }
     
@@ -73,6 +88,18 @@ function FlightListingsLayout() {
       controller.cancel();
     }
   },[flightSearchKey]);
+
+  useEffect(() => {
+    const handleScroll = (event) => {
+      setScrollValue(window.scrollY);
+    };
+
+    window.addEventListener('scroll', handleScroll);
+
+    return () => {
+      window.removeEventListener('scroll', handleScroll);
+    };
+  },[])
   
   return (
     <>
@@ -103,10 +130,21 @@ function FlightListingsLayout() {
           />
           <FlightListings 
             cardData={flightResult}
+            showValue={showValue}
+            setShowValue={setShowValue}
           />
       </Box>
     </Box>
-    
+    {scrollValue > 400 && <Tooltip title="Go to top" placement="top">
+      <Fab 
+        sx={{ position: 'fixed', bottom: 16, right: 16 }} 
+        color="primary" 
+        size='medium'
+        onClick={scrollToTop}
+      >
+        <Navigation />
+      </Fab>
+    </Tooltip>}
     </>
   )
 }
